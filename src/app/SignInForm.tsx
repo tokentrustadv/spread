@@ -8,6 +8,7 @@ export function SignInForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle"
   );
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -17,7 +18,13 @@ export function SignInForm() {
       email,
       options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
     });
-    setStatus(error ? "error" : "sent");
+    if (error) {
+      console.error("signInWithOtp failed", error);
+      setErrorMessage(error.message);
+      setStatus("error");
+    } else {
+      setStatus("sent");
+    }
   }
 
   if (status === "sent") {
@@ -42,7 +49,9 @@ export function SignInForm() {
         {status === "sending" ? "Sending…" : "Get magic link"}
       </button>
       {status === "error" && (
-        <p className="text-sm text-hot">Something went wrong. Try again.</p>
+        <p className="text-sm text-hot">
+          {errorMessage ?? "Something went wrong. Try again."}
+        </p>
       )}
     </form>
   );
