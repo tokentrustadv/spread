@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Node } from "@/components/Node";
 import { Tile } from "@/components/Tile";
@@ -22,7 +23,17 @@ const steps = [
   },
 ];
 
-export default async function LandingPage() {
+export default async function LandingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ code?: string; error?: string }>;
+}) {
+  const params = await searchParams;
+
+  if (params.code) {
+    redirect(`/auth/callback?code=${encodeURIComponent(params.code)}`);
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -51,6 +62,11 @@ export default async function LandingPage() {
           </Link>
         ) : (
           <SignInForm />
+        )}
+        {params.error && (
+          <p className="mt-3 rounded-input bg-tomato-tint p-3 text-sm text-hot">
+            {params.error}
+          </p>
         )}
       </div>
 

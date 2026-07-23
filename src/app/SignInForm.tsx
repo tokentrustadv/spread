@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { siteUrl } from "@/lib/site";
 
 export function SignInForm() {
   const [email, setEmail] = useState("");
@@ -16,7 +15,7 @@ export function SignInForm() {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${siteUrl}/auth/callback` },
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
     });
     setStatus(error ? "error" : "sent");
   }
