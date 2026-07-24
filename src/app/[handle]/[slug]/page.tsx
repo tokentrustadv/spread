@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { getPublicSpread } from "@/services/spreads";
@@ -71,21 +70,32 @@ export default async function SpreadDetailPage({
   const { supabase, spread, handle, error } = await loadSpread(resolved);
 
   if (!spread) {
-    if (error) {
-      return (
-        <main className="frame py-16">
-          <p className="font-display text-sm font-bold text-hot">
-            Couldn&rsquo;t load this spread
-          </p>
-          <p className="mt-2 text-sm text-soft">handle: {handle}</p>
-          <p className="text-sm text-soft">slug: {resolved.slug}</p>
+    return (
+      <main className="frame py-16">
+        <p className="font-display text-sm font-bold text-hot">
+          Couldn&rsquo;t load this spread
+        </p>
+        <p className="mt-2 text-sm text-soft">
+          raw params.handle: {JSON.stringify(resolved.handle)}
+        </p>
+        <p className="text-sm text-soft">
+          stripped handle: {JSON.stringify(handle)}
+        </p>
+        <p className="text-sm text-soft">
+          raw params.slug: {JSON.stringify(resolved.slug)}
+        </p>
+        {error && (
           <p className="mt-4 rounded-input bg-tomato-tint p-3 text-sm text-hot">
             {error}
           </p>
-        </main>
-      );
-    }
-    notFound();
+        )}
+        {!error && (
+          <p className="mt-4 text-sm text-soft">
+            No error thrown — query legitimately returned no matching row.
+          </p>
+        )}
+      </main>
+    );
   }
 
   const {
