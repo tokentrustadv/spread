@@ -20,6 +20,8 @@ export function EditProfileForm({
   const [availability, setAvailability] = useState(profile.availability ?? "");
   const [area, setArea] = useState(profile.area ?? "");
   const [paymentNote, setPaymentNote] = useState(profile.paymentNote ?? "");
+  const [cashappHandle, setCashappHandle] = useState(profile.cashappHandle ?? "");
+  const [venmoHandle, setVenmoHandle] = useState(profile.venmoHandle ?? "");
   const [isLive, setIsLive] = useState(profile.isLive);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -36,6 +38,8 @@ export function EditProfileForm({
       availability: availability.trim(),
       area: area.trim(),
       paymentNote: paymentNote.trim(),
+      cashappHandle: cashappHandle.trim(),
+      venmoHandle: venmoHandle.trim(),
       isLive,
     });
     if (!result.success) {
@@ -124,6 +128,42 @@ export function EditProfileForm({
           placeholder="I take Venmo, Cash App, or cash"
           onChange={(e) => setPaymentNote(e.target.value)}
         />
+      </div>
+
+      <div>
+        <label className="mb-1.5 block text-sm font-semibold text-soft">
+          Cash App
+        </label>
+        <div className="flex items-center gap-2">
+          <span className="text-soft">$</span>
+          <input
+            className="input-field"
+            value={cashappHandle}
+            maxLength={50}
+            placeholder="yourcashtag"
+            onChange={(e) => setCashappHandle(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="mb-1.5 block text-sm font-semibold text-soft">
+          Venmo
+        </label>
+        <div className="flex items-center gap-2">
+          <span className="text-soft">@</span>
+          <input
+            className="input-field"
+            value={venmoHandle}
+            maxLength={50}
+            placeholder="yourvenmoname"
+            onChange={(e) => setVenmoHandle(e.target.value)}
+          />
+        </div>
+        <p className="mt-1 text-xs text-soft">
+          When set, buyers get a pay button pre-filled with the spread&rsquo;s
+          price.
+        </p>
       </div>
 
       <div className="card p-4">

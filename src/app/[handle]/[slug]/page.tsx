@@ -155,16 +155,12 @@ export default async function SpreadDetailPage({
             {spread.ownerPaymentNote && (
               <p className="text-sm text-soft">{spread.ownerPaymentNote}</p>
             )}
-            {spread.ownerSocialLink && (
-              <a
-                href={spread.ownerSocialLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary mt-4 w-full"
-              >
-                Order from @{spread.ownerHandle}
-              </a>
-            )}
+            <Link
+              href={`/@${spread.ownerHandle}/${spread.slug}/order`}
+              className="btn-primary mt-4 w-full"
+            >
+              Start your order
+            </Link>
           </div>
         ) : (
           <Link href="/" className="card block p-5 text-center">

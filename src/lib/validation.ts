@@ -10,12 +10,21 @@ export const profileSchema = z.object({
   handle: handleSchema,
 });
 
+const handleLikeField = z
+  .string()
+  .max(50)
+  .optional()
+  .or(z.literal(""))
+  .transform((v) => (v ? v.replace(/^[$@]+/, "").trim() : v));
+
 export const profileEditSchema = z.object({
   displayName: z.string().min(1, "Required").max(60),
   socialLink: z.string().max(200).optional().or(z.literal("")),
   availability: z.string().max(100).optional().or(z.literal("")),
   area: z.string().max(100).optional().or(z.literal("")),
   paymentNote: z.string().max(100).optional().or(z.literal("")),
+  cashappHandle: handleLikeField,
+  venmoHandle: handleLikeField,
   isLive: z.boolean(),
 });
 

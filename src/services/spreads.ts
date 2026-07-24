@@ -110,6 +110,8 @@ export async function getPublicSpread(
     ownerAvailability: profile.availability,
     ownerArea: profile.area,
     ownerPaymentNote: profile.paymentNote,
+    ownerCashappHandle: profile.cashappHandle,
+    ownerVenmoHandle: profile.venmoHandle,
     ownerIsLive: profile.isLive,
   };
 }

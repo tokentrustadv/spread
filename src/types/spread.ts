@@ -8,6 +8,8 @@ export type Profile = {
   availability: string | null;
   area: string | null;
   paymentNote: string | null;
+  cashappHandle: string | null;
+  venmoHandle: string | null;
   isLive: boolean;
   createdAt: string;
 };
@@ -48,5 +50,7 @@ export type SpreadWithOwner = Spread & {
   ownerAvailability: string | null;
   ownerArea: string | null;
   ownerPaymentNote: string | null;
+  ownerCashappHandle: string | null;
+  ownerVenmoHandle: string | null;
   ownerIsLive: boolean;
 };

@@ -13,6 +13,8 @@ function toProfile(row: Database["public"]["Tables"]["profiles"]["Row"]): Profil
     availability: row.availability,
     area: row.area,
     paymentNote: row.payment_note,
+    cashappHandle: row.cashapp_handle,
+    venmoHandle: row.venmo_handle,
     isLive: row.is_live,
     createdAt: row.created_at,
   };
@@ -87,6 +89,8 @@ export async function updateProfile(
     availability?: string;
     area?: string;
     paymentNote?: string;
+    cashappHandle?: string;
+    venmoHandle?: string;
     isLive: boolean;
   }
 ): Promise<Profile> {
@@ -98,6 +102,8 @@ export async function updateProfile(
       availability: input.availability ? input.availability : null,
       area: input.area ? input.area : null,
       payment_note: input.paymentNote ? input.paymentNote : null,
+      cashapp_handle: input.cashappHandle ? input.cashappHandle : null,
+      venmo_handle: input.venmoHandle ? input.venmoHandle : null,
       is_live: input.isLive,
     })
     .eq("id", userId)

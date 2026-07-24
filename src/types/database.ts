@@ -13,6 +13,8 @@ export type Database = {
           availability: string | null;
           area: string | null;
           payment_note: string | null;
+          cashapp_handle: string | null;
+          venmo_handle: string | null;
           is_live: boolean;
           created_at: string;
         };
@@ -24,6 +26,8 @@ export type Database = {
           availability?: string | null;
           area?: string | null;
           payment_note?: string | null;
+          cashapp_handle?: string | null;
+          venmo_handle?: string | null;
           is_live?: boolean;
           created_at?: string;
         };
@@ -35,6 +39,8 @@ export type Database = {
           availability?: string | null;
           area?: string | null;
           payment_note?: string | null;
+          cashapp_handle?: string | null;
+          venmo_handle?: string | null;
           is_live?: boolean;
           created_at?: string;
         };
