@@ -11,6 +11,9 @@ export type Database = {
           display_name: string;
           social_link: string | null;
           availability: string | null;
+          area: string | null;
+          payment_note: string | null;
+          is_live: boolean;
           created_at: string;
         };
         Insert: {
@@ -19,6 +22,9 @@ export type Database = {
           display_name: string;
           social_link?: string | null;
           availability?: string | null;
+          area?: string | null;
+          payment_note?: string | null;
+          is_live?: boolean;
           created_at?: string;
         };
         Update: {
@@ -27,6 +33,9 @@ export type Database = {
           display_name?: string;
           social_link?: string | null;
           availability?: string | null;
+          area?: string | null;
+          payment_note?: string | null;
+          is_live?: boolean;
           created_at?: string;
         };
         Relationships: [];

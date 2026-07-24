@@ -6,6 +6,9 @@ export type Profile = {
   displayName: string;
   socialLink: string | null;
   availability: string | null;
+  area: string | null;
+  paymentNote: string | null;
+  isLive: boolean;
   createdAt: string;
 };
 
@@ -41,4 +44,7 @@ export type SpreadWithOwner = Spread & {
   ownerDisplayName: string;
   ownerSocialLink: string | null;
   ownerAvailability: string | null;
+  ownerArea: string | null;
+  ownerPaymentNote: string | null;
+  ownerIsLive: boolean;
 };

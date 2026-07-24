@@ -136,22 +136,30 @@ export default async function SpreadDetailPage({
             />
             <OwnerActions spreadId={spread.id} userId={spread.userId} />
           </div>
-        ) : spread.ownerSocialLink ? (
+        ) : spread.ownerIsLive ? (
           <div className="card p-5 text-center">
             <p className="font-display text-sm font-bold text-hot">
               How to order
             </p>
-            {spread.ownerAvailability && (
-              <p className="mt-1 text-sm text-soft">{spread.ownerAvailability}</p>
+            {spread.ownerArea && (
+              <p className="mt-2 text-sm text-soft">{spread.ownerArea}</p>
             )}
-            <a
-              href={spread.ownerSocialLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary mt-4 w-full"
-            >
-              Order from @{spread.ownerHandle}
-            </a>
+            {spread.ownerAvailability && (
+              <p className="text-sm text-soft">{spread.ownerAvailability}</p>
+            )}
+            {spread.ownerPaymentNote && (
+              <p className="text-sm text-soft">{spread.ownerPaymentNote}</p>
+            )}
+            {spread.ownerSocialLink && (
+              <a
+                href={spread.ownerSocialLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary mt-4 w-full"
+              >
+                Order from @{spread.ownerHandle}
+              </a>
+            )}
           </div>
         ) : (
           <Link href="/" className="card block p-5 text-center">

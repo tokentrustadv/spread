@@ -106,6 +106,9 @@ export async function getPublicSpread(
     ownerDisplayName: profile.displayName,
     ownerSocialLink: profile.socialLink,
     ownerAvailability: profile.availability,
+    ownerArea: profile.area,
+    ownerPaymentNote: profile.paymentNote,
+    ownerIsLive: profile.isLive,
   };
 }
 

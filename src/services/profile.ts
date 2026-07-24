@@ -11,6 +11,9 @@ function toProfile(row: Database["public"]["Tables"]["profiles"]["Row"]): Profil
     displayName: row.display_name,
     socialLink: row.social_link,
     availability: row.availability,
+    area: row.area,
+    paymentNote: row.payment_note,
+    isLive: row.is_live,
     createdAt: row.created_at,
   };
 }
@@ -78,7 +81,14 @@ export async function createProfile(
 export async function updateProfile(
   supabase: Client,
   userId: string,
-  input: { displayName: string; socialLink?: string; availability?: string }
+  input: {
+    displayName: string;
+    socialLink?: string;
+    availability?: string;
+    area?: string;
+    paymentNote?: string;
+    isLive: boolean;
+  }
 ): Promise<Profile> {
   const { data, error } = await supabase
     .from("profiles")
@@ -86,6 +96,9 @@ export async function updateProfile(
       display_name: input.displayName,
       social_link: input.socialLink ? input.socialLink : null,
       availability: input.availability ? input.availability : null,
+      area: input.area ? input.area : null,
+      payment_note: input.paymentNote ? input.paymentNote : null,
+      is_live: input.isLive,
     })
     .eq("id", userId)
     .select("*")

@@ -14,6 +14,9 @@ export const profileEditSchema = z.object({
   displayName: z.string().min(1, "Required").max(60),
   socialLink: z.string().max(200).optional().or(z.literal("")),
   availability: z.string().max(100).optional().or(z.literal("")),
+  area: z.string().max(100).optional().or(z.literal("")),
+  paymentNote: z.string().max(100).optional().or(z.literal("")),
+  isLive: z.boolean(),
 });
 
 export const itemSchema = z.object({
