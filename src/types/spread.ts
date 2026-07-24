@@ -34,6 +34,8 @@ export type Spread = {
   color: SpreadColor;
   notes: string | null;
   isPublic: boolean;
+  foodCost: number | null;
+  price: number | null;
   createdAt: string;
   updatedAt: string;
   restaurants: SpreadRestaurant[];

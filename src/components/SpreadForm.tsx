@@ -16,6 +16,8 @@ type FormState = {
   title: string;
   color: SpreadColor;
   notes: string;
+  foodCost: string;
+  price: string;
   restaurants: [RestaurantDraft, RestaurantDraft];
 };
 
@@ -29,6 +31,8 @@ function fromSpread(spread: Spread): FormState {
     title: spread.title,
     color: spread.color,
     notes: spread.notes ?? "",
+    foodCost: spread.foodCost != null ? String(spread.foodCost) : "",
+    price: spread.price != null ? String(spread.price) : "",
     restaurants: [toDraft(a), toDraft(b)],
   };
 }
@@ -37,11 +41,20 @@ const emptyState: FormState = {
   title: "",
   color: "tomato",
   notes: "",
+  foodCost: "",
+  price: "",
   restaurants: [
     { name: "", items: [{ name: "", note: "" }] },
     { name: "", items: [] },
   ],
 };
+
+function parseMoney(value: string): number | null {
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  const n = Number(trimmed);
+  return Number.isFinite(n) ? Math.round(n * 100) / 100 : null;
+}
 
 export function SpreadForm({
   userId,
@@ -63,6 +76,15 @@ export function SpreadForm({
   const [savedSlug, setSavedSlug] = useState<string | null>(null);
 
   const totalItems = form.restaurants.reduce((n, r) => n + r.items.length, 0);
+  const foodCostNum = parseMoney(form.foodCost);
+  const priceNum = parseMoney(form.price);
+  const profit =
+    foodCostNum !== null && priceNum !== null ? priceNum - foodCostNum : null;
+
+  function suggestPrice(runFee: number) {
+    if (foodCostNum === null) return;
+    setForm((f) => ({ ...f, price: (foodCostNum + runFee).toFixed(2) }));
+  }
 
   function updateRestaurant(index: 0 | 1, patch: Partial<RestaurantDraft>) {
     setForm((f) => {
@@ -101,6 +123,8 @@ export function SpreadForm({
       color: form.color,
       notes: form.notes.trim(),
       isPublic: true,
+      foodCost: parseMoney(form.foodCost),
+      price: parseMoney(form.price),
       restaurants: form.restaurants.map((r) => ({
         name: r.name.trim(),
         items: r.items
@@ -241,6 +265,65 @@ export function SpreadForm({
           </button>
         </div>
       ))}
+
+      <div className="card p-4">
+        <label className="mb-1.5 block text-sm font-semibold text-soft">
+          What it costs you
+        </label>
+        <input
+          type="number"
+          inputMode="decimal"
+          step="0.01"
+          min="0"
+          className="input-field"
+          value={form.foodCost}
+          placeholder="0.00"
+          onChange={(e) => setForm((f) => ({ ...f, foodCost: e.target.value }))}
+        />
+        <p className="mt-1 text-xs text-soft">
+          Both items, tax included — what you actually pay at the counter.
+          Never shown to buyers.
+        </p>
+
+        <div className="mt-3 flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => suggestPrice(12)}
+            disabled={foodCostNum === null}
+            className="text-xs font-semibold text-hot disabled:cursor-not-allowed disabled:text-soft"
+          >
+            Nearby (+$12)
+          </button>
+          <button
+            type="button"
+            onClick={() => suggestPrice(15)}
+            disabled={foodCostNum === null}
+            className="text-xs font-semibold text-hot disabled:cursor-not-allowed disabled:text-soft"
+          >
+            A bit of a drive (+$15)
+          </button>
+        </div>
+
+        <label className="mb-1.5 mt-4 block text-sm font-semibold text-soft">
+          What you charge
+        </label>
+        <input
+          type="number"
+          inputMode="decimal"
+          step="0.01"
+          min="0"
+          className="input-field"
+          value={form.price}
+          placeholder="0.00"
+          onChange={(e) => setForm((f) => ({ ...f, price: e.target.value }))}
+        />
+
+        {profit !== null && (
+          <p className="mt-2 text-sm font-semibold text-herb">
+            You&rsquo;ll make ${profit.toFixed(2)}
+          </p>
+        )}
+      </div>
 
       {errors.length > 0 && (
         <div className="rounded-input bg-tomato-tint p-3 text-sm text-hot">

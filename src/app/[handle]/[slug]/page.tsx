@@ -141,6 +141,11 @@ export default async function SpreadDetailPage({
             <p className="font-display text-sm font-bold text-hot">
               How to order
             </p>
+            {spread.price != null && (
+              <p className="mt-2 font-display text-2xl font-extrabold">
+                ${spread.price.toFixed(2)}
+              </p>
+            )}
             {spread.ownerArea && (
               <p className="mt-2 text-sm text-soft">{spread.ownerArea}</p>
             )}

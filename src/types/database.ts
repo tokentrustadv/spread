@@ -49,6 +49,8 @@ export type Database = {
           color: string;
           notes: string | null;
           is_public: boolean;
+          food_cost: number | null;
+          price: number | null;
           created_at: string;
           updated_at: string;
           deleted_at: string | null;
@@ -61,6 +63,8 @@ export type Database = {
           color?: string;
           notes?: string | null;
           is_public?: boolean;
+          food_cost?: number | null;
+          price?: number | null;
           created_at?: string;
           updated_at?: string;
           deleted_at?: string | null;
@@ -73,6 +77,8 @@ export type Database = {
           color?: string;
           notes?: string | null;
           is_public?: boolean;
+          food_cost?: number | null;
+          price?: number | null;
           created_at?: string;
           updated_at?: string;
           deleted_at?: string | null;

@@ -42,6 +42,8 @@ function toSpread(row: RawSpread): Spread {
     color: row.color as SpreadColor,
     notes: row.notes,
     isPublic: row.is_public,
+    foodCost: row.food_cost,
+    price: row.price,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     restaurants,
@@ -173,6 +175,8 @@ export async function createSpread(
       color: input.color,
       notes: input.notes ? input.notes : null,
       is_public: input.isPublic,
+      food_cost: input.foodCost ?? null,
+      price: input.price ?? null,
     })
     .select("*")
     .single();
@@ -216,6 +220,8 @@ export async function updateSpread(
       color: input.color,
       notes: input.notes ? input.notes : null,
       is_public: input.isPublic,
+      food_cost: input.foodCost ?? null,
+      price: input.price ?? null,
     })
     .eq("id", id)
     .eq("user_id", userId);
