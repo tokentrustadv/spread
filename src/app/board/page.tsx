@@ -28,7 +28,12 @@ export default async function BoardPage() {
             @{profile.handle}
           </h1>
         </div>
-        <SignOut />
+        <div className="flex items-center gap-4">
+          <Link href="/board/profile" className="text-sm font-medium text-soft hover:text-ink">
+            Edit profile
+          </Link>
+          <SignOut />
+        </div>
       </div>
 
       <Link href="/board/new" className="btn-primary mt-6 w-full">

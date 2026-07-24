@@ -4,6 +4,8 @@ export type Profile = {
   id: string;
   handle: string;
   displayName: string;
+  socialLink: string | null;
+  availability: string | null;
   createdAt: string;
 };
 
@@ -37,4 +39,6 @@ export type Spread = {
 export type SpreadWithOwner = Spread & {
   ownerHandle: string;
   ownerDisplayName: string;
+  ownerSocialLink: string | null;
+  ownerAvailability: string | null;
 };

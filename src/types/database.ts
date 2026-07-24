@@ -9,18 +9,24 @@ export type Database = {
           id: string;
           handle: string;
           display_name: string;
+          social_link: string | null;
+          availability: string | null;
           created_at: string;
         };
         Insert: {
           id: string;
           handle: string;
           display_name: string;
+          social_link?: string | null;
+          availability?: string | null;
           created_at?: string;
         };
         Update: {
           id?: string;
           handle?: string;
           display_name?: string;
+          social_link?: string | null;
+          availability?: string | null;
           created_at?: string;
         };
         Relationships: [];

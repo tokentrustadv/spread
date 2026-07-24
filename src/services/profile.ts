@@ -9,6 +9,8 @@ function toProfile(row: Database["public"]["Tables"]["profiles"]["Row"]): Profil
     id: row.id,
     handle: row.handle,
     displayName: row.display_name,
+    socialLink: row.social_link,
+    availability: row.availability,
     createdAt: row.created_at,
   };
 }
@@ -66,6 +68,26 @@ export async function createProfile(
       handle: input.handle,
       display_name: input.displayName,
     })
+    .select("*")
+    .single();
+
+  if (error) throw error;
+  return toProfile(data);
+}
+
+export async function updateProfile(
+  supabase: Client,
+  userId: string,
+  input: { displayName: string; socialLink?: string; availability?: string }
+): Promise<Profile> {
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({
+      display_name: input.displayName,
+      social_link: input.socialLink ? input.socialLink : null,
+      availability: input.availability ? input.availability : null,
+    })
+    .eq("id", userId)
     .select("*")
     .single();
 

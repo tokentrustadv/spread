@@ -10,6 +10,12 @@ export const profileSchema = z.object({
   handle: handleSchema,
 });
 
+export const profileEditSchema = z.object({
+  displayName: z.string().min(1, "Required").max(60),
+  socialLink: z.string().max(200).optional().or(z.literal("")),
+  availability: z.string().max(100).optional().or(z.literal("")),
+});
+
 export const itemSchema = z.object({
   name: z.string().min(1, "Required").max(60),
   note: z.string().max(120).optional().or(z.literal("")),
@@ -44,3 +50,4 @@ export const spreadSchema = z
 
 export type SpreadInput = z.infer<typeof spreadSchema>;
 export type ProfileInput = z.infer<typeof profileSchema>;
+export type ProfileEditInput = z.infer<typeof profileEditSchema>;

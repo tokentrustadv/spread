@@ -104,6 +104,8 @@ export async function getPublicSpread(
     ...toSpread(data as unknown as RawSpread),
     ownerHandle: profile.handle,
     ownerDisplayName: profile.displayName,
+    ownerSocialLink: profile.socialLink,
+    ownerAvailability: profile.availability,
   };
 }
 
