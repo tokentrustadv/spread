@@ -14,7 +14,14 @@ type Params = { handle: string; slug: string };
 async function loadSpread(params: Params) {
   const handle = params.handle.replace(/^@/, "");
   const supabase = await createClient();
-  return { supabase, spread: await getPublicSpread(supabase, handle, params.slug) };
+  try {
+    const spread = await getPublicSpread(supabase, handle, params.slug);
+    return { supabase, spread, handle, error: null as string | null };
+  } catch (err) {
+    console.error("loadSpread failed", { handle, slug: params.slug, err });
+    const message = err instanceof Error ? err.message : String(err);
+    return { supabase, spread: null, handle, error: message };
+  }
 }
 
 export async function generateMetadata({
@@ -61,8 +68,25 @@ export default async function SpreadDetailPage({
   params: Promise<Params>;
 }) {
   const resolved = await params;
-  const { supabase, spread } = await loadSpread(resolved);
-  if (!spread) notFound();
+  const { supabase, spread, handle, error } = await loadSpread(resolved);
+
+  if (!spread) {
+    if (error) {
+      return (
+        <main className="frame py-16">
+          <p className="font-display text-sm font-bold text-hot">
+            Couldn&rsquo;t load this spread
+          </p>
+          <p className="mt-2 text-sm text-soft">handle: {handle}</p>
+          <p className="text-sm text-soft">slug: {resolved.slug}</p>
+          <p className="mt-4 rounded-input bg-tomato-tint p-3 text-sm text-hot">
+            {error}
+          </p>
+        </main>
+      );
+    }
+    notFound();
+  }
 
   const {
     data: { user },
