@@ -9,3 +9,7 @@ npm-debug.log*
 .DS_Store
 *.tsbuildinfo
 next-env.d.ts
+
+# The Commitment Chain — build output (produced by GitHub Actions)
+/the-commitment-chain/dist/*
+!/the-commitment-chain/dist/.gitkeep

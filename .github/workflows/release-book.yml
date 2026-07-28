@@ -1,0 +1,98 @@
+name: Release Book
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    working-directory: the-commitment-chain
+
+jobs:
+  release:
+    name: Build and publish GitHub Release
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Pandoc (pinned release build)
+        env:
+          PANDOC_VERSION: "3.1.11.1"
+        run: |
+          set -euo pipefail
+          curl -fsSL -o /tmp/pandoc.deb \
+            "https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-amd64.deb"
+          sudo dpkg -i /tmp/pandoc.deb
+          pandoc --version
+
+      - name: Install XeLaTeX and supporting tools
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-xetex \
+            texlive-latex-extra \
+            texlive-latex-recommended \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            fonts-texgyre \
+            poppler-utils \
+            qpdf \
+            libimage-exiftool-perl
+          pip install --break-system-packages "img2pdf==0.6.3"
+
+      - name: Build all formats
+        run: make all
+
+      - name: Verify expected outputs exist
+        run: |
+          set -euo pipefail
+          for f in the-commitment-chain.pdf the-commitment-chain.epub the-commitment-chain.docx the-commitment-chain.html; do
+            test -s "dist/$f" || { echo "::error::Missing or empty dist/$f"; exit 1; }
+          done
+
+      - name: Stage release assets
+        run: |
+          set -euo pipefail
+          cp book.md dist/the-commitment-chain-source.md
+          cp cover.png dist/
+          ls -la dist/
+
+      - name: Extract changelog section for this tag
+        id: notes
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          notes_file="$(mktemp)"
+          awk -v ver="$VERSION" '
+            BEGIN { found=0 }
+            /^## / {
+              if (found) exit
+              if (index($0, ver) > 0) { found=1; next }
+              next
+            }
+            found { print }
+          ' CHANGELOG.md > "$notes_file"
+          if [ ! -s "$notes_file" ]; then
+            echo "No matching section in CHANGELOG.md for version $VERSION; using full file." >&2
+            cp CHANGELOG.md "$notes_file"
+          fi
+          echo "notes_file=$notes_file" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "The Commitment Chain ${{ github.ref_name }}"
+          body_path: ${{ steps.notes.outputs.notes_file }}
+          files: |
+            the-commitment-chain/dist/the-commitment-chain.pdf
+            the-commitment-chain/dist/the-commitment-chain.epub
+            the-commitment-chain/dist/the-commitment-chain.docx
+            the-commitment-chain/dist/the-commitment-chain.html
+            the-commitment-chain/dist/the-commitment-chain-source.md
+            the-commitment-chain/dist/cover.png
