@@ -2,8 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Node } from "@/components/Node";
-import { Tile } from "@/components/Tile";
 import { SignInForm } from "./SignInForm";
+import { ComboDemo } from "./ComboDemo";
 
 const steps = [
   {
@@ -62,7 +62,7 @@ export default async function LandingPage({
         Some of the best meals don&rsquo;t exist on any menu.
       </p>
 
-      <div className="mt-8">
+      <div id="signup" className="mt-8">
         {user ? (
           <Link href="/board" className="btn-primary w-full">
             Go to your board
@@ -88,19 +88,7 @@ export default async function LandingPage({
         )}
       </div>
 
-      <div className="card mt-10 p-6">
-        <div className="flex items-center justify-center gap-3">
-          <Tile letter="R" color="amber" size="lg" />
-          <Node size="lg" />
-          <Tile letter="P" color="teal" size="lg" />
-        </div>
-        <p className="mt-4 text-center font-display text-lg font-bold">
-          One meal that&rsquo;s only yours
-        </p>
-        <p className="text-center text-sm text-soft">
-          The combo no single menu offers.
-        </p>
-      </div>
+      <ComboDemo />
 
       <section className="mt-14">
         <h2 className="font-display text-2xl font-extrabold">How it works</h2>
