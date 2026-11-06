@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { createProfile, isHandleAvailable } from "@/services/profile";
 import { profileSchema } from "@/lib/validation";
+import { TERMS_VERSION } from "@/lib/terms";
 
 export function WelcomeForm({ userId }: { userId: string }) {
   const router = useRouter();
@@ -42,6 +43,8 @@ export function WelcomeForm({ userId }: { userId: string }) {
         id: userId,
         handle: result.data.handle,
         displayName: result.data.displayName,
+        agreedToTerms: result.data.agreedToTerms,
+        termsVersion: TERMS_VERSION,
       });
       router.push("/board");
       router.refresh();

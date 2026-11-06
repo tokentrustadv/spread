@@ -18,6 +18,7 @@ export type Database = {
           bio: string | null;
           is_live: boolean;
           agreed_terms_at: string | null;
+          terms_version: string | null;
           created_at: string;
         };
         Insert: {
@@ -33,6 +34,7 @@ export type Database = {
           bio?: string | null;
           is_live?: boolean;
           agreed_terms_at?: string | null;
+          terms_version?: string | null;
           created_at?: string;
         };
         Update: {
@@ -48,6 +50,7 @@ export type Database = {
           bio?: string | null;
           is_live?: boolean;
           agreed_terms_at?: string | null;
+          terms_version?: string | null;
           created_at?: string;
         };
         Relationships: [];

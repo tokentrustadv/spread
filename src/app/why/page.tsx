@@ -17,7 +17,7 @@ const problems = [
   },
   {
     title: "Tips don't always mean what you think.",
-    body: "Several of the biggest delivery apps have been investigated or sued over using tips to cover base pay instead of adding to it. You did the delivery. The algorithm decided what you actually made.",
+    body: "In 2019, DoorDash changed how it paid drivers after public backlash over a pay model that used customer tips to cover base pay instead of adding to it. Washington, D.C.'s Attorney General separately sued the company over the practice and settled for $2.5 million in 2020 — DoorDash didn't admit wrongdoing, and says it no longer works that way. Either way, it's a reminder that an app can change what your tip actually does without telling you.",
   },
   {
     title: "You don't pick your customer. The app does.",

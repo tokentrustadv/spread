@@ -13,6 +13,7 @@ export type Profile = {
   bio: string | null;
   isLive: boolean;
   agreedTermsAt: string | null;
+  termsVersion: string | null;
   createdAt: string;
 };
 

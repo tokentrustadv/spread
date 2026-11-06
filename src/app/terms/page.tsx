@@ -3,13 +3,17 @@ export const metadata = {
   description: "Spread's membership terms and liability agreement.",
 };
 
+import { TERMS_VERSION } from "@/lib/terms";
+
 export default function TermsPage() {
   return (
     <main className="frame py-10">
       <h1 className="font-display text-2xl font-extrabold">
         Spread Membership Terms
       </h1>
-      <p className="mt-2 text-sm text-soft">Last updated: draft — pending legal review.</p>
+      <p className="mt-2 text-sm text-soft">
+        Version {TERMS_VERSION} — draft, pending legal review.
+      </p>
 
       <div className="mt-8 flex flex-col gap-6 text-sm text-soft">
         <section>

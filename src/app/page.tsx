@@ -5,8 +5,6 @@ import { Node } from "@/components/Node";
 import { SignInForm } from "./SignInForm";
 import { SpreadDemo } from "./SpreadDemo";
 import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
-import { ShareMockup } from "./ShareMockup";
-import { DeliveryMockup } from "./DeliveryMockup";
 
 const steps = [
   {
@@ -110,22 +108,6 @@ export default async function LandingPage({
         </div>
       </section>
 
-      <section className="mt-14 rounded-card border border-line2 bg-surface p-5">
-        <h2 className="font-display text-xl font-extrabold leading-tight">
-          Delivery apps charge too much, skim your tips, and tell you who to
-          drive for. You know this already.
-        </h2>
-        <p className="mt-3 text-[15px] text-soft">
-          Spread flips it: your menu, your price, your customers.
-        </p>
-        <Link
-          href="/why"
-          className="mt-4 inline-block text-sm font-semibold text-hot hover:underline"
-        >
-          Read why delivery needed this →
-        </Link>
-      </section>
-
       <section className="mt-14">
         <h2 className="font-display text-2xl font-extrabold leading-tight">
           You control the whole thing.
@@ -138,45 +120,24 @@ export default async function LandingPage({
           asking, and you&rsquo;re the one who delivers it.
         </p>
         <p className="mt-3 text-[15px] text-soft">
-          Need to make something right? You refund the same way — straight
-          back through Cash App or Venmo, just like you would with a friend.
+          Need to make something right? Refunds go straight back through Cash
+          App or Venmo, worked out directly between you and your customer —
+          the same way payment did.
         </p>
         <div className="mt-4">
           <FoodOnlyBadge />
         </div>
         <p className="mt-4 rounded-input border border-line2 bg-surface p-4 text-[15px] text-soft">
-          Spread is a membership, not a marketplace. We don&rsquo;t touch the
-          money, we&rsquo;re not part of your deliveries, and we&rsquo;re not
-          involved in your business in any way — just a tool creators use to
-          run their own thing.
+          Spread is a membership, not a marketplace: we give you the menu and
+          sharing tools. You handle requests, payment, and delivery yourself,
+          directly with your customers.
         </p>
-      </section>
-
-      <section className="mt-14">
-        <h2 className="font-display text-2xl font-extrabold leading-tight">
-          Share it like you&rsquo;d share anything else.
-        </h2>
-        <p className="mt-3 text-[15px] text-soft">
-          Post your meal to your story, your feed, or straight into a DM —
-          wherever your audience already is. Every spread gets a link with a
-          rich preview card, plus a ready-to-send caption, so sharing it is
-          as easy as sharing anything else you post.
-        </p>
-        <ShareMockup />
-      </section>
-
-      <section className="mt-14">
-        <h2 className="font-display text-2xl font-extrabold leading-tight">
-          Delivery, but personal.
-        </h2>
-        <p className="mt-3 text-[15px] text-soft">
-          You know exactly who&rsquo;s asking, where they live, and what they
-          want — because you made this meal for people like them in the
-          first place. No stranger dispatched to a stranger&rsquo;s door.
-          Just you, confirming details directly with someone who already
-          trusts you.
-        </p>
-        <DeliveryMockup />
+        <Link
+          href="/why"
+          className="mt-3 inline-block text-sm font-semibold text-hot hover:underline"
+        >
+          Curious why delivery needed this? →
+        </Link>
       </section>
 
       <section className="mt-14">

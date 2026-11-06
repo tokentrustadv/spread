@@ -18,6 +18,7 @@ function toProfile(row: Database["public"]["Tables"]["profiles"]["Row"]): Profil
     bio: row.bio,
     isLive: row.is_live,
     agreedTermsAt: row.agreed_terms_at,
+    termsVersion: row.terms_version,
     createdAt: row.created_at,
   };
 }
@@ -66,8 +67,23 @@ export async function isHandleAvailable(
 
 export async function createProfile(
   supabase: Client,
-  input: { id: string; handle: string; displayName: string }
+  input: {
+    id: string;
+    handle: string;
+    displayName: string;
+    agreedToTerms: boolean;
+    termsVersion: string;
+  }
 ): Promise<Profile> {
+  // Belt-and-suspenders: this check runs before the insert is even attempted,
+  // and the database's own CHECK constraint (profiles_agreed_terms_required)
+  // refuses the insert outright if agreed_terms_at or terms_version is missing —
+  // so a profile can't exist without recorded agreement even if some future
+  // caller skips this function's own validation.
+  if (!input.agreedToTerms) {
+    throw new Error("Terms must be agreed to before creating a profile.");
+  }
+
   const { data, error } = await supabase
     .from("profiles")
     .insert({
@@ -75,6 +91,7 @@ export async function createProfile(
       handle: input.handle,
       display_name: input.displayName,
       agreed_terms_at: new Date().toISOString(),
+      terms_version: input.termsVersion,
     })
     .select("*")
     .single();
