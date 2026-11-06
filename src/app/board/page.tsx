@@ -5,6 +5,8 @@ import { getProfile } from "@/services/profile";
 import { listSpreads } from "@/services/spreads";
 import { SpreadCard } from "@/components/SpreadCard";
 import { SignOut } from "@/components/SignOut";
+import { ShareMenuButton } from "@/components/ShareMenuButton";
+import { siteUrl } from "@/lib/site";
 
 export default async function BoardPage() {
   const supabase = await createClient();
@@ -36,9 +38,15 @@ export default async function BoardPage() {
         </div>
       </div>
 
-      <Link href="/board/new" className="btn-primary mt-6 w-full">
-        + New spread
-      </Link>
+      <div className="mt-6 flex flex-col gap-3">
+        <ShareMenuButton
+          displayName={profile.displayName}
+          menuUrl={`${siteUrl}/@${profile.handle}`}
+        />
+        <Link href="/board/new" className="btn-secondary w-full">
+          + New spread
+        </Link>
+      </div>
 
       <div className="mt-8 flex flex-col gap-3">
         {spreads.length === 0 ? (

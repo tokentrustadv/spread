@@ -103,7 +103,7 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
             rel="noopener noreferrer"
             className="btn-primary w-full"
           >
-            Send request to @{spread.ownerHandle}
+            Open chat with @{spread.ownerHandle}
           </a>
         ) : (
           <p className="text-sm text-soft">
@@ -111,6 +111,10 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
           </p>
         )}
       </div>
+
+      <p className="text-xs text-soft">
+        Paste your copied request once the conversation is open.
+      </p>
 
       <p className="rounded-input bg-tomato-tint p-3 text-xs text-hot">
         Your request isn&rsquo;t confirmed until {spread.ownerDisplayName}{" "}
@@ -120,7 +124,12 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
       {(spread.ownerCashappHandle || spread.ownerVenmoHandle) && (
         <div className="card p-4">
           <p className="font-display text-sm font-bold text-hot">
-            Once confirmed, pay {spread.ownerDisplayName}
+            Pay only after {spread.ownerDisplayName} confirms
+          </p>
+          <p className="mt-1 text-xs text-soft">
+            These buttons are pre-filled with the listed price. If the
+            confirmed total is different, change the amount before you send
+            it.
           </p>
           <div className="mt-3 flex flex-col gap-2">
             {spread.ownerCashappHandle && (
@@ -130,7 +139,7 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
                 rel="noopener noreferrer"
                 className="btn-secondary w-full"
               >
-                Pay with Cash App
+                Pay with Cash App (after confirmation)
               </a>
             )}
             {spread.ownerVenmoHandle && (
@@ -140,7 +149,7 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
                 rel="noopener noreferrer"
                 className="btn-secondary w-full"
               >
-                Pay with Venmo
+                Pay with Venmo (after confirmation)
               </a>
             )}
           </div>
@@ -148,9 +157,9 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
       )}
 
       <p className="text-xs text-soft">
-        Copy your request details above, send them to{" "}
-        {spread.ownerDisplayName} to confirm, then pay once they&rsquo;ve
-        confirmed the total and delivery address.
+        Copy your request details above, open the chat to send them to{" "}
+        {spread.ownerDisplayName}, then pay once they&rsquo;ve confirmed the
+        total and delivery address.
       </p>
     </div>
   );
