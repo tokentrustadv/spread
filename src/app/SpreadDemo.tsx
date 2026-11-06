@@ -27,7 +27,7 @@ const SIDE_B: SampleItem[] = [
 
 type Phase = "building" | "combining" | "result";
 
-export function ComboDemo() {
+export function SpreadDemo() {
   const [selectedA, setSelectedA] = useState<number | null>(null);
   const [selectedB, setSelectedB] = useState<number | null>(null);
   const [mealName, setMealName] = useState("");
@@ -66,7 +66,7 @@ export function ComboDemo() {
           <h3 className="mt-4 font-display text-xl font-extrabold">
             {mealName}
           </h3>
-          <p className="text-xs text-soft">your demo meal</p>
+          <p className="text-xs text-soft">your demo Spread</p>
         </div>
 
         <div className="mt-6 flex items-center justify-center gap-3 text-sm">
@@ -89,7 +89,7 @@ export function ComboDemo() {
           onClick={reset}
           className="mt-3 w-full text-center text-sm font-semibold text-soft hover:text-ink"
         >
-          Try another combo
+          Try another Spread
         </button>
       </div>
     );
@@ -110,7 +110,7 @@ export function ComboDemo() {
   return (
     <div className="card mt-10 p-6">
       <p className="text-center font-display text-sm font-bold text-hot">
-        Try it — pick two, name it
+        Try it — build your Spread
       </p>
 
       <div className="mt-4 grid grid-cols-2 gap-3">
@@ -164,7 +164,7 @@ export function ComboDemo() {
         disabled={!canCombine}
         className="btn-primary mt-4 w-full disabled:cursor-not-allowed disabled:opacity-50"
       >
-        Combine
+        Build it
       </button>
     </div>
   );

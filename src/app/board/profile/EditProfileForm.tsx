@@ -84,7 +84,7 @@ export function EditProfileForm({
           className="input-field"
           value={bio}
           maxLength={200}
-          placeholder="Combos I actually crave, delivered around campus."
+          placeholder="Spreads I actually crave, delivered around campus."
           onChange={(e) => setBio(e.target.value)}
         />
         <p className="mt-1 text-xs text-soft">

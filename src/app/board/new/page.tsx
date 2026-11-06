@@ -18,7 +18,8 @@ export default async function NewSpreadPage() {
     <main className="frame py-10">
       <h1 className="font-display text-2xl font-extrabold">New spread</h1>
       <p className="mt-1 text-sm text-soft">
-        Two restaurants, up to three items, exactly how you love them.
+        Two local spots, one item from each — a third if you want it,
+        exactly how you love them.
       </p>
       <div className="mt-8">
         <SpreadForm userId={user.id} handle={profile.handle} />

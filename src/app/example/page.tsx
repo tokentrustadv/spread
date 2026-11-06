@@ -24,7 +24,7 @@ export default function ExamplePage() {
         </h1>
         <p className="text-sm text-soft">@jordan_example</p>
         <p className="mt-3 max-w-[360px] text-sm text-soft">
-          Weeknight combos I actually crave, delivered around Eastside.
+          Weeknight spreads I actually crave, delivered around Eastside.
           (example intro)
         </p>
       </div>

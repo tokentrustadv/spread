@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Node } from "@/components/Node";
 import { SignInForm } from "./SignInForm";
-import { ComboDemo } from "./ComboDemo";
+import { SpreadDemo } from "./SpreadDemo";
 import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
 import { ShareMockup } from "./ShareMockup";
 import { DeliveryMockup } from "./DeliveryMockup";
@@ -12,7 +12,7 @@ const steps = [
   {
     n: 1,
     title: "Make it yours",
-    body: "Choose up to three food items from two local restaurants. Name your meal.",
+    body: "Your favorite item from two local spots — add a third if you want more. Name your Spread.",
   },
   {
     n: 2,
@@ -91,7 +91,7 @@ export default async function LandingPage({
         )}
       </div>
 
-      <ComboDemo />
+      <SpreadDemo />
 
       <section className="mt-14">
         <h2 className="font-display text-2xl font-extrabold">How it works</h2>
@@ -108,6 +108,22 @@ export default async function LandingPage({
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="mt-14 rounded-card border border-line2 bg-surface p-5">
+        <h2 className="font-display text-xl font-extrabold leading-tight">
+          Delivery apps charge too much, skim your tips, and tell you who to
+          drive for. You know this already.
+        </h2>
+        <p className="mt-3 text-[15px] text-soft">
+          Spread flips it: your menu, your price, your customers.
+        </p>
+        <Link
+          href="/why"
+          className="mt-4 inline-block text-sm font-semibold text-hot hover:underline"
+        >
+          Read why delivery needed this →
+        </Link>
       </section>
 
       <section className="mt-14">
