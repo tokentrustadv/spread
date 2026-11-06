@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Tile } from "./Tile";
 import { Node } from "./Node";
+import { LogoMark } from "./Logo";
 import type { SpreadColor } from "@/lib/colors";
 
 export function ShareSheet({
@@ -57,9 +58,12 @@ export function ShareSheet({
             <div className="relative overflow-hidden rounded-card bg-bg p-6">
               <div
                 className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-40 blur-3xl"
-                style={{ background: "linear-gradient(135deg,#FF4A2E,#FF8A3D)" }}
+                style={{ background: "linear-gradient(135deg,#C4472D,#D9836D)" }}
               />
-              <p className="font-display text-sm font-semibold text-hot">Spread +</p>
+              <LogoMark size={18} className="text-hot" />
+              <p className="mt-1.5 font-display text-sm font-semibold text-hot">
+                Spread
+              </p>
               <h3 className="mt-2 font-display text-2xl font-extrabold">{title}</h3>
               <div className="mt-3 flex items-center gap-2 text-sm text-soft">
                 <Tile letter={restaurantA} color={color} size="sm" />

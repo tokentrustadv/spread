@@ -17,7 +17,7 @@ export async function GET(request: Request) {
           display: "flex",
           flexDirection: "column",
           position: "relative",
-          backgroundColor: "#FBF7F2",
+          backgroundColor: "#FFF7ED",
           fontFamily: "sans-serif",
         }}
       >
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
             width: 480,
             height: 480,
             borderRadius: "50%",
-            background: "linear-gradient(135deg,#FF4A2E,#FF8A3D)",
+            background: "linear-gradient(135deg,#C4472D,#D9836D)",
             opacity: 0.35,
             filter: "blur(10px)",
           }}
@@ -42,7 +42,7 @@ export async function GET(request: Request) {
             width: 460,
             height: 460,
             borderRadius: "50%",
-            background: "linear-gradient(135deg,#FF8A3D,#FF4A2E)",
+            background: "linear-gradient(135deg,#D9836D,#C4472D)",
             opacity: 0.25,
             filter: "blur(10px)",
           }}
@@ -63,27 +63,27 @@ export async function GET(request: Request) {
               alignItems: "center",
               fontSize: 28,
               fontWeight: 800,
-              color: "#FF4A2E",
+              color: "#C4472D",
               letterSpacing: -1,
             }}
           >
-            Spread
             <span
               style={{
-                marginLeft: 10,
+                marginRight: 10,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 width: 34,
                 height: 34,
-                borderRadius: "50%",
-                background: "linear-gradient(135deg,#FF4A2E,#FF8A3D)",
-                color: "#fff",
+                borderRadius: "28%",
+                background: "#C4472D",
+                color: "#FFF7ED",
                 fontSize: 20,
               }}
             >
-              +
+              S
             </span>
+            Spread
           </div>
 
           <div
@@ -92,7 +92,7 @@ export async function GET(request: Request) {
               marginTop: 28,
               fontSize: 68,
               fontWeight: 800,
-              color: "#171310",
+              color: "#26231F",
               letterSpacing: -2,
               lineHeight: 1.05,
               maxWidth: 1000,
@@ -108,10 +108,10 @@ export async function GET(request: Request) {
               marginTop: 36,
               fontSize: 32,
               fontWeight: 700,
-              color: "#7C7268",
+              color: "#7A746C",
             }}
           >
-            <span style={{ color: "#171310" }}>{a}</span>
+            <span style={{ color: "#26231F" }}>{a}</span>
             <span
               style={{
                 display: "flex",
@@ -121,14 +121,14 @@ export async function GET(request: Request) {
                 height: 44,
                 margin: "0 20px",
                 borderRadius: "50%",
-                background: "linear-gradient(135deg,#FF4A2E,#FF8A3D)",
+                background: "linear-gradient(135deg,#C4472D,#D9836D)",
                 color: "#fff",
                 fontSize: 26,
               }}
             >
               +
             </span>
-            <span style={{ color: "#171310" }}>{b}</span>
+            <span style={{ color: "#26231F" }}>{b}</span>
           </div>
 
           <div
@@ -136,7 +136,7 @@ export async function GET(request: Request) {
               display: "flex",
               marginTop: 48,
               fontSize: 24,
-              color: "#7C7268",
+              color: "#7A746C",
             }}
           >
             {`A meal ${title} swears by.`}

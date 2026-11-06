@@ -6,6 +6,7 @@ import { listSpreads } from "@/services/spreads";
 import { SpreadCard } from "@/components/SpreadCard";
 import { SignOut } from "@/components/SignOut";
 import { ShareMenuButton } from "@/components/ShareMenuButton";
+import { Logo } from "@/components/Logo";
 import { siteUrl } from "@/lib/site";
 
 export default async function BoardPage() {
@@ -25,7 +26,7 @@ export default async function BoardPage() {
     <main className="frame py-10">
       <div className="flex items-center justify-between">
         <div>
-          <p className="font-display text-sm font-bold text-hot">Spread +</p>
+          <Logo size={16} />
           <h1 className="mt-1 font-display text-2xl font-extrabold">
             @{profile.handle}
           </h1>

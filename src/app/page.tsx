@@ -5,6 +5,7 @@ import { Node } from "@/components/Node";
 import { SignInForm } from "./SignInForm";
 import { SpreadDemo } from "./SpreadDemo";
 import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
+import { Logo } from "@/components/Logo";
 
 const steps = [
   {
@@ -42,9 +43,7 @@ export default async function LandingPage({
 
   return (
     <main className="frame py-16">
-      <p className="font-display text-sm font-bold tracking-tight text-hot">
-        Spread <span className="text-warm">+</span>
-      </p>
+      <Logo size={20} />
 
       <h1 className="mt-6 font-display text-4xl font-extrabold leading-[1.05]">
         Create your meal.{" "}

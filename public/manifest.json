@@ -4,8 +4,8 @@
   "description": "Some of the best meals don't exist on any menu. Build yours.",
   "start_url": "/board",
   "display": "standalone",
-  "background_color": "#FBF7F2",
-  "theme_color": "#FBF7F2",
+  "background_color": "#FFF7ED",
+  "theme_color": "#FFF7ED",
   "icons": [
     {
       "src": "/icons/icon-192.png",

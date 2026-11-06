@@ -15,17 +15,17 @@ export function FoodOnlyBadge({ compact = false }: { compact?: boolean }) {
       >
         <path
           d="M6 3h10l-1 11a4 4 0 0 1-4 3.6A4 4 0 0 1 7 14L6 3Z"
-          stroke="#7C7268"
+          stroke="#7A746C"
           strokeWidth="1.6"
           strokeLinejoin="round"
         />
-        <path d="M6.5 7.5h9" stroke="#7C7268" strokeWidth="1.6" />
+        <path d="M6.5 7.5h9" stroke="#7A746C" strokeWidth="1.6" />
         <line
           x1="3.5"
           y1="20.5"
           x2="20.5"
           y2="3.5"
-          stroke="#FF4A2E"
+          stroke="#C4472D"
           strokeWidth="2.2"
           strokeLinecap="round"
         />
