@@ -121,6 +121,23 @@ export default async function LandingPage({
 
       <section className="mt-14">
         <h2 className="font-display text-2xl font-extrabold leading-tight">
+          You control the whole thing.
+        </h2>
+        <p className="mt-3 text-[15px] text-soft">
+          You set the price, the area, and when you&rsquo;re available. When
+          someone requests a meal, you get paid directly — Cash App, Venmo,
+          however you already get paid for anything — the same way a friend
+          pays you back. No middleman holding your money. You know who&rsquo;s
+          asking, and you&rsquo;re the one who delivers it.
+        </p>
+        <p className="mt-3 text-[15px] text-soft">
+          Food only — no drinks, ice cream, or other cold items. That keeps
+          every run quick enough to stay fresh.
+        </p>
+      </section>
+
+      <section className="mt-14">
+        <h2 className="font-display text-2xl font-extrabold leading-tight">
           Ever want the fries from one place and the sandwich from another?
         </h2>
         <p className="mt-3 text-[15px] text-soft">

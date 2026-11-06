@@ -8,6 +8,7 @@ import { spreadSchema } from "@/lib/validation";
 import { SPREAD_COLORS, COLOR_TOKENS, type SpreadColor } from "@/lib/colors";
 import { SaveAnimation } from "./SaveAnimation";
 import type { Spread } from "@/types/spread";
+import { flaggedFoodPolicyTerm } from "@/lib/foodPolicy";
 
 type ItemDraft = { name: string; note: string };
 type RestaurantDraft = { name: string; items: ItemDraft[] };
@@ -79,6 +80,11 @@ export function SpreadForm({
   const [savedSlug, setSavedSlug] = useState<string | null>(null);
 
   const totalItems = form.restaurants.reduce((n, r) => n + r.items.length, 0);
+  const flaggedItems = form.restaurants
+    .flatMap((r) => r.items)
+    .filter((item) => item.name.trim().length > 0)
+    .map((item) => ({ name: item.name, term: flaggedFoodPolicyTerm(item.name) }))
+    .filter((item): item is { name: string; term: string } => item.term !== null);
   const foodCostNum = parseMoney(form.foodCost);
   const priceNum = parseMoney(form.price);
   const profit =
@@ -267,8 +273,32 @@ export function SpreadForm({
           >
             + Add item
           </button>
+          <p className="mt-2 text-xs text-soft">
+            Food only — no drinks, ice cream, or other cold items.
+          </p>
         </div>
       ))}
+
+      {flaggedItems.length > 0 && (
+        <div className="rounded-input bg-tomato-tint p-3 text-xs text-hot">
+          <p className="font-semibold">
+            {flaggedItems.length === 1 ? "This looks like it" : "These look like they"}{" "}
+            might be a drink or cold item — Spread is food only, no drinks or
+            cold products:
+          </p>
+          <ul className="mt-1 list-disc pl-4">
+            {flaggedItems.map((item, i) => (
+              <li key={i}>
+                &ldquo;{item.name}&rdquo; (matched &ldquo;{item.term}&rdquo;)
+              </li>
+            ))}
+          </ul>
+          <p className="mt-1">
+            If this is a mistake, no action needed — just double check before
+            you save.
+          </p>
+        </div>
+      )}
 
       <div className="card p-4">
         <label className="mb-1.5 block text-sm font-semibold text-soft">

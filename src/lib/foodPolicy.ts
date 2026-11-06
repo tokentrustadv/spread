@@ -1,0 +1,48 @@
+const KEYWORDS = [
+  "soda",
+  "pop",
+  "cola",
+  "juice",
+  "lemonade",
+  "iced tea",
+  "sweet tea",
+  "tea",
+  "coffee",
+  "latte",
+  "espresso",
+  "smoothie",
+  "milkshake",
+  "shake",
+  "slushie",
+  "slush",
+  "soft drink",
+  "drink",
+  "beverage",
+  "bottled water",
+  "sparkling water",
+  "root beer",
+  "ginger ale",
+  "fountain drink",
+  "boba",
+  "bubble tea",
+  "horchata",
+  "ice cream",
+  "gelato",
+  "sorbet",
+  "frozen yogurt",
+  "froyo",
+  "popsicle",
+  "ice pop",
+  "sundae",
+  "snow cone",
+  "shaved ice",
+  "soft serve",
+  "slurpee",
+  "float",
+];
+
+export function flaggedFoodPolicyTerm(itemName: string): string | null {
+  const lower = itemName.toLowerCase();
+  const match = KEYWORDS.find((keyword) => lower.includes(keyword));
+  return match ?? null;
+}
