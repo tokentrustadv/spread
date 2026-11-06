@@ -17,6 +17,7 @@ function toProfile(row: Database["public"]["Tables"]["profiles"]["Row"]): Profil
     venmoHandle: row.venmo_handle,
     bio: row.bio,
     isLive: row.is_live,
+    agreedTermsAt: row.agreed_terms_at,
     createdAt: row.created_at,
   };
 }
@@ -73,6 +74,7 @@ export async function createProfile(
       id: input.id,
       handle: input.handle,
       display_name: input.displayName,
+      agreed_terms_at: new Date().toISOString(),
     })
     .select("*")
     .single();

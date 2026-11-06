@@ -8,6 +8,9 @@ export const handleSchema = z
 export const profileSchema = z.object({
   displayName: z.string().min(1, "Required").max(60),
   handle: handleSchema,
+  agreedToTerms: z
+    .boolean()
+    .refine((v) => v === true, "You need to agree to the terms to continue."),
 });
 
 const handleLikeField = z

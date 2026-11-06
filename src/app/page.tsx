@@ -4,6 +4,9 @@ import { createClient } from "@/lib/supabase/server";
 import { Node } from "@/components/Node";
 import { SignInForm } from "./SignInForm";
 import { ComboDemo } from "./ComboDemo";
+import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
+import { ShareMockup } from "./ShareMockup";
+import { DeliveryMockup } from "./DeliveryMockup";
 
 const steps = [
   {
@@ -119,9 +122,45 @@ export default async function LandingPage({
           asking, and you&rsquo;re the one who delivers it.
         </p>
         <p className="mt-3 text-[15px] text-soft">
-          Food only — no drinks, ice cream, or other cold items. That keeps
-          every run quick enough to stay fresh.
+          Need to make something right? You refund the same way — straight
+          back through Cash App or Venmo, just like you would with a friend.
         </p>
+        <div className="mt-4">
+          <FoodOnlyBadge />
+        </div>
+        <p className="mt-4 rounded-input border border-line2 bg-surface p-4 text-[15px] text-soft">
+          Spread is a membership, not a marketplace. We don&rsquo;t touch the
+          money, we&rsquo;re not part of your deliveries, and we&rsquo;re not
+          involved in your business in any way — just a tool creators use to
+          run their own thing.
+        </p>
+      </section>
+
+      <section className="mt-14">
+        <h2 className="font-display text-2xl font-extrabold leading-tight">
+          Share it like you&rsquo;d share anything else.
+        </h2>
+        <p className="mt-3 text-[15px] text-soft">
+          Post your meal to your story, your feed, or straight into a DM —
+          wherever your audience already is. Every spread gets a link with a
+          rich preview card, plus a ready-to-send caption, so sharing it is
+          as easy as sharing anything else you post.
+        </p>
+        <ShareMockup />
+      </section>
+
+      <section className="mt-14">
+        <h2 className="font-display text-2xl font-extrabold leading-tight">
+          Delivery, but personal.
+        </h2>
+        <p className="mt-3 text-[15px] text-soft">
+          You know exactly who&rsquo;s asking, where they live, and what they
+          want — because you made this meal for people like them in the
+          first place. No stranger dispatched to a stranger&rsquo;s door.
+          Just you, confirming details directly with someone who already
+          trusts you.
+        </p>
+        <DeliveryMockup />
       </section>
 
       <section className="mt-14">

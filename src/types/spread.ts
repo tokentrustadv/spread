@@ -12,6 +12,7 @@ export type Profile = {
   venmoHandle: string | null;
   bio: string | null;
   isLive: boolean;
+  agreedTermsAt: string | null;
   createdAt: string;
 };
 

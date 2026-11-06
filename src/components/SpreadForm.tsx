@@ -9,6 +9,7 @@ import { SPREAD_COLORS, COLOR_TOKENS, type SpreadColor } from "@/lib/colors";
 import { SaveAnimation } from "./SaveAnimation";
 import type { Spread } from "@/types/spread";
 import { flaggedFoodPolicyTerm } from "@/lib/foodPolicy";
+import { FoodOnlyBadge } from "./FoodOnlyBadge";
 
 type ItemDraft = { name: string; note: string };
 type RestaurantDraft = { name: string; items: ItemDraft[] };
@@ -273,9 +274,9 @@ export function SpreadForm({
           >
             + Add item
           </button>
-          <p className="mt-2 text-xs text-soft">
-            Food only — no drinks, ice cream, or other cold items.
-          </p>
+          <div className="mt-2">
+            <FoodOnlyBadge compact />
+          </div>
         </div>
       ))}
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Tile } from "@/components/Tile";
 import { Node } from "@/components/Node";
+import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
 
 export const metadata = {
   title: "Example menu — Spread",
@@ -72,6 +73,10 @@ export default function ExamplePage() {
             </li>
           </ul>
         </div>
+      </div>
+
+      <div className="mt-6 flex justify-center">
+        <FoodOnlyBadge compact />
       </div>
 
       <div className="mt-10 card p-5 text-center">

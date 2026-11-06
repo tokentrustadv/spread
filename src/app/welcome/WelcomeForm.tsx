@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { createProfile, isHandleAvailable } from "@/services/profile";
@@ -10,6 +11,7 @@ export function WelcomeForm({ userId }: { userId: string }) {
   const router = useRouter();
   const [displayName, setDisplayName] = useState("");
   const [handle, setHandle] = useState("");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -20,6 +22,7 @@ export function WelcomeForm({ userId }: { userId: string }) {
     const result = profileSchema.safeParse({
       displayName: displayName.trim(),
       handle: handle.trim().toLowerCase(),
+      agreedToTerms,
     });
     if (!result.success) {
       setError(result.error.issues[0]?.message ?? "Invalid input");
@@ -86,7 +89,29 @@ export function WelcomeForm({ userId }: { userId: string }) {
 
       {error && <p className="text-sm text-hot">{error}</p>}
 
-      <button type="submit" disabled={saving} className="btn-primary w-full">
+      <label className="flex items-start gap-2 text-xs text-soft">
+        <input
+          type="checkbox"
+          checked={agreedToTerms}
+          onChange={(e) => setAgreedToTerms(e.target.checked)}
+          className="mt-0.5 h-4 w-4 shrink-0 accent-hot"
+        />
+        <span>
+          I agree to the{" "}
+          <Link href="/terms" target="_blank" className="font-semibold text-hot hover:underline">
+            Spread Membership Terms
+          </Link>
+          . I understand Spread is a membership tool only — every meal,
+          price, payment, and delivery is between me and the people I deal
+          with directly, not Spread.
+        </span>
+      </label>
+
+      <button
+        type="submit"
+        disabled={saving || !agreedToTerms}
+        className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-50"
+      >
         {saving ? "Saving…" : "Continue"}
       </button>
     </form>
