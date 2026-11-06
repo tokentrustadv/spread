@@ -42,6 +42,7 @@ function toSpread(row: RawSpread): Spread {
     color: row.color as SpreadColor,
     notes: row.notes,
     isPublic: row.is_public,
+    isPaused: row.is_paused,
     foodCost: row.food_cost,
     price: row.price,
     createdAt: row.created_at,
@@ -112,7 +113,31 @@ export async function getPublicSpread(
     ownerPaymentNote: profile.paymentNote,
     ownerCashappHandle: profile.cashappHandle,
     ownerVenmoHandle: profile.venmoHandle,
+    ownerBio: profile.bio,
     ownerIsLive: profile.isLive,
+  };
+}
+
+export async function listPublicSpreadsByHandle(
+  supabase: Client,
+  handle: string
+): Promise<{ profile: Awaited<ReturnType<typeof getProfileByHandle>>; spreads: Spread[] }> {
+  const profile = await getProfileByHandle(supabase, handle);
+  if (!profile) return { profile: null, spreads: [] };
+
+  const { data, error } = await supabase
+    .from("spreads")
+    .select(SPREAD_SELECT)
+    .eq("user_id", profile.id)
+    .eq("is_public", true)
+    .is("deleted_at", null)
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+
+  return {
+    profile,
+    spreads: (data as unknown as RawSpread[]).map(toSpread),
   };
 }
 
@@ -177,6 +202,7 @@ export async function createSpread(
       color: input.color,
       notes: input.notes ? input.notes : null,
       is_public: input.isPublic,
+      is_paused: input.isPaused,
       food_cost: input.foodCost ?? null,
       price: input.price ?? null,
     })
@@ -222,6 +248,7 @@ export async function updateSpread(
       color: input.color,
       notes: input.notes ? input.notes : null,
       is_public: input.isPublic,
+      is_paused: input.isPaused,
       food_cost: input.foodCost ?? null,
       price: input.price ?? null,
     })

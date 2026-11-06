@@ -22,6 +22,7 @@ export function EditProfileForm({
   const [paymentNote, setPaymentNote] = useState(profile.paymentNote ?? "");
   const [cashappHandle, setCashappHandle] = useState(profile.cashappHandle ?? "");
   const [venmoHandle, setVenmoHandle] = useState(profile.venmoHandle ?? "");
+  const [bio, setBio] = useState(profile.bio ?? "");
   const [isLive, setIsLive] = useState(profile.isLive);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -40,6 +41,7 @@ export function EditProfileForm({
       paymentNote: paymentNote.trim(),
       cashappHandle: cashappHandle.trim(),
       venmoHandle: venmoHandle.trim(),
+      bio: bio.trim(),
       isLive,
     });
     if (!result.success) {
@@ -76,6 +78,22 @@ export function EditProfileForm({
 
       <div>
         <label className="mb-1.5 block text-sm font-semibold text-soft">
+          Short intro
+        </label>
+        <input
+          className="input-field"
+          value={bio}
+          maxLength={200}
+          placeholder="Combos I actually crave, delivered around campus."
+          onChange={(e) => setBio(e.target.value)}
+        />
+        <p className="mt-1 text-xs text-soft">
+          Shown at the top of your public menu.
+        </p>
+      </div>
+
+      <div>
+        <label className="mb-1.5 block text-sm font-semibold text-soft">
           Order here
         </label>
         <input
@@ -86,8 +104,8 @@ export function EditProfileForm({
           onChange={(e) => setSocialLink(e.target.value)}
         />
         <p className="mt-1 text-xs text-soft">
-          Where people go to order from you — Instagram, Messenger, a phone
-          link, whatever you use.
+          Where people go to reach you — Instagram, Messenger, a phone link,
+          whatever you use.
         </p>
       </div>
 
@@ -170,12 +188,12 @@ export function EditProfileForm({
         <label className="flex items-center justify-between gap-3">
           <span>
             <span className="font-display text-sm font-bold">
-              Ready to start Spreadin&rsquo;
+              Accepting requests
             </span>
             <span className="mt-0.5 block text-xs text-soft">
-              When on, your area, availability, and order link show on your
-              spreads and people can order. When off, your spreads are
-              view-only.
+              When on, your area, availability, and price show on your
+              spreads and people can request them. When off, your spreads
+              are view-only.
             </span>
           </span>
           <input
@@ -187,8 +205,8 @@ export function EditProfileForm({
         </label>
         {isLive && (
           <p className="mt-3 rounded-input bg-tomato-tint p-3 text-xs text-hot">
-            Collect payment from the customer before you spend your own money
-            at the counter. That one rule protects you from getting stiffed.
+            Confirm the total and delivery details with the customer, and
+            collect payment, before you spend your own money at the counter.
           </p>
         )}
       </div>

@@ -15,6 +15,7 @@ export type Database = {
           payment_note: string | null;
           cashapp_handle: string | null;
           venmo_handle: string | null;
+          bio: string | null;
           is_live: boolean;
           created_at: string;
         };
@@ -28,6 +29,7 @@ export type Database = {
           payment_note?: string | null;
           cashapp_handle?: string | null;
           venmo_handle?: string | null;
+          bio?: string | null;
           is_live?: boolean;
           created_at?: string;
         };
@@ -41,6 +43,7 @@ export type Database = {
           payment_note?: string | null;
           cashapp_handle?: string | null;
           venmo_handle?: string | null;
+          bio?: string | null;
           is_live?: boolean;
           created_at?: string;
         };
@@ -55,6 +58,7 @@ export type Database = {
           color: string;
           notes: string | null;
           is_public: boolean;
+          is_paused: boolean;
           food_cost: number | null;
           price: number | null;
           created_at: string;
@@ -69,6 +73,7 @@ export type Database = {
           color?: string;
           notes?: string | null;
           is_public?: boolean;
+          is_paused?: boolean;
           food_cost?: number | null;
           price?: number | null;
           created_at?: string;
@@ -83,6 +88,7 @@ export type Database = {
           color?: string;
           notes?: string | null;
           is_public?: boolean;
+          is_paused?: boolean;
           food_cost?: number | null;
           price?: number | null;
           created_at?: string;

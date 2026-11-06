@@ -18,6 +18,7 @@ type FormState = {
   notes: string;
   foodCost: string;
   price: string;
+  isPaused: boolean;
   restaurants: [RestaurantDraft, RestaurantDraft];
 };
 
@@ -33,6 +34,7 @@ function fromSpread(spread: Spread): FormState {
     notes: spread.notes ?? "",
     foodCost: spread.foodCost != null ? String(spread.foodCost) : "",
     price: spread.price != null ? String(spread.price) : "",
+    isPaused: spread.isPaused,
     restaurants: [toDraft(a), toDraft(b)],
   };
 }
@@ -43,6 +45,7 @@ const emptyState: FormState = {
   notes: "",
   foodCost: "",
   price: "",
+  isPaused: false,
   restaurants: [
     { name: "", items: [{ name: "", note: "" }] },
     { name: "", items: [] },
@@ -123,6 +126,7 @@ export function SpreadForm({
       color: form.color,
       notes: form.notes.trim(),
       isPublic: true,
+      isPaused: form.isPaused,
       foodCost: parseMoney(form.foodCost),
       price: parseMoney(form.price),
       restaurants: form.restaurants.map((r) => ({
@@ -292,7 +296,7 @@ export function SpreadForm({
             disabled={foodCostNum === null}
             className="text-xs font-semibold text-hot disabled:cursor-not-allowed disabled:text-soft"
           >
-            Nearby (+$12)
+            +$12 (example, nearby)
           </button>
           <button
             type="button"
@@ -300,9 +304,13 @@ export function SpreadForm({
             disabled={foodCostNum === null}
             className="text-xs font-semibold text-hot disabled:cursor-not-allowed disabled:text-soft"
           >
-            A bit of a drive (+$15)
+            +$15 (example, farther)
           </button>
         </div>
+        <p className="mt-1 text-xs text-soft">
+          Starting points to edit, not a calculated fee — Spread doesn&rsquo;t
+          know your actual distance or time.
+        </p>
 
         <label className="mb-1.5 mt-4 block text-sm font-semibold text-soft">
           What you charge
@@ -317,12 +325,43 @@ export function SpreadForm({
           placeholder="0.00"
           onChange={(e) => setForm((f) => ({ ...f, price: e.target.value }))}
         />
+        <p className="mt-1 text-xs text-soft">
+          The total you&rsquo;ll charge for this meal and delivery in your
+          area.
+        </p>
 
         {profit !== null && (
-          <p className="mt-2 text-sm font-semibold text-herb">
-            You&rsquo;ll make ${profit.toFixed(2)}
-          </p>
+          <div className="mt-2">
+            <p className="text-sm font-semibold text-herb">
+              Amount left after food cost: ${profit.toFixed(2)}
+            </p>
+            <p className="text-xs text-soft">
+              Before travel costs, your time, and other expenses.
+            </p>
+          </div>
         )}
+      </div>
+
+      <div className="card p-4">
+        <label className="flex items-center justify-between gap-3">
+          <span>
+            <span className="font-display text-sm font-bold">
+              Pause requests for this meal
+            </span>
+            <span className="mt-0.5 block text-xs text-soft">
+              People can still view and share it, but won&rsquo;t be able to
+              request it.
+            </span>
+          </span>
+          <input
+            type="checkbox"
+            checked={form.isPaused}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, isPaused: e.target.checked }))
+            }
+            className="h-6 w-11 shrink-0 accent-hot"
+          />
+        </label>
       </div>
 
       {errors.length > 0 && (

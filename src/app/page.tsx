@@ -8,18 +8,18 @@ import { SignInForm } from "./SignInForm";
 const steps = [
   {
     n: 1,
-    title: "Pair two spots",
-    body: "Pick two local restaurants and the exact items you love from each.",
+    title: "Make it yours",
+    body: "Choose up to three food items from two local restaurants. Name your meal.",
   },
   {
     n: 2,
-    title: "Build up to three items",
-    body: "Add your custom items — food only — and say exactly how each one comes.",
+    title: "Set your terms",
+    body: "Choose your price, delivery area, and availability.",
   },
   {
     n: 3,
-    title: "Keep & share",
-    body: "Save it to your board and share it with the people who'll love it too.",
+    title: "Share and deliver",
+    body: "Share your menu with your audience, confirm requests directly, and deliver the meals yourself.",
   },
 ];
 
@@ -46,13 +46,20 @@ export default async function LandingPage({
       </p>
 
       <h1 className="mt-6 font-display text-4xl font-extrabold leading-[1.05]">
-        Some of the best meals don&rsquo;t exist on any menu.{" "}
-        <span className="bg-node bg-clip-text text-transparent">Build yours.</span>
+        Create your meal.{" "}
+        <span className="bg-node bg-clip-text text-transparent">
+          Share your menu. Deliver on your terms.
+        </span>
       </h1>
 
       <p className="mt-4 text-[17px] text-soft">
-        Two local restaurants, the exact items you love, combined into one meal
-        you name yourself — saved to your board, ready to share.
+        Combine your favorite food from two local restaurants into a meal you
+        name and price. Share it with your social audience, take requests,
+        and deliver in your area.
+      </p>
+
+      <p className="mt-3 text-sm italic text-soft">
+        Some of the best meals don&rsquo;t exist on any menu.
       </p>
 
       <div className="mt-8">
@@ -61,7 +68,18 @@ export default async function LandingPage({
             Go to your board
           </Link>
         ) : (
-          <SignInForm />
+          <>
+            <SignInForm />
+            <p className="mt-2 text-xs text-soft">
+              We&rsquo;ll email you a sign-in link. No password needed.
+            </p>
+            <Link
+              href="/example"
+              className="mt-3 block text-center text-sm font-semibold text-hot hover:underline"
+            >
+              See an example →
+            </Link>
+          </>
         )}
         {params.error && (
           <p className="mt-3 rounded-input bg-tomato-tint p-3 text-sm text-hot">
@@ -125,11 +143,12 @@ export default async function LandingPage({
               </p>
             </div>
           </div>
-          <input
-            disabled
-            placeholder="What would you call it?"
-            className="input-field mt-5 font-display font-bold"
-          />
+          <Link
+            href="/example"
+            className="btn-secondary mt-5 block w-full text-center"
+          >
+            See how this works →
+          </Link>
         </div>
       </section>
 

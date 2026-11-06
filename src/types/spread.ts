@@ -10,6 +10,7 @@ export type Profile = {
   paymentNote: string | null;
   cashappHandle: string | null;
   venmoHandle: string | null;
+  bio: string | null;
   isLive: boolean;
   createdAt: string;
 };
@@ -36,6 +37,7 @@ export type Spread = {
   color: SpreadColor;
   notes: string | null;
   isPublic: boolean;
+  isPaused: boolean;
   foodCost: number | null;
   price: number | null;
   createdAt: string;
@@ -52,5 +54,6 @@ export type SpreadWithOwner = Spread & {
   ownerPaymentNote: string | null;
   ownerCashappHandle: string | null;
   ownerVenmoHandle: string | null;
+  ownerBio: string | null;
   ownerIsLive: boolean;
 };

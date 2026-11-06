@@ -11,8 +11,10 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
   const [copied, setCopied] = useState(false);
 
   const summary = [
-    `Order: ${spread.title}`,
-    spread.price != null ? `Price: $${spread.price.toFixed(2)}` : null,
+    `Request: ${spread.title}`,
+    spread.price != null
+      ? `Listed price: $${spread.price.toFixed(2)} (subject to confirmation)`
+      : null,
     address ? `Deliver to: ${address}` : null,
     instructions ? `Instructions: ${instructions}` : null,
   ]
@@ -22,7 +24,7 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
   async function handleCopy() {
     await navigator.clipboard.writeText(summary);
     setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+    setTimeout(() => setCopied(false), 2500);
   }
 
   return (
@@ -37,9 +39,15 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
       <div>
         <h1 className="font-display text-2xl font-extrabold">{spread.title}</h1>
         {spread.price != null && (
-          <p className="mt-1 font-display text-xl font-bold text-hot">
-            ${spread.price.toFixed(2)}
-          </p>
+          <>
+            <p className="mt-1 font-display text-xl font-bold text-hot">
+              ${spread.price.toFixed(2)}
+            </p>
+            <p className="text-xs text-soft">
+              For this meal and delivery in {spread.ownerDisplayName}&rsquo;s
+              area — subject to the creator&rsquo;s confirmation.
+            </p>
+          </>
         )}
         {spread.ownerArea && (
           <p className="mt-2 text-sm text-soft">{spread.ownerArea}</p>
@@ -78,19 +86,41 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
         />
       </div>
 
-      <button
-        type="button"
-        onClick={handleCopy}
-        disabled={!address}
-        className="btn-secondary w-full disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {copied ? "Copied!" : "Copy order details"}
-      </button>
+      <div className="flex flex-col gap-3">
+        <button
+          type="button"
+          onClick={handleCopy}
+          disabled={!address}
+          className="btn-secondary w-full disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {copied ? "Copied. Open the conversation and paste your request." : "Copy request details"}
+        </button>
+
+        {spread.ownerSocialLink ? (
+          <a
+            href={spread.ownerSocialLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary w-full"
+          >
+            Send request to @{spread.ownerHandle}
+          </a>
+        ) : (
+          <p className="text-sm text-soft">
+            This creator hasn&rsquo;t added a way to reach them yet.
+          </p>
+        )}
+      </div>
+
+      <p className="rounded-input bg-tomato-tint p-3 text-xs text-hot">
+        Your request isn&rsquo;t confirmed until {spread.ownerDisplayName}{" "}
+        replies with a total and delivery time.
+      </p>
 
       {(spread.ownerCashappHandle || spread.ownerVenmoHandle) && (
         <div className="card p-4">
           <p className="font-display text-sm font-bold text-hot">
-            Pay {spread.ownerDisplayName}
+            Once confirmed, pay {spread.ownerDisplayName}
           </p>
           <div className="mt-3 flex flex-col gap-2">
             {spread.ownerCashappHandle && (
@@ -117,25 +147,10 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
         </div>
       )}
 
-      {spread.ownerSocialLink ? (
-        <a
-          href={spread.ownerSocialLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-primary w-full"
-        >
-          Message @{spread.ownerHandle} to order
-        </a>
-      ) : (
-        <p className="text-sm text-soft">
-          This creator hasn&rsquo;t added an order link yet.
-        </p>
-      )}
-
       <p className="text-xs text-soft">
-        Copy your order details above, then paste them into your message —
-        that&rsquo;s how you&rsquo;ll confirm and arrange delivery with{" "}
-        {spread.ownerDisplayName}.
+        Copy your request details above, send them to{" "}
+        {spread.ownerDisplayName} to confirm, then pay once they&rsquo;ve
+        confirmed the total and delivery address.
       </p>
     </div>
   );

@@ -25,6 +25,7 @@ export const profileEditSchema = z.object({
   paymentNote: z.string().max(100).optional().or(z.literal("")),
   cashappHandle: handleLikeField,
   venmoHandle: handleLikeField,
+  bio: z.string().max(200).optional().or(z.literal("")),
   isLive: z.boolean(),
 });
 
@@ -44,6 +45,7 @@ export const spreadSchema = z
     color: z.enum(SPREAD_COLORS),
     notes: z.string().max(500).optional().or(z.literal("")),
     isPublic: z.boolean(),
+    isPaused: z.boolean(),
     foodCost: z.number().min(0).max(999.99).nullable().optional(),
     price: z.number().min(0).max(999.99).nullable().optional(),
     restaurants: z.array(restaurantSchema).length(2, "Exactly 2 restaurants"),

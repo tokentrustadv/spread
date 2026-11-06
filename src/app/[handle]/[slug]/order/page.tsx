@@ -16,7 +16,7 @@ export default async function OrderPage({
   const spread = await getPublicSpread(supabase, handle, resolved.slug);
 
   if (!spread) notFound();
-  if (!spread.ownerIsLive) {
+  if (!spread.ownerIsLive || spread.isPaused) {
     redirect(`/@${handle}/${resolved.slug}`);
   }
 

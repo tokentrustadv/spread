@@ -7,6 +7,7 @@ import { Tile } from "@/components/Tile";
 import { Node } from "@/components/Node";
 import { OwnerActions } from "@/components/OwnerActions";
 import { ShareSheet } from "@/components/ShareSheet";
+import { CopyLinkButton } from "@/components/CopyLinkButton";
 import { siteUrl } from "@/lib/site";
 
 type Params = { handle: string; slug: string };
@@ -104,6 +105,12 @@ export default async function SpreadDetailPage({
           {spread.title}
         </h1>
         <p className="mt-1 text-sm text-soft">by @{spread.ownerHandle}</p>
+        <Link
+          href={`/@${spread.ownerHandle}`}
+          className="mt-1 text-xs font-semibold text-hot hover:underline"
+        >
+          See @{spread.ownerHandle}&rsquo;s full menu
+        </Link>
       </div>
 
       <div className="mt-10 flex flex-col gap-6">
@@ -136,10 +143,10 @@ export default async function SpreadDetailPage({
             />
             <OwnerActions spreadId={spread.id} userId={spread.userId} />
           </div>
-        ) : spread.ownerIsLive ? (
+        ) : spread.ownerIsLive && !spread.isPaused ? (
           <div className="card p-5 text-center">
-            <p className="font-display text-sm font-bold text-hot">
-              How to order
+            <p className="font-display text-sm font-bold text-herb">
+              Accepting requests
             </p>
             {spread.price != null && (
               <p className="mt-2 font-display text-2xl font-extrabold">
@@ -159,17 +166,41 @@ export default async function SpreadDetailPage({
               href={`/@${spread.ownerHandle}/${spread.slug}/order`}
               className="btn-primary mt-4 w-full"
             >
-              Start your order
+              Request this meal
             </Link>
           </div>
-        ) : (
-          <Link href="/" className="card block p-5 text-center">
-            <p className="font-display text-sm font-bold text-hot">
-              Made with Spread
+        ) : spread.ownerIsLive && spread.isPaused ? (
+          <div className="card p-5 text-center">
+            <p className="font-display text-sm font-bold text-soft">
+              This meal is currently unavailable
             </p>
-            <p className="mt-1 text-sm text-soft">Make your own spread →</p>
-          </Link>
+            <p className="mt-1 text-sm text-soft">
+              @{spread.ownerHandle} isn&rsquo;t taking requests for this one
+              right now.
+            </p>
+          </div>
+        ) : (
+          <div className="card p-5 text-center">
+            <p className="font-display text-sm font-bold text-soft">
+              Not currently accepting requests
+            </p>
+            <p className="mt-1 text-sm text-soft">
+              You can still view and share this spread.
+            </p>
+          </div>
         )}
+      </div>
+
+      {!isOwner && (
+        <div className="mt-4">
+          <CopyLinkButton url={shareUrl} label="Copy meal link" />
+        </div>
+      )}
+
+      <div className="mt-6 text-center">
+        <Link href="/" className="text-xs text-soft hover:text-ink">
+          Made with Spread — create your own menu →
+        </Link>
       </div>
     </main>
   );

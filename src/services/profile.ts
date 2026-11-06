@@ -15,6 +15,7 @@ function toProfile(row: Database["public"]["Tables"]["profiles"]["Row"]): Profil
     paymentNote: row.payment_note,
     cashappHandle: row.cashapp_handle,
     venmoHandle: row.venmo_handle,
+    bio: row.bio,
     isLive: row.is_live,
     createdAt: row.created_at,
   };
@@ -91,6 +92,7 @@ export async function updateProfile(
     paymentNote?: string;
     cashappHandle?: string;
     venmoHandle?: string;
+    bio?: string;
     isLive: boolean;
   }
 ): Promise<Profile> {
@@ -104,6 +106,7 @@ export async function updateProfile(
       payment_note: input.paymentNote ? input.paymentNote : null,
       cashapp_handle: input.cashappHandle ? input.cashappHandle : null,
       venmo_handle: input.venmoHandle ? input.venmoHandle : null,
+      bio: input.bio ? input.bio : null,
       is_live: input.isLive,
     })
     .eq("id", userId)
