@@ -3,7 +3,11 @@ import { addMonths } from "date-fns";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getProfile } from "@/services/profile";
-import { ensureStripeCustomer } from "@/services/membership";
+import {
+  ensureStripeCustomer,
+  claimCheckoutReservation,
+  storeCheckoutSessionId,
+} from "@/services/membership";
 import { getStripe } from "@/lib/stripe";
 import { siteUrl } from "@/lib/site";
 
@@ -50,12 +54,32 @@ export async function POST() {
     profile.displayName
   );
 
-  // Guard against duplicate subscriptions from concurrent checkout attempts
-  // (e.g. two tabs, a double click before the first redirect lands): if this
-  // customer already has a subscription that isn't fully terminal, don't
-  // start another one. Checked against Stripe directly (not just our own
-  // row) since it's the authoritative source and catches the case where our
-  // DB hasn't been synced yet either.
+  // Atomically claim the right to start a checkout for this creator. This is
+  // a single conditional database UPDATE (see claimCheckoutReservation), not
+  // a read-then-decide check here in JS, so two genuinely simultaneous
+  // requests (two tabs, a double click) cannot both proceed — Postgres
+  // serializes the competing UPDATEs and only one can match.
+  const claim = await claimCheckoutReservation(admin, user.id);
+  if (!claim.won) {
+    if (claim.reusableSessionId) {
+      const existing = await stripe.checkout.sessions.retrieve(
+        claim.reusableSessionId
+      );
+      if (existing.status === "open" && existing.url) {
+        return NextResponse.json({ url: existing.url });
+      }
+    }
+    return NextResponse.json(
+      { error: "A checkout is already starting. Try again in a moment." },
+      { status: 409 }
+    );
+  }
+
+  // Separate from the reservation above (which only protects against truly
+  // concurrent requests): a creator who is already subscribed, visiting
+  // "Activate" again later with no concurrency involved, shouldn't be able
+  // to start a second subscription either. Checked against Stripe directly,
+  // not just our own row, since it's the authoritative source.
   const existingSubscriptions = await stripe.subscriptions.list({
     customer: membership.stripeCustomerId,
     status: "all",
@@ -76,6 +100,15 @@ export async function POST() {
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     customer: membership.stripeCustomerId,
+    // Restricted to card: the only method this flow has been tested with.
+    // Several of Stripe's other default methods (Klarna, Cash App, Amazon
+    // Pay) settle asynchronously — checkout.session.completed can fire for
+    // those with payment_status still "unpaid", which would need handling
+    // checkout.session.async_payment_succeeded/failed separately. Until
+    // that's built and tested, card keeps the payment-confirmation logic in
+    // the webhook (a single synchronous payment_status check) actually
+    // correct for every session this route can create.
+    allowed_payment_method_types: ["card"],
     line_items: introEligible
       ? [
           { price: introPriceId, quantity: 1 },
@@ -102,6 +135,8 @@ export async function POST() {
       { status: 500 }
     );
   }
+
+  await storeCheckoutSessionId(admin, user.id, session.id);
 
   return NextResponse.json({ url: session.url });
 }

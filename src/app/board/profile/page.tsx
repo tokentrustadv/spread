@@ -1,7 +1,9 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getProfile } from "@/services/profile";
-import { getMembership } from "@/services/membership";
+import { getMembership, reconcileMembership } from "@/services/membership";
+import { getStripe } from "@/lib/stripe";
 import { EditProfileForm } from "./EditProfileForm";
 import { MembershipStatus } from "@/components/MembershipStatus";
 
@@ -16,7 +18,20 @@ export default async function EditProfilePage() {
   const profile = await getProfile(supabase, user.id);
   if (!profile) redirect("/welcome");
 
-  const membership = await getMembership(supabase, user.id);
+  // Recovery path for a missed webhook: re-syncs this creator's billing
+  // state straight from Stripe on every visit to their own profile page, so
+  // a paying creator can't stay stuck locked out by a delivery failure they
+  // have no way to trigger a retry of themselves. Cheap and safe to always
+  // run here — this page is low-traffic and authenticated, unlike the
+  // public pages, which stay fast and don't call Stripe at all.
+  let membership;
+  try {
+    membership = await reconcileMembership(createAdminClient(), getStripe(), user.id);
+  } catch {
+    // If Stripe or the reconciliation call itself is unavailable, fall back
+    // to whatever's already on file rather than breaking the whole page.
+    membership = await getMembership(supabase, user.id);
+  }
 
   return (
     <main className="frame py-10">

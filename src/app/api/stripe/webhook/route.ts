@@ -26,10 +26,30 @@ export async function POST(request: Request) {
 
   const admin = createAdminClient();
 
+  // Exactly two event types can grant or renew access, both guarded:
+  // - checkout.session.completed: only when payment_status === "paid" (see
+  //   below) — this is what confirms the initial $12 charge actually
+  //   succeeded, not just that the customer filled in the Checkout form.
+  // - customer.subscription.updated: Stripe only ever sets status to
+  //   trialing/active when the relevant invoice is actually paid (or the
+  //   trial hasn't started billing yet) — Spread doesn't invent that
+  //   judgment, it mirrors subscription.status as Stripe reports it.
+  // checkout.session.async_payment_succeeded/failed are deliberately NOT
+  // handled: the checkout route restricts payment_method_types to ["card"],
+  // so Stripe should never generate those events for a session this code
+  // creates. If delayed payment methods are ever allowed, this needs both
+  // events handled before that's safe.
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
       if (session.mode !== "subscription" || !session.subscription) break;
+
+      // The customer completed the Checkout form, but for the subscription
+      // to actually be active/trialing with the $12 charged, the session's
+      // payment must have actually succeeded — payment_status can be
+      // "unpaid" here for a payment still pending confirmation. Checked
+      // explicitly rather than inferred from the event firing at all.
+      if (session.payment_status !== "paid") break;
 
       const subscription = await stripe.subscriptions.retrieve(
         typeof session.subscription === "string"
@@ -44,13 +64,19 @@ export async function POST(request: Request) {
 
       // checkout.session.completed is the one place a NEW subscription is
       // intentionally attached to a creator's row (first signup, or a
-      // reactivation after an earlier cancellation) — always allowed to
-      // (re)assign which subscription the row tracks.
-      await syncMembershipFromSubscription(admin, customerId, subscription, {
-        allowSubscriptionReassign: true,
-      });
+      // reactivation after an earlier cancellation) — allowed to (re)assign
+      // which subscription the row tracks, but only forward in time (see
+      // syncMembershipFromSubscription's atomic created-at guard): a
+      // delayed completion event for an older, superseded checkout attempt
+      // can't reassign the row away from a newer subscription.
+      const applied = await syncMembershipFromSubscription(
+        admin,
+        customerId,
+        subscription,
+        { allowSubscriptionReassign: true }
+      );
 
-      if (session.metadata?.intro_offer === "true") {
+      if (applied && session.metadata?.intro_offer === "true") {
         await markIntroOfferUsed(admin, customerId);
       }
       break;

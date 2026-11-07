@@ -12,6 +12,12 @@ create table if not exists memberships (
   user_id uuid primary key references profiles(id) on delete cascade,
   stripe_customer_id text not null,
   stripe_subscription_id text,
+  -- The tracked subscription's own Stripe-assigned creation time. Used to
+  -- atomically reject a reassignment from a delayed/out-of-order
+  -- checkout.session.completed event for an OLDER, superseded checkout
+  -- attempt — a newer subscription already on file can never be replaced by
+  -- one created earlier, no matter what order webhooks arrive in.
+  stripe_subscription_created_at timestamptz,
   -- Mirrors Stripe's own subscription.status values directly (trialing, active,
   -- past_due, canceled, unpaid, incomplete, incomplete_expired), or 'none' before
   -- the creator's first checkout. Kept in sync by the Stripe webhook handler.
@@ -21,9 +27,22 @@ create table if not exists memberships (
   -- Set once on first checkout, never cleared — gates eligibility for the
   -- "first three months for $12" offer so it can only be used once per creator.
   intro_offer_used_at timestamptz,
+  -- A durable, atomically-claimed reservation that serializes checkout
+  -- attempts per creator: the checkout route can only create a new Checkout
+  -- Session if it wins this slot via a single conditional UPDATE (not a
+  -- read-then-decide check), which Postgres's row-level locking makes
+  -- genuinely race-proof under concurrent requests. A short expiry (not a
+  -- manual release) means a crashed or abandoned attempt can't permanently
+  -- wedge a creator out of checking out again.
+  pending_checkout_session_id text,
+  pending_checkout_expires_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table memberships add column if not exists stripe_subscription_created_at timestamptz;
+alter table memberships add column if not exists pending_checkout_session_id text;
+alter table memberships add column if not exists pending_checkout_expires_at timestamptz;
 
 create unique index if not exists memberships_stripe_customer_id_idx
   on memberships(stripe_customer_id);
