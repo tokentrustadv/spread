@@ -37,11 +37,17 @@ alter table memberships enable row level security;
 -- (ensureStripeCustomer's initial insert, before any Stripe customer exists
 -- for them yet) — both run as the authenticated creator via their normal
 -- session client, no service-role key needed.
+drop policy if exists "memberships_select_own" on memberships;
 create policy "memberships_select_own" on memberships
   for select using (auth.uid() = user_id);
 
+drop policy if exists "memberships_insert_own" on memberships;
 create policy "memberships_insert_own" on memberships
   for insert with check (auth.uid() = user_id);
+
+-- Drop the old, overly-permissive policy if this migration is being re-run
+-- after an earlier draft that included it.
+drop policy if exists "memberships_update_own" on memberships;
 
 -- Deliberately NO update policy for authenticated users, own row included:
 -- every field on this table (status, current_period_end, cancel_at_period_end,
