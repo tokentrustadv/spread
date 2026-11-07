@@ -67,6 +67,35 @@ export const spreadSchema = z
     }
   });
 
+const datetimeLocalPattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+
+export const requestSubmitSchema = z.object({
+  spreadId: z.string().uuid(),
+  clientSubmissionId: z.string().uuid(),
+  quantity: z.number().int().min(1).max(10),
+  customerDisplayName: z.string().trim().min(1).max(80),
+  contactChannel: z.enum(["instagram", "messenger", "other"]),
+  socialHandle: z.string().trim().min(1).max(80),
+  requestedWindowStart: z
+    .string()
+    .regex(datetimeLocalPattern, "Invalid date/time")
+    .optional()
+    .or(z.literal("")),
+  requestedWindowEnd: z
+    .string()
+    .regex(datetimeLocalPattern, "Invalid date/time")
+    .optional()
+    .or(z.literal("")),
+  requestedWindowTz: z.string().max(60).optional().or(z.literal("")),
+});
+
+export const requestStatusSchema = z.object({
+  expectedStatus: z.enum(["new", "accepted"]),
+  newStatus: z.enum(["accepted", "completed", "declined", "cancelled"]),
+});
+
 export type SpreadInput = z.infer<typeof spreadSchema>;
 export type ProfileInput = z.infer<typeof profileSchema>;
 export type ProfileEditInput = z.infer<typeof profileEditSchema>;
+export type RequestSubmitInput = z.infer<typeof requestSubmitSchema>;
+export type RequestStatusInput = z.infer<typeof requestStatusSchema>;

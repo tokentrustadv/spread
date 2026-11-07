@@ -80,3 +80,46 @@ export type Membership = {
   cancelAtPeriodEnd: boolean;
   introOfferUsedAt: string | null;
 };
+
+export type RequestItemSnapshot = {
+  restaurant: string;
+  item: string;
+  note: string | null;
+};
+
+export type ContactChannel = "instagram" | "messenger" | "other";
+
+export type RequestStatus =
+  | "new"
+  | "accepted"
+  | "completed"
+  | "declined"
+  | "cancelled"
+  | "archived";
+
+export type SpreadRequest = {
+  id: string;
+  creatorId: string;
+  spreadId: string;
+  spreadTitle: string;
+  items: RequestItemSnapshot[];
+  currency: string;
+  listedPriceCents: number | null;
+  quantity: number;
+  customerDisplayName: string;
+  contactChannel: ContactChannel;
+  socialHandle: string;
+  requestedWindowStart: string | null;
+  requestedWindowEnd: string | null;
+  requestedWindowTz: string | null;
+  status: RequestStatus;
+  requestedAt: string;
+  acceptedAt: string | null;
+  closedAt: string | null;
+  expiresAt: string;
+};
+
+export type RequestCounts = {
+  newCount: number;
+  activeCount: number;
+};

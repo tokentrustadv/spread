@@ -21,6 +21,13 @@ each of those has happened once already in this project.
 - [ ] Stripe is still pointed at the **Spread Development** sandbox
       (test-mode keys) unless a live-mode cutover was explicitly decided
       and asked for. Check `STRIPE_SECRET_KEY` starts with `sk_test_`.
+- [ ] `CRON_SECRET` and `REQUEST_IP_HASH_SECRET` are set in Vercel with
+      their own randomly-generated values (`openssl rand -hex 32` or
+      similar) — **not** copied from `.env.local`. These are app-internal
+      secrets, not third-party credentials, so there's no dashboard to
+      cross-check them against; generating fresh ones per environment is
+      the only thing that keeps local/dev values from leaking into
+      production.
 
 ## 2. Deploy
 
@@ -31,6 +38,12 @@ each of those has happened once already in this project.
   re-check the registered webhook endpoint in the Stripe Dashboard
   (Developers → Webhooks) still points at the deployed URL and that
   `STRIPE_WEBHOOK_SECRET` in Vercel matches the endpoint's signing secret.
+- If `vercel.json`'s cron entry is new or changed, confirm it registered:
+  Vercel → Project → Settings → Cron Jobs should list
+  `/api/cron/cleanup-requests`. Don't assume it's wired up from a manual
+  `curl` test alone — check that an actual scheduled invocation happened
+  (the Cron Jobs tab shows last-run time) after the next scheduled time
+  passes, not just that the route works when called by hand.
 
 ## 3. After you deploy — explicit test list
 
@@ -69,6 +82,20 @@ card `4000 0000 0000 0341`)
       reachable
 - [ ] `/example` — sample-data notice is visible, request preview toggle
       works and is clearly non-functional
+
+**Request queue**
+- [ ] Submit a request from `/[handle]/[slug]/order`, confirm the "saved,
+      not yet accepted" confirmation and reference code appear
+- [ ] Request shows up on `/board/requests`, and the New count on `/board`
+      increments
+- [ ] Accept, then Complete a request — confirm `/board` counts update
+- [ ] Submitting while the creator isn't live/paused/unmembered is
+      rejected with a clear message, not silently queued
+- [ ] Hit the per-IP rate limit (a handful of quick submissions to the
+      same spread) and confirm the 6th within an hour is rejected, not
+      silently accepted
+- [ ] `GET /api/cron/cleanup-requests` without the `Authorization` header
+      returns 401
 
 **Responsive / accessibility spot check**
 - [ ] Homepage at ~360px, ~390px, ~768px, and desktop width

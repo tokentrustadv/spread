@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/services/profile";
 import { listSpreads } from "@/services/spreads";
+import { getRequestCounts } from "@/services/requests";
 import { SpreadCard } from "@/components/SpreadCard";
 import { SignOut } from "@/components/SignOut";
 import { ShareMenuButton } from "@/components/ShareMenuButton";
@@ -21,6 +22,7 @@ export default async function BoardPage() {
   if (!profile) redirect("/welcome");
 
   const spreads = await listSpreads(supabase, user.id);
+  const requestCounts = await getRequestCounts(supabase, user.id);
 
   return (
     <main className="frame py-10">
@@ -39,7 +41,23 @@ export default async function BoardPage() {
         </div>
       </div>
 
-      <div className="mt-6 flex flex-col gap-3">
+      <Link
+        href="/board/requests"
+        className="mt-6 flex items-center justify-between rounded-input border border-line2 bg-surface px-4 py-3 transition-colors hover:bg-bg"
+      >
+        <span className="font-display text-sm font-bold">Requests</span>
+        <span className="flex items-center gap-3 text-sm text-soft">
+          <span>
+            <span className="font-semibold text-hot">{requestCounts.newCount}</span> new
+          </span>
+          <span>
+            <span className="font-semibold text-ink">{requestCounts.activeCount}</span> active
+          </span>
+          <span aria-hidden="true">→</span>
+        </span>
+      </Link>
+
+      <div className="mt-4 flex flex-col gap-3">
         <ShareMenuButton
           displayName={profile.displayName}
           menuUrl={`${siteUrl}/@${profile.handle}`}
