@@ -42,59 +42,71 @@ export default async function LandingPage({
   } = await supabase.auth.getUser();
 
   return (
-    <main className="frame py-16">
-      <Logo size={20} />
+    <main className="mx-auto w-full max-w-[1120px] px-5 py-16">
+      <div className="lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
+        <div className="mx-auto w-full max-w-[480px] lg:mx-0">
+          <Logo size={20} />
 
-      <h1 className="mt-6 font-display text-4xl font-extrabold leading-[1.05]">
-        Create your meal.{" "}
-        <span className="bg-node bg-clip-text text-transparent">
-          Share your menu. Deliver on your terms.
-        </span>
-      </h1>
+          <h1 className="mt-6 font-display text-4xl font-extrabold leading-[1.1]">
+            Create your meal.
+            <br />
+            Share your menu.
+            <br />
+            Deliver on <span className="text-hot">your terms</span>.
+          </h1>
 
-      <p className="mt-4 text-[17px] text-soft">
-        Combine your favorite food from two local restaurants into a meal you
-        name and price. Share it with your social audience, take requests,
-        and deliver in your area.
-      </p>
-
-      <p className="mt-3 text-sm italic text-soft">
-        Some of the best meals don&rsquo;t exist on any menu.
-      </p>
-
-      <div id="signup" className="mt-8">
-        {user ? (
-          <Link href="/board" className="btn-primary w-full">
-            Go to your board
-          </Link>
-        ) : (
-          <>
-            <SignInForm />
-            <p className="mt-2 text-xs text-soft">
-              We&rsquo;ll email you a sign-in link. No password needed.
-            </p>
-            <Link
-              href="/example"
-              className="mt-3 block text-center text-sm font-semibold text-hot hover:underline"
-            >
-              See an example →
-            </Link>
-          </>
-        )}
-        {params.error && (
-          <p className="mt-3 rounded-input bg-tomato-tint p-3 text-sm text-hot">
-            {params.error}
+          <p className="mt-4 text-[17px] text-soft">
+            Combine your favorite food from two local restaurants into a meal
+            you name and price. Share it with your social audience, take
+            requests, and deliver in your area.
           </p>
-        )}
+
+          <p className="mt-3 text-sm italic text-soft">
+            Some of the best meals don&rsquo;t exist on any menu.
+          </p>
+
+          <div id="signup" className="mt-8">
+            {user ? (
+              <Link href="/board" className="btn-primary w-full">
+                Go to your board
+              </Link>
+            ) : (
+              <>
+                <SignInForm />
+                <p className="mt-2 text-xs text-soft">
+                  We&rsquo;ll email you a sign-in link. No password needed.
+                </p>
+                <p className="mt-4 rounded-input border border-line2 bg-surface p-3 text-xs text-soft">
+                  Build and share free. Activate requests for $12 for your
+                  first three months, then $12/month. No commission on your
+                  sales.
+                </p>
+                <Link
+                  href="/example"
+                  className="mt-3 block text-center text-sm font-semibold text-hot hover:underline"
+                >
+                  See an example →
+                </Link>
+              </>
+            )}
+            {params.error && (
+              <p className="mt-3 rounded-input bg-tomato-tint p-3 text-sm text-hot">
+                {params.error}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <SpreadDemo />
+        </div>
       </div>
 
-      <SpreadDemo />
-
-      <section className="mt-14">
+      <section className="mt-14 lg:mt-20">
         <h2 className="font-display text-2xl font-extrabold">How it works</h2>
-        <div className="mt-6 flex flex-col gap-6">
+        <div className="mt-6 grid gap-6 lg:grid-cols-3 lg:gap-8">
           {steps.map((step) => (
-            <div key={step.n} className="flex gap-4">
+            <div key={step.n} className="flex gap-4 lg:flex-col">
               <div className="plus-node h-9 w-9 shrink-0 font-display text-base font-bold">
                 {step.n}
               </div>
@@ -107,6 +119,7 @@ export default async function LandingPage({
         </div>
       </section>
 
+      <div className="mx-auto w-full max-w-[560px]">
       <section className="mt-14">
         <h2 className="font-display text-2xl font-extrabold leading-tight">
           You control the whole thing.
@@ -175,6 +188,7 @@ export default async function LandingPage({
       <footer className="mt-16 pb-8 text-center text-xs text-soft">
         Spread — some of the best meals don&rsquo;t exist on any menu.
       </footer>
+      </div>
     </main>
   );
 }

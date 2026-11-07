@@ -29,7 +29,7 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-input bg-node px-5 py-3 font-display text-[15px] font-semibold text-white shadow-sm transition-transform active:scale-[0.98];
+    @apply inline-flex items-center justify-center rounded-input bg-hot px-5 py-3 font-display text-[15px] font-semibold text-white shadow-sm transition-transform active:scale-[0.98];
   }
 
   .btn-secondary {

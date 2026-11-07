@@ -57,6 +57,11 @@ export function MembershipStatus({
         >
           {loading ? "Starting…" : "Activate — $12 to start"}
         </button>
+        {/* TODO: remove this notice once live-mode Stripe keys are in use. */}
+        <p className="mt-2 text-center text-xs text-soft">
+          Test mode — no real charge. Stripe&rsquo;s checkout page will say
+          so too.
+        </p>
       </>
     );
   } else if (status === "trialing") {

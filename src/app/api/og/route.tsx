@@ -108,7 +108,7 @@ export async function GET(request: Request) {
               marginTop: 36,
               fontSize: 32,
               fontWeight: 700,
-              color: "#7A746C",
+              color: "#6A635A",
             }}
           >
             <span style={{ color: "#26231F" }}>{a}</span>
@@ -136,7 +136,7 @@ export async function GET(request: Request) {
               display: "flex",
               marginTop: 48,
               fontSize: 24,
-              color: "#7A746C",
+              color: "#6A635A",
             }}
           >
             {`A meal ${title} swears by.`}

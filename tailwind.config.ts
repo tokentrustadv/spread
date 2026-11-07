@@ -8,7 +8,7 @@ const config: Config = {
         bg: "#FFF7ED",
         surface: "#FFFFFF",
         ink: "#26231F",
-        soft: "#7A746C",
+        soft: "#6A635A",
         line: "#F3E7DA",
         line2: "#E7D8C7",
         hot: "#C4472D",

@@ -10,6 +10,7 @@ import { SaveAnimation } from "./SaveAnimation";
 import type { Spread } from "@/types/spread";
 import { flaggedFoodPolicyTerm } from "@/lib/foodPolicy";
 import { FoodOnlyBadge } from "./FoodOnlyBadge";
+import { DEMO_DRAFT_KEY } from "@/app/SpreadDemo";
 
 type ItemDraft = { name: string; note: string };
 type RestaurantDraft = { name: string; items: ItemDraft[] };
@@ -54,6 +55,33 @@ const emptyState: FormState = {
   ],
 };
 
+function fromDemoDraft(): FormState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(DEMO_DRAFT_KEY);
+    if (!raw) return null;
+    window.localStorage.removeItem(DEMO_DRAFT_KEY);
+    const draft = JSON.parse(raw) as {
+      title?: string;
+      restaurantA?: string;
+      itemA?: string;
+      restaurantB?: string;
+      itemB?: string;
+    };
+    if (!draft.restaurantA || !draft.restaurantB) return null;
+    return {
+      ...emptyState,
+      title: draft.title ?? "",
+      restaurants: [
+        { name: draft.restaurantA, items: [{ name: draft.itemA ?? "", note: "" }] },
+        { name: draft.restaurantB, items: [{ name: draft.itemB ?? "", note: "" }] },
+      ],
+    };
+  } catch {
+    return null;
+  }
+}
+
 function parseMoney(value: string): number | null {
   const trimmed = value.trim();
   if (!trimmed) return null;
@@ -73,7 +101,7 @@ export function SpreadForm({
   const router = useRouter();
   const isEdit = Boolean(spread);
   const [form, setForm] = useState<FormState>(
-    spread ? fromSpread(spread) : emptyState
+    spread ? fromSpread(spread) : () => fromDemoDraft() ?? emptyState
   );
   const [errors, setErrors] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
