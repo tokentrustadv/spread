@@ -25,8 +25,8 @@ function toMembership(
   };
 }
 
-// Works with any client (own-row RLS or admin) — used by the creator's own
-// dashboard and by server routes acting on the authenticated creator's behalf.
+// Works with any client — the creator's own session client is enough here
+// (memberships_select_own RLS), no service role needed just to read.
 export async function getMembership(
   supabase: Client,
   userId: string
@@ -57,15 +57,25 @@ export async function isMembershipActiveForUser(
 }
 
 // Creates (or reuses) the Stripe Customer for a creator and ensures a
-// memberships row exists, using the creator's OWN session client — allowed by
-// the memberships_insert_own/update_own RLS policies, no service role needed.
+// memberships row exists. MUST be called with the admin (service-role)
+// client — there is no insert policy for the authenticated role at all, by
+// design (see the migration), since the row's user_id has to come from the
+// caller's own verified session, not anything a client request could shape.
+// The caller (checkout route) derives userId from supabase.auth.getUser(),
+// never from request input.
+//
+// Race-safe under concurrent calls (e.g. two tabs both hitting "Activate" at
+// once): the insert uses ON CONFLICT DO NOTHING on the user_id primary key,
+// so if two requests both see no existing row and both create a Stripe
+// Customer, only the first insert wins — the second re-reads and uses the
+// winning row's customer id instead of its own (now-orphaned) one.
 export async function ensureStripeCustomer(
-  supabase: Client,
+  admin: Client,
   stripe: Stripe,
   userId: string,
   displayName: string
 ): Promise<Membership> {
-  const existing = await getMembership(supabase, userId);
+  const existing = await getMembership(admin, userId);
   if (existing) return existing;
 
   const customer = await stripe.customers.create({
@@ -73,28 +83,60 @@ export async function ensureStripeCustomer(
     metadata: { supabase_user_id: userId },
   });
 
-  const { data, error } = await supabase
-    .from("memberships")
-    .insert({
+  const { error: upsertError } = await admin.from("memberships").upsert(
+    {
       user_id: userId,
       stripe_customer_id: customer.id,
       status: "none",
-    })
-    .select("*")
-    .single();
+    },
+    { onConflict: "user_id", ignoreDuplicates: true }
+  );
+  if (upsertError) throw upsertError;
 
-  if (error) throw error;
-  return toMembership(data);
+  const row = await getMembership(admin, userId);
+  if (!row) throw new Error("Failed to create or load membership row.");
+  return row;
 }
 
 // Webhook write path — matched by stripe_customer_id (unique-indexed), using
 // the admin (service-role) client since there's no Supabase session on a
 // Stripe-initiated request.
+//
+// allowSubscriptionReassign controls whether this call is allowed to change
+// which subscription the row tracks:
+// - true: only from checkout.session.completed, the one place a NEW
+//   subscription is intentionally and authoritatively attached to a
+//   creator's row (first signup or a reactivation after cancellation).
+// - false: from customer.subscription.updated/deleted. These fire per
+//   subscription, and a customer can have more than one subscription object
+//   over their lifetime (an old canceled one, a newer reactivated one). A
+//   delayed/retried event for an OLD subscription must never overwrite a
+//   row that has since moved on to tracking a NEWER one, so these calls are
+//   dropped (treated as a safe no-op) unless the event's subscription id
+//   still matches what the row currently has on file.
 export async function syncMembershipFromSubscription(
   admin: Client,
   stripeCustomerId: string,
-  subscription: Stripe.Subscription
+  subscription: Stripe.Subscription,
+  { allowSubscriptionReassign }: { allowSubscriptionReassign: boolean }
 ): Promise<void> {
+  if (!allowSubscriptionReassign) {
+    const { data: current, error: readError } = await admin
+      .from("memberships")
+      .select("stripe_subscription_id")
+      .eq("stripe_customer_id", stripeCustomerId)
+      .maybeSingle();
+    if (readError) throw readError;
+
+    const trackedId = current?.stripe_subscription_id ?? null;
+    if (trackedId !== null && trackedId !== subscription.id) {
+      // Event is for a subscription this row isn't (or is no longer)
+      // tracking — ignore it rather than let stale/out-of-order data from a
+      // superseded subscription clobber the current one.
+      return;
+    }
+  }
+
   const currentPeriodEnd = subscription.items.data[0]?.current_period_end;
 
   const { error } = await admin
@@ -112,6 +154,9 @@ export async function syncMembershipFromSubscription(
   if (error) throw error;
 }
 
+// Only ever called after checkout.session.completed has confirmed the
+// subscription (i.e. the initial payment succeeded) — see the checkout
+// route and webhook handler. Guarded so it only fires once per creator.
 export async function markIntroOfferUsed(
   admin: Client,
   stripeCustomerId: string

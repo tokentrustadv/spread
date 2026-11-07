@@ -42,7 +42,13 @@ export async function POST(request: Request) {
           : session.customer?.id;
       if (!customerId) break;
 
-      await syncMembershipFromSubscription(admin, customerId, subscription);
+      // checkout.session.completed is the one place a NEW subscription is
+      // intentionally attached to a creator's row (first signup, or a
+      // reactivation after an earlier cancellation) — always allowed to
+      // (re)assign which subscription the row tracks.
+      await syncMembershipFromSubscription(admin, customerId, subscription, {
+        allowSubscriptionReassign: true,
+      });
 
       if (session.metadata?.intro_offer === "true") {
         await markIntroOfferUsed(admin, customerId);
@@ -66,7 +72,13 @@ export async function POST(request: Request) {
         typeof subscription.customer === "string"
           ? subscription.customer
           : subscription.customer.id;
-      await syncMembershipFromSubscription(admin, customerId, subscription);
+      // Not allowed to reassign which subscription the row tracks — a
+      // delayed/retried event about a subscription the row has since moved
+      // on from (e.g. an old one, superseded by a reactivation) is dropped
+      // rather than applied. See syncMembershipFromSubscription.
+      await syncMembershipFromSubscription(admin, customerId, subscription, {
+        allowSubscriptionReassign: false,
+      });
       break;
     }
 
