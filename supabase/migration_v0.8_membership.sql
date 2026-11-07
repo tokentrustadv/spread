@@ -32,20 +32,25 @@ create trigger memberships_touch_updated_at
 
 alter table memberships enable row level security;
 
--- A creator can read and write only their own row (used by the checkout/portal
--- routes and the membership status block on /board/profile, all running as the
--- authenticated creator — no service-role key needed for these).
+-- A creator can read their own row (the membership status block on
+-- /board/profile) and create it once, the first time they start checkout
+-- (ensureStripeCustomer's initial insert, before any Stripe customer exists
+-- for them yet) — both run as the authenticated creator via their normal
+-- session client, no service-role key needed.
 create policy "memberships_select_own" on memberships
   for select using (auth.uid() = user_id);
 
 create policy "memberships_insert_own" on memberships
   for insert with check (auth.uid() = user_id);
 
-create policy "memberships_update_own" on memberships
-  for update using (auth.uid() = user_id);
-
--- No delete policy: membership rows are never deleted by the app, only
--- transitioned through Stripe's statuses.
+-- Deliberately NO update policy for authenticated users, own row included:
+-- every field on this table (status, current_period_end, cancel_at_period_end,
+-- intro_offer_used_at) reflects Stripe's billing state, not something a
+-- creator should ever be able to set directly — an update-own policy would
+-- let anyone grant themselves free membership via a direct client call. Only
+-- the Stripe webhook (service-role client, bypasses RLS) ever updates these
+-- fields after the row is created. No delete policy either: membership rows
+-- are never deleted by the app, only transitioned through Stripe's statuses.
 
 -- ---------------------------------------------------------------------------
 -- Public "is this creator currently able to accept requests" check

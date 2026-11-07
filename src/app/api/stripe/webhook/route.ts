@@ -52,7 +52,16 @@ export async function POST(request: Request) {
 
     case "customer.subscription.updated":
     case "customer.subscription.deleted": {
-      const subscription = event.data.object as Stripe.Subscription;
+      // Re-fetch rather than trust event.data.object directly: Stripe does
+      // not guarantee webhook delivery order, so an older event processed
+      // after a newer one could otherwise overwrite current state with
+      // stale data (e.g. incorrectly restoring or reverting access). Always
+      // reading Stripe's current canonical state makes the result converge
+      // to the truth regardless of delivery order.
+      const eventSubscription = event.data.object as Stripe.Subscription;
+      const subscription = await stripe.subscriptions.retrieve(
+        eventSubscription.id
+      );
       const customerId =
         typeof subscription.customer === "string"
           ? subscription.customer
