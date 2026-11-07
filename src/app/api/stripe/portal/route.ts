@@ -33,7 +33,13 @@ async function ensurePortalConfiguration(
       subscription_cancel: {
         enabled: true,
         mode: "at_period_end",
-        cancellation_reason: { enabled: false, options: [] },
+        // Stripe requires a non-empty options list even with collection
+        // disabled — this list is simply never shown to the customer since
+        // enabled is false.
+        cancellation_reason: {
+          enabled: false,
+          options: ["too_expensive", "missing_features", "unused", "other"],
+        },
       },
     },
   });
