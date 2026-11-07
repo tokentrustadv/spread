@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/services/profile";
@@ -25,7 +26,10 @@ export default async function EditSpreadPage({
 
   return (
     <main className="frame py-10">
-      <h1 className="font-display text-2xl font-extrabold">Edit spread</h1>
+      <Link href="/board" className="text-sm text-soft hover:text-ink">
+        ← Back to board
+      </Link>
+      <h1 className="mt-4 font-display text-2xl font-extrabold">Edit spread</h1>
       <div className="mt-8">
         <SpreadForm userId={user.id} handle={profile.handle} spread={spread} />
       </div>
