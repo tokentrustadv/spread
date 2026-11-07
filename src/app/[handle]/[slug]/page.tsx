@@ -143,7 +143,7 @@ export default async function SpreadDetailPage({
             />
             <OwnerActions spreadId={spread.id} userId={spread.userId} />
           </div>
-        ) : spread.ownerIsLive && !spread.isPaused ? (
+        ) : spread.ownerIsLive && !spread.isPaused && spread.ownerMembershipActive ? (
           <div className="card p-5 text-center">
             <p className="font-display text-sm font-bold text-herb">
               Accepting requests

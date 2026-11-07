@@ -5,6 +5,7 @@ import type { SpreadInput } from "@/lib/validation";
 import type { SpreadColor } from "@/lib/colors";
 import { slugify, dedupeSlug } from "@/lib/slug";
 import { getProfileByHandle } from "@/services/profile";
+import { isMembershipActiveForUser } from "@/services/membership";
 
 type Client = SupabaseClient<Database>;
 
@@ -103,6 +104,11 @@ export async function getPublicSpread(
   if (error) throw error;
   if (!data) return null;
 
+  const ownerMembershipActive = await isMembershipActiveForUser(
+    supabase,
+    profile.id
+  );
+
   return {
     ...toSpread(data as unknown as RawSpread),
     ownerHandle: profile.handle,
@@ -115,6 +121,7 @@ export async function getPublicSpread(
     ownerVenmoHandle: profile.venmoHandle,
     ownerBio: profile.bio,
     ownerIsLive: profile.isLive,
+    ownerMembershipActive,
   };
 }
 

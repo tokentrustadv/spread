@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { listPublicSpreadsByHandle } from "@/services/spreads";
+import { isMembershipActiveForUser } from "@/services/membership";
 import { Tile } from "@/components/Tile";
 import { siteUrl } from "@/lib/site";
 import { CopyLinkButton } from "@/components/CopyLinkButton";
@@ -11,7 +12,12 @@ type Params = { handle: string };
 
 async function loadMenu(params: Params) {
   const handle = decodeURIComponent(params.handle).replace(/^@/, "");
-  return listPublicSpreadsByHandle(await createClient(), handle);
+  const supabase = await createClient();
+  const { profile, spreads } = await listPublicSpreadsByHandle(supabase, handle);
+  const membershipActive = profile
+    ? await isMembershipActiveForUser(supabase, profile.id)
+    : false;
+  return { profile, spreads, membershipActive };
 }
 
 export async function generateMetadata({
@@ -42,7 +48,7 @@ export default async function CreatorMenuPage({
   params: Promise<Params>;
 }) {
   const resolved = await params;
-  const { profile, spreads } = await loadMenu(resolved);
+  const { profile, spreads, membershipActive } = await loadMenu(resolved);
 
   if (!profile) notFound();
 
@@ -62,7 +68,7 @@ export default async function CreatorMenuPage({
       </div>
 
       <div className="mt-6 text-center">
-        {profile.isLive ? (
+        {profile.isLive && membershipActive ? (
           <p className="font-display text-sm font-bold text-herb">
             Accepting requests
           </p>

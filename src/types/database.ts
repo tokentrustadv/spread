@@ -148,8 +148,49 @@ export type Database = {
         };
         Relationships: [];
       };
+      memberships: {
+        Row: {
+          user_id: string;
+          stripe_customer_id: string;
+          stripe_subscription_id: string | null;
+          status: string;
+          current_period_end: string | null;
+          cancel_at_period_end: boolean;
+          intro_offer_used_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          user_id: string;
+          stripe_customer_id: string;
+          stripe_subscription_id?: string | null;
+          status?: string;
+          current_period_end?: string | null;
+          cancel_at_period_end?: boolean;
+          intro_offer_used_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          user_id?: string;
+          stripe_customer_id?: string;
+          stripe_subscription_id?: string | null;
+          status?: string;
+          current_period_end?: string | null;
+          cancel_at_period_end?: boolean;
+          intro_offer_used_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      is_membership_active: {
+        Args: { target_user_id: string };
+        Returns: boolean;
+      };
+    };
   };
 };

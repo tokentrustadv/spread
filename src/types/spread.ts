@@ -58,4 +58,25 @@ export type SpreadWithOwner = Spread & {
   ownerVenmoHandle: string | null;
   ownerBio: string | null;
   ownerIsLive: boolean;
+  ownerMembershipActive: boolean;
+};
+
+export type MembershipStatus =
+  | "none"
+  | "trialing"
+  | "active"
+  | "past_due"
+  | "canceled"
+  | "unpaid"
+  | "incomplete"
+  | "incomplete_expired";
+
+export type Membership = {
+  userId: string;
+  stripeCustomerId: string;
+  stripeSubscriptionId: string | null;
+  status: MembershipStatus;
+  currentPeriodEnd: string | null;
+  cancelAtPeriodEnd: boolean;
+  introOfferUsedAt: string | null;
 };
