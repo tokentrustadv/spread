@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Tile } from "@/components/Tile";
 import { Node } from "@/components/Node";
+import { DeliveryMark } from "@/components/DeliveryMark";
 import type { SpreadColor } from "@/lib/colors";
 
 type SampleItem = {
@@ -123,6 +124,16 @@ export function SpreadDemo() {
             <p className="truncate font-display font-bold">{itemB.restaurant}</p>
             <p className="truncate text-soft">{itemB.item}</p>
           </div>
+        </div>
+
+        <div className="mt-5 flex items-center justify-center gap-2">
+          <span className="text-[11px] font-medium text-soft">Pickup</span>
+          <span className="h-0.5 w-8 border-t-2 border-dashed border-line2" />
+          <DeliveryMark size={40} className="shrink-0 text-ink" />
+          <span className="h-0.5 w-8 border-t-2 border-dashed border-line2" />
+          <span className="whitespace-nowrap text-[11px] font-medium text-soft">
+            Their door
+          </span>
         </div>
 
         <Link

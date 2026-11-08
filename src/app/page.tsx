@@ -6,6 +6,7 @@ import { SignInForm } from "./SignInForm";
 import { SpreadDemo } from "./SpreadDemo";
 import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
 import { Logo } from "@/components/Logo";
+import { DeliveryMark } from "@/components/DeliveryMark";
 
 const steps = [
   {
@@ -124,6 +125,17 @@ export default async function LandingPage({
         <h2 className="font-display text-2xl font-extrabold leading-tight">
           You control the whole thing.
         </h2>
+        <div className="mt-5 flex items-center gap-2">
+          <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-hot" />
+          <span className="h-0.5 flex-1 border-t-2 border-dashed border-line2" />
+          <DeliveryMark size={44} className="shrink-0 text-ink" />
+          <span className="h-0.5 flex-1 border-t-2 border-dashed border-line2" />
+          <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-hot" />
+        </div>
+        <div className="mt-1 flex justify-between text-[11px] font-medium text-soft">
+          <span>Pickup</span>
+          <span>Their door</span>
+        </div>
         <p className="mt-3 text-[15px] text-soft">
           You set the price, the area, and when you&rsquo;re available. When
           someone requests a meal, you get paid directly — Cash App, Venmo,
