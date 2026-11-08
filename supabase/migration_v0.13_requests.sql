@@ -234,8 +234,12 @@ begin
 end;
 $$;
 
-revoke all on function public.submit_request from public;
-grant execute on function public.submit_request to service_role;
+revoke all on function public.submit_request(
+  uuid, uuid, uuid, text, text, jsonb, integer, integer, text, text, text, timestamptz, timestamptz, text
+) from public;
+grant execute on function public.submit_request(
+  uuid, uuid, uuid, text, text, jsonb, integer, integer, text, text, text, timestamptz, timestamptz, text
+) to service_role;
 
 -- ---------------------------------------------------------------------------
 -- update_request_status() — the one and only write path for status changes
@@ -281,5 +285,5 @@ begin
 end;
 $$;
 
-revoke all on function public.update_request_status from public;
-grant execute on function public.update_request_status to service_role;
+revoke all on function public.update_request_status(uuid, uuid, text, text) from public;
+grant execute on function public.update_request_status(uuid, uuid, text, text) to service_role;
