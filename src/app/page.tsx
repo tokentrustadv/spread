@@ -7,6 +7,7 @@ import { SpreadDemo } from "./SpreadDemo";
 import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
 import { Logo } from "@/components/Logo";
 import { DeliveryMark } from "@/components/DeliveryMark";
+import { CarMark } from "@/components/CarMark";
 
 const steps = [
   {
@@ -197,8 +198,12 @@ export default async function LandingPage({
         </div>
       </section>
 
-      <footer className="mt-16 pb-8 text-center text-xs text-soft">
-        Spread — some of the best meals don&rsquo;t exist on any menu.
+      <footer className="mt-16 flex flex-col items-center pb-8 text-center text-xs text-soft">
+        <CarMark size={140} />
+        <p className="mt-3">Or by car — however you already get around.</p>
+        <p className="mt-2">
+          Spread — some of the best meals don&rsquo;t exist on any menu.
+        </p>
       </footer>
       </div>
     </main>
