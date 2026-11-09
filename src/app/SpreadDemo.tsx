@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { Tile } from "@/components/Tile";
 import { Node } from "@/components/Node";
-import { DeliveryMark } from "@/components/DeliveryMark";
+import { StorefrontIcon, HomeIcon, VehicleGlyphs, RouteMarker } from "@/components/RouteIcons";
 import type { SpreadColor } from "@/lib/colors";
 
 type SampleItem = {
@@ -52,6 +53,28 @@ function Checkmark() {
   );
 }
 
+function StopPill({
+  n,
+  icon,
+  label,
+}: {
+  n?: number;
+  icon: ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="flex min-w-0 items-center gap-1.5 rounded-full border border-line2 bg-surface px-2.5 py-1.5 text-xs">
+      {n && (
+        <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-hot text-[10px] font-bold text-white">
+          {n}
+        </span>
+      )}
+      <span className="shrink-0 text-soft">{icon}</span>
+      <span className="truncate font-semibold text-ink">{label}</span>
+    </div>
+  );
+}
+
 export function SpreadDemo() {
   const [selectedA, setSelectedA] = useState<number | null>(null);
   const [selectedB, setSelectedB] = useState<number | null>(null);
@@ -62,6 +85,10 @@ export function SpreadDemo() {
   const itemB = selectedB !== null ? SIDE_B[selectedB] : null;
   const selectedCount = (itemA ? 1 : 0) + (itemB ? 1 : 0);
   const canCombine = itemA !== null && itemB !== null && mealName.trim().length > 0;
+  const atDropoff = phase === "result";
+
+  const labelA = itemA?.restaurant ?? "Pick a spot";
+  const labelB = itemB?.restaurant ?? "Pick a spot";
 
   function handleCombine() {
     if (!canCombine) return;
@@ -103,9 +130,11 @@ export function SpreadDemo() {
     }
   }
 
+  let card: ReactNode;
+
   if (phase === "result" && itemA && itemB) {
-    return (
-      <div className="card mt-10 p-6">
+    card = (
+      <div className="card p-6">
         <div className="flex flex-col items-center text-center" role="status">
           <Tile letter={mealName} color="tomato" size="lg" />
           <h3 className="mt-4 font-display text-xl font-extrabold">
@@ -126,22 +155,16 @@ export function SpreadDemo() {
           </div>
         </div>
 
-        <div className="mt-5 flex items-center justify-center gap-2">
-          <span className="text-[11px] font-medium text-soft">Pickup</span>
-          <span className="h-0.5 w-8 border-t-2 border-dashed border-line2" />
-          <DeliveryMark size={40} className="shrink-0 text-ink" />
-          <span className="h-0.5 w-8 border-t-2 border-dashed border-line2" />
-          <span className="whitespace-nowrap text-[11px] font-medium text-soft">
-            Their door
-          </span>
-        </div>
+        <p className="mt-5 text-center text-sm text-soft">
+          Created by you. Shared with your people. Delivered by you.
+        </p>
 
         <Link
           href="#signup"
           onClick={handleContinue}
           className="btn-primary mt-6 w-full"
         >
-          Make this your first Spread
+          Make this my first Spread
         </Link>
         <button
           type="button"
@@ -152,11 +175,9 @@ export function SpreadDemo() {
         </button>
       </div>
     );
-  }
-
-  if (phase === "combining" && itemA && itemB) {
-    return (
-      <div className="card mt-10 flex items-center justify-center gap-3 p-6 py-12">
+  } else if (phase === "combining" && itemA && itemB) {
+    card = (
+      <div className="card flex items-center justify-center gap-3 p-6 py-12">
         <div className="flex items-center gap-3 animate-collapse">
           <Tile letter={itemA.letter} color={itemA.color} size="lg" />
           <Node size="lg" />
@@ -164,103 +185,154 @@ export function SpreadDemo() {
         </div>
       </div>
     );
+  } else {
+    card = (
+      <div className="card p-6">
+        <p className="text-center font-display text-sm font-bold text-hot">
+          Try it — build your Spread
+        </p>
+        <p className="mt-1 text-center text-sm text-soft">
+          Choose two items from different restaurants.
+        </p>
+        <p className="mt-2 text-center text-xs font-semibold text-soft" aria-live="polite">
+          {selectedCount} of 2 selected
+        </p>
+
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-2">
+            {SIDE_A.map((option, i) => {
+              const selected = selectedA === i;
+              return (
+                <button
+                  key={option.item}
+                  type="button"
+                  aria-pressed={selected}
+                  onClick={() => setSelectedA(i)}
+                  className={`flex items-start justify-between gap-2 rounded-input border p-2 text-left text-xs transition-colors ${
+                    selected
+                      ? "border-hot bg-tomato-tint"
+                      : "border-line2 bg-surface hover:bg-bg"
+                  }`}
+                >
+                  <span>
+                    <span className="block font-display font-bold">
+                      {option.restaurant}
+                    </span>
+                    <span className="block text-soft">{option.item}</span>
+                  </span>
+                  {selected && <Checkmark />}
+                </button>
+              );
+            })}
+          </div>
+          <div className="flex flex-col gap-2">
+            {SIDE_B.map((option, i) => {
+              const selected = selectedB === i;
+              return (
+                <button
+                  key={option.item}
+                  type="button"
+                  aria-pressed={selected}
+                  onClick={() => setSelectedB(i)}
+                  className={`flex items-start justify-between gap-2 rounded-input border p-2 text-left text-xs transition-colors ${
+                    selected
+                      ? "border-hot bg-tomato-tint"
+                      : "border-line2 bg-surface hover:bg-bg"
+                  }`}
+                >
+                  <span>
+                    <span className="block font-display font-bold">
+                      {option.restaurant}
+                    </span>
+                    <span className="block text-soft">{option.item}</span>
+                  </span>
+                  {selected && <Checkmark />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <label
+          htmlFor="demo-meal-name"
+          className="mb-1.5 mt-4 block text-xs font-semibold text-soft"
+        >
+          Name your Spread
+        </label>
+        <input
+          id="demo-meal-name"
+          className="input-field font-display font-bold"
+          value={mealName}
+          maxLength={60}
+          placeholder="What would you call it?"
+          onChange={(e) => setMealName(e.target.value)}
+        />
+
+        <button
+          type="button"
+          onClick={handleCombine}
+          disabled={!canCombine}
+          className="btn-primary mt-4 w-full disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Build it
+        </button>
+        {!canCombine && (
+          <p className="mt-2 text-center text-xs text-soft">
+            Pick one item from each side and give it a name to continue.
+          </p>
+        )}
+      </div>
+    );
   }
 
   return (
-    <div className="card mt-10 p-6">
-      <p className="text-center font-display text-sm font-bold text-hot">
-        Try it — build your Spread
-      </p>
-      <p className="mt-1 text-center text-sm text-soft">
-        Choose two items from different restaurants.
-      </p>
-      <p className="mt-2 text-center text-xs font-semibold text-soft" aria-live="polite">
-        {selectedCount} of 2 selected
+    <div className="mt-10">
+      <p className="text-center text-[11px] font-medium text-soft">
+        Illustrative delivery example.
       </p>
 
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        <div className="flex flex-col gap-2">
-          {SIDE_A.map((option, i) => {
-            const selected = selectedA === i;
-            return (
-              <button
-                key={option.item}
-                type="button"
-                aria-pressed={selected}
-                onClick={() => setSelectedA(i)}
-                className={`flex items-start justify-between gap-2 rounded-input border p-2 text-left text-xs transition-colors ${
-                  selected
-                    ? "border-hot bg-tomato-tint"
-                    : "border-line2 bg-surface hover:bg-bg"
-                }`}
-              >
-                <span>
-                  <span className="block font-display font-bold">
-                    {option.restaurant}
-                  </span>
-                  <span className="block text-soft">{option.item}</span>
-                </span>
-                {selected && <Checkmark />}
-              </button>
-            );
-          })}
+      {/* Desktop: stops wrap around the card, never overlapping it — each
+          row lives in its own stacked flex row, so there's no absolute
+          positioning that could ever land on top of the controls. */}
+      <div className="mt-3 hidden lg:block">
+        <div className="flex items-start justify-between gap-4">
+          <StopPill n={1} icon={<StorefrontIcon size={16} />} label={labelA} />
+          <StopPill n={2} icon={<StorefrontIcon size={16} />} label={labelB} />
         </div>
-        <div className="flex flex-col gap-2">
-          {SIDE_B.map((option, i) => {
-            const selected = selectedB === i;
-            return (
-              <button
-                key={option.item}
-                type="button"
-                aria-pressed={selected}
-                onClick={() => setSelectedB(i)}
-                className={`flex items-start justify-between gap-2 rounded-input border p-2 text-left text-xs transition-colors ${
-                  selected
-                    ? "border-hot bg-tomato-tint"
-                    : "border-line2 bg-surface hover:bg-bg"
-                }`}
-              >
-                <span>
-                  <span className="block font-display font-bold">
-                    {option.restaurant}
-                  </span>
-                  <span className="block text-soft">{option.item}</span>
-                </span>
-                {selected && <Checkmark />}
-              </button>
-            );
-          })}
+        <div className="flex items-center justify-center gap-3 py-2">
+          <span className="h-5 w-px bg-line2" />
+          <RouteMarker active={!atDropoff} size={20} />
+          <span className="h-5 w-px bg-line2" />
         </div>
       </div>
 
-      <label
-        htmlFor="demo-meal-name"
-        className="mb-1.5 mt-4 block text-xs font-semibold text-soft"
-      >
-        Name your Spread
-      </label>
-      <input
-        id="demo-meal-name"
-        className="input-field font-display font-bold"
-        value={mealName}
-        maxLength={60}
-        placeholder="What would you call it?"
-        onChange={(e) => setMealName(e.target.value)}
-      />
+      {card}
 
-      <button
-        type="button"
-        onClick={handleCombine}
-        disabled={!canCombine}
-        className="btn-primary mt-4 w-full disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        Build it
-      </button>
-      {!canCombine && (
-        <p className="mt-2 text-center text-xs text-soft">
-          Pick one item from each side and give it a name to continue.
-        </p>
-      )}
+      <div className="mt-2 hidden lg:block">
+        <div className="flex items-center justify-center gap-3 py-2">
+          <span className="h-5 w-px bg-line2" />
+          <RouteMarker active={atDropoff} size={20} />
+          <span className="h-5 w-px bg-line2" />
+        </div>
+        <div className="flex items-center justify-center gap-3">
+          <StopPill icon={<HomeIcon size={16} />} label="Customer drop-off" />
+          <VehicleGlyphs size={14} className="text-soft" />
+        </div>
+      </div>
+
+      {/* Mobile: one compact sequence below the card, never beside or
+          behind its controls. */}
+      <div className="mt-3 flex flex-wrap items-center justify-center gap-x-2 gap-y-2 lg:hidden">
+        <StopPill n={1} icon={<StorefrontIcon size={14} />} label={labelA} />
+        <span aria-hidden="true" className="text-soft">
+          →
+        </span>
+        <StopPill n={2} icon={<StorefrontIcon size={14} />} label={labelB} />
+        <span aria-hidden="true" className="text-soft">
+          →
+        </span>
+        <StopPill icon={<HomeIcon size={14} />} label="Customer drop-off" />
+      </div>
     </div>
   );
 }

@@ -6,8 +6,14 @@ import { SignInForm } from "./SignInForm";
 import { SpreadDemo } from "./SpreadDemo";
 import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
 import { Logo } from "@/components/Logo";
-import { DeliveryMark } from "@/components/DeliveryMark";
 import { CarMark } from "@/components/CarMark";
+import {
+  MenuIcon,
+  PriceIcon,
+  HoursIcon,
+  AreaIcon,
+  RequestsIcon,
+} from "@/components/ControlIcons";
 
 const steps = [
   {
@@ -49,23 +55,26 @@ export default async function LandingPage({
         <div className="mx-auto w-full max-w-[480px] lg:mx-0">
           <Logo size={20} />
 
-          <h1 className="mt-6 font-display text-4xl font-extrabold leading-[1.1]">
-            Create your meal.
+          <p className="mt-5 text-xs font-bold uppercase tracking-wide text-herb">
+            A membership for independent delivery creators
+          </p>
+
+          <h1 className="mt-2 font-display text-4xl font-extrabold leading-[1.1]">
+            Your favorites.
             <br />
-            Share your menu.
+            Your menu.
             <br />
-            Deliver on <span className="text-hot">your terms</span>.
+            <span className="text-hot">Your delivery.</span>
           </h1>
 
           <p className="mt-4 text-[17px] text-soft">
-            Combine your favorite food from two local restaurants into a meal
-            you name and price. Share it with your social audience, take
-            requests, and deliver in your area.
+            Two food items from two local spots. Name your Spread, share it
+            with your followers, and deliver on your terms.
           </p>
 
-          <p className="mt-3 text-sm italic text-soft">
-            Some of the best meals don&rsquo;t exist on any menu.
-          </p>
+          <div className="mt-3 inline-flex items-center rounded-full bg-tomato-tint px-3 py-1.5 text-xs font-semibold text-hot">
+            Food only · No drinks or cold items
+          </div>
 
           <div id="signup" className="mt-8">
             {user ? (
@@ -79,9 +88,9 @@ export default async function LandingPage({
                   We&rsquo;ll email you a sign-in link. No password needed.
                 </p>
                 <p className="mt-4 rounded-input border border-line2 bg-surface p-3 text-xs text-soft">
-                  Build and share free. Activate requests for $12 for your
-                  first three months, then $12/month. No commission on your
-                  sales.
+                  Build and share free. Activate requests for $12 total for
+                  your first three months, then $12/month. No commission on
+                  your sales.
                 </p>
                 <Link
                   href="/example"
@@ -121,45 +130,70 @@ export default async function LandingPage({
         </div>
       </section>
 
+      <section className="-mx-5 mt-14 bg-herb/15 px-5 py-6 lg:rounded-card">
+        <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
+          <h2 className="shrink-0 font-display text-xl font-extrabold leading-tight">
+            You control the flow.
+          </h2>
+          <div className="hidden h-8 w-px shrink-0 bg-ink/15 lg:block" />
+          <div className="flex flex-wrap gap-x-6 gap-y-3">
+            <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+              <MenuIcon size={17} /> Your menu
+            </span>
+            <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+              <PriceIcon size={17} /> Your price
+            </span>
+            <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+              <HoursIcon size={17} /> Your hours
+            </span>
+            <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+              <AreaIcon size={17} /> Your area
+            </span>
+            <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+              <RequestsIcon size={17} /> Your requests
+            </span>
+          </div>
+        </div>
+      </section>
+
       <div className="mx-auto w-full max-w-[560px]">
       <section className="mt-14">
         <h2 className="font-display text-2xl font-extrabold leading-tight">
-          You control the whole thing.
+          A few more things
         </h2>
-        <div className="mt-5 flex items-center gap-2">
-          <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-hot" />
-          <span className="h-0.5 flex-1 border-t-2 border-dashed border-line2" />
-          <DeliveryMark size={44} className="shrink-0 text-ink" />
-          <span className="h-0.5 flex-1 border-t-2 border-dashed border-line2" />
-          <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-hot" />
+        <div className="mt-5 flex flex-col gap-5">
+          <div>
+            <p className="font-display font-bold">How do I get paid?</p>
+            <p className="mt-1 text-[15px] text-soft">
+              Directly — Cash App, Venmo, however you already get paid for
+              anything — the same way a friend pays you back. No middleman
+              holding your money. You know who&rsquo;s asking, and you&rsquo;re
+              the one who delivers it.
+            </p>
+          </div>
+          <div>
+            <p className="font-display font-bold">What about refunds?</p>
+            <p className="mt-1 text-[15px] text-soft">
+              Refunds go straight back through Cash App or Venmo, worked out
+              directly between you and your customer — the same way payment
+              did.
+            </p>
+          </div>
+          <div>
+            <p className="font-display font-bold">Is Spread a marketplace?</p>
+            <p className="mt-1 text-[15px] text-soft">
+              No — it&rsquo;s a membership. We give you the menu and sharing
+              tools. You handle requests, payment, and delivery yourself,
+              directly with your customers.
+            </p>
+          </div>
         </div>
-        <div className="mt-1 flex justify-between text-[11px] font-medium text-soft">
-          <span>Pickup</span>
-          <span>Their door</span>
-        </div>
-        <p className="mt-3 text-[15px] text-soft">
-          You set the price, the area, and when you&rsquo;re available. When
-          someone requests a meal, you get paid directly — Cash App, Venmo,
-          however you already get paid for anything — the same way a friend
-          pays you back. No middleman holding your money. You know who&rsquo;s
-          asking, and you&rsquo;re the one who delivers it.
-        </p>
-        <p className="mt-3 text-[15px] text-soft">
-          Need to make something right? Refunds go straight back through Cash
-          App or Venmo, worked out directly between you and your customer —
-          the same way payment did.
-        </p>
         <div className="mt-4">
           <FoodOnlyBadge />
         </div>
-        <p className="mt-4 rounded-input border border-line2 bg-surface p-4 text-[15px] text-soft">
-          Spread is a membership, not a marketplace: we give you the menu and
-          sharing tools. You handle requests, payment, and delivery yourself,
-          directly with your customers.
-        </p>
         <Link
           href="/why"
-          className="mt-3 inline-block text-sm font-semibold text-hot hover:underline"
+          className="mt-4 inline-block text-sm font-semibold text-hot hover:underline"
         >
           Curious why delivery needed this? →
         </Link>
