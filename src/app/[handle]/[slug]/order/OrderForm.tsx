@@ -138,6 +138,9 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
         {spread.ownerPaymentNote && (
           <p className="text-sm text-soft">{spread.ownerPaymentNote}</p>
         )}
+        <p className="mt-2 text-xs text-soft">
+          Delivery location and timing confirmed by the creator.
+        </p>
       </div>
 
       {!confirmation ? (

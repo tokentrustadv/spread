@@ -15,13 +15,10 @@ type SampleItem = {
   color: SpreadColor;
 };
 
-const SIDE_A: SampleItem[] = [
+const OPTIONS: SampleItem[] = [
   { restaurant: "Raising Cane's", item: "Chicken Strips", letter: "R", color: "amber" },
   { restaurant: "Five Guys", item: "Cajun Fries", letter: "F", color: "tomato" },
   { restaurant: "In-N-Out", item: "Double-Double", letter: "I", color: "herb" },
-];
-
-const SIDE_B: SampleItem[] = [
   { restaurant: "Panda Express", item: "Orange Chicken", letter: "P", color: "teal" },
   { restaurant: "Chipotle", item: "Chicken Bowl", letter: "C", color: "plum" },
   { restaurant: "Taco Bell", item: "Crunchwrap Supreme", letter: "T", color: "amber" },
@@ -78,17 +75,29 @@ function StopPill({
 export function SpreadDemo() {
   const [selectedA, setSelectedA] = useState<number | null>(null);
   const [selectedB, setSelectedB] = useState<number | null>(null);
+  const [showSecondStop, setShowSecondStop] = useState(false);
   const [mealName, setMealName] = useState("");
   const [phase, setPhase] = useState<Phase>("building");
 
-  const itemA = selectedA !== null ? SIDE_A[selectedA] : null;
-  const itemB = selectedB !== null ? SIDE_B[selectedB] : null;
-  const selectedCount = (itemA ? 1 : 0) + (itemB ? 1 : 0);
-  const canCombine = itemA !== null && itemB !== null && mealName.trim().length > 0;
+  const itemA = selectedA !== null ? OPTIONS[selectedA] : null;
+  const itemB = selectedB !== null ? OPTIONS[selectedB] : null;
+  const canCombine = itemA !== null && mealName.trim().length > 0;
   const atDropoff = phase === "result";
 
   const labelA = itemA?.restaurant ?? "Pick a spot";
-  const labelB = itemB?.restaurant ?? "Pick a spot";
+  const labelB = itemB?.restaurant ?? "";
+
+  function handleSelectA(i: number) {
+    setSelectedA(i);
+    if (selectedB !== null && OPTIONS[selectedB].restaurant === OPTIONS[i].restaurant) {
+      setSelectedB(null);
+    }
+  }
+
+  function handleRemoveSecondStop() {
+    setSelectedB(null);
+    setShowSecondStop(false);
+  }
 
   function handleCombine() {
     if (!canCombine) return;
@@ -107,12 +116,13 @@ export function SpreadDemo() {
   function reset() {
     setSelectedA(null);
     setSelectedB(null);
+    setShowSecondStop(false);
     setMealName("");
     setPhase("building");
   }
 
   function handleContinue() {
-    if (!itemA || !itemB || typeof window === "undefined") return;
+    if (!itemA || typeof window === "undefined") return;
     try {
       window.localStorage.setItem(
         DEMO_DRAFT_KEY,
@@ -120,8 +130,7 @@ export function SpreadDemo() {
           title: mealName,
           restaurantA: itemA.restaurant,
           itemA: itemA.item,
-          restaurantB: itemB.restaurant,
-          itemB: itemB.item,
+          ...(itemB ? { restaurantB: itemB.restaurant, itemB: itemB.item } : {}),
         })
       );
     } catch {
@@ -132,7 +141,7 @@ export function SpreadDemo() {
 
   let card: ReactNode;
 
-  if (phase === "result" && itemA && itemB) {
+  if (phase === "result" && itemA) {
     card = (
       <div className="card p-6">
         <div className="flex flex-col items-center text-center" role="status">
@@ -144,15 +153,19 @@ export function SpreadDemo() {
         </div>
 
         <div className="mt-6 flex items-center justify-center gap-3 text-sm">
-          <div className="min-w-0 text-right">
+          <div className={itemB ? "min-w-0 text-right" : "min-w-0 text-center"}>
             <p className="truncate font-display font-bold">{itemA.restaurant}</p>
             <p className="truncate text-soft">{itemA.item}</p>
           </div>
-          <Node />
-          <div className="min-w-0">
-            <p className="truncate font-display font-bold">{itemB.restaurant}</p>
-            <p className="truncate text-soft">{itemB.item}</p>
-          </div>
+          {itemB && (
+            <>
+              <Node />
+              <div className="min-w-0">
+                <p className="truncate font-display font-bold">{itemB.restaurant}</p>
+                <p className="truncate text-soft">{itemB.item}</p>
+              </div>
+            </>
+          )}
         </div>
 
         <p className="mt-5 text-center text-sm text-soft">
@@ -175,13 +188,17 @@ export function SpreadDemo() {
         </button>
       </div>
     );
-  } else if (phase === "combining" && itemA && itemB) {
+  } else if (phase === "combining" && itemA) {
     card = (
       <div className="card flex items-center justify-center gap-3 p-6 py-12">
         <div className="flex items-center gap-3 animate-collapse">
           <Tile letter={itemA.letter} color={itemA.color} size="lg" />
-          <Node size="lg" />
-          <Tile letter={itemB.letter} color={itemB.color} size="lg" />
+          {itemB && (
+            <>
+              <Node size="lg" />
+              <Tile letter={itemB.letter} color={itemB.color} size="lg" />
+            </>
+          )}
         </div>
       </div>
     );
@@ -192,66 +209,89 @@ export function SpreadDemo() {
           Try it — build your Spread
         </p>
         <p className="mt-1 text-center text-sm text-soft">
-          Choose two items from different restaurants.
-        </p>
-        <p className="mt-2 text-center text-xs font-semibold text-soft" aria-live="polite">
-          {selectedCount} of 2 selected
+          Pick one favorite to start. A second spot is optional.
         </p>
 
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          <div className="flex flex-col gap-2">
-            {SIDE_A.map((option, i) => {
-              const selected = selectedA === i;
-              return (
-                <button
-                  key={option.item}
-                  type="button"
-                  aria-pressed={selected}
-                  onClick={() => setSelectedA(i)}
-                  className={`flex items-start justify-between gap-2 rounded-input border p-2 text-left text-xs transition-colors ${
-                    selected
-                      ? "border-hot bg-tomato-tint"
-                      : "border-line2 bg-surface hover:bg-bg"
-                  }`}
-                >
-                  <span>
-                    <span className="block font-display font-bold">
-                      {option.restaurant}
-                    </span>
-                    <span className="block text-soft">{option.item}</span>
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          {OPTIONS.map((option, i) => {
+            const selected = selectedA === i;
+            return (
+              <button
+                key={option.item}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => handleSelectA(i)}
+                className={`flex items-start justify-between gap-2 rounded-input border p-2 text-left text-xs transition-colors ${
+                  selected
+                    ? "border-hot bg-tomato-tint"
+                    : "border-line2 bg-surface hover:bg-bg"
+                }`}
+              >
+                <span>
+                  <span className="block font-display font-bold">
+                    {option.restaurant}
                   </span>
-                  {selected && <Checkmark />}
-                </button>
-              );
-            })}
-          </div>
-          <div className="flex flex-col gap-2">
-            {SIDE_B.map((option, i) => {
-              const selected = selectedB === i;
-              return (
-                <button
-                  key={option.item}
-                  type="button"
-                  aria-pressed={selected}
-                  onClick={() => setSelectedB(i)}
-                  className={`flex items-start justify-between gap-2 rounded-input border p-2 text-left text-xs transition-colors ${
-                    selected
-                      ? "border-hot bg-tomato-tint"
-                      : "border-line2 bg-surface hover:bg-bg"
-                  }`}
-                >
-                  <span>
-                    <span className="block font-display font-bold">
-                      {option.restaurant}
-                    </span>
-                    <span className="block text-soft">{option.item}</span>
-                  </span>
-                  {selected && <Checkmark />}
-                </button>
-              );
-            })}
-          </div>
+                  <span className="block text-soft">{option.item}</span>
+                </span>
+                {selected && <Checkmark />}
+              </button>
+            );
+          })}
         </div>
+
+        {itemA && !showSecondStop && (
+          <button
+            type="button"
+            onClick={() => setShowSecondStop(true)}
+            className="btn-secondary mt-3 w-full text-sm"
+          >
+            + Add a second stop
+          </button>
+        )}
+
+        {showSecondStop && (
+          <div className="mt-4">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-semibold text-soft">
+                Second stop (optional)
+              </p>
+              <button
+                type="button"
+                onClick={handleRemoveSecondStop}
+                className="text-xs font-semibold text-soft hover:text-ink"
+              >
+                Remove
+              </button>
+            </div>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              {OPTIONS.map((option, i) => {
+                if (itemA && option.restaurant === itemA.restaurant) return null;
+                const selected = selectedB === i;
+                return (
+                  <button
+                    key={option.item}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => setSelectedB(i)}
+                    className={`flex items-start justify-between gap-2 rounded-input border p-2 text-left text-xs transition-colors ${
+                      selected
+                        ? "border-hot bg-tomato-tint"
+                        : "border-line2 bg-surface hover:bg-bg"
+                    }`}
+                  >
+                    <span>
+                      <span className="block font-display font-bold">
+                        {option.restaurant}
+                      </span>
+                      <span className="block text-soft">{option.item}</span>
+                    </span>
+                    {selected && <Checkmark />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         <label
           htmlFor="demo-meal-name"
@@ -278,7 +318,7 @@ export function SpreadDemo() {
         </button>
         {!canCombine && (
           <p className="mt-2 text-center text-xs text-soft">
-            Pick one item from each side and give it a name to continue.
+            Pick a favorite and give it a name to continue.
           </p>
         )}
       </div>
@@ -295,9 +335,19 @@ export function SpreadDemo() {
           row lives in its own stacked flex row, so there's no absolute
           positioning that could ever land on top of the controls. */}
       <div className="mt-3 hidden lg:block">
-        <div className="flex items-start justify-between gap-4">
-          <StopPill n={1} icon={<StorefrontIcon size={16} />} label={labelA} />
-          <StopPill n={2} icon={<StorefrontIcon size={16} />} label={labelB} />
+        <div
+          className={`flex items-start gap-4 ${
+            itemB ? "justify-between" : "justify-center"
+          }`}
+        >
+          <StopPill
+            n={itemB ? 1 : undefined}
+            icon={<StorefrontIcon size={16} />}
+            label={labelA}
+          />
+          {itemB && (
+            <StopPill n={2} icon={<StorefrontIcon size={16} />} label={labelB} />
+          )}
         </div>
         <div className="flex items-center justify-center gap-3 py-2">
           <span className="h-5 w-px bg-line2" />
@@ -323,11 +373,19 @@ export function SpreadDemo() {
       {/* Mobile: one compact sequence below the card, never beside or
           behind its controls. */}
       <div className="mt-3 flex flex-wrap items-center justify-center gap-x-2 gap-y-2 lg:hidden">
-        <StopPill n={1} icon={<StorefrontIcon size={14} />} label={labelA} />
-        <span aria-hidden="true" className="text-soft">
-          →
-        </span>
-        <StopPill n={2} icon={<StorefrontIcon size={14} />} label={labelB} />
+        <StopPill
+          n={itemB ? 1 : undefined}
+          icon={<StorefrontIcon size={14} />}
+          label={labelA}
+        />
+        {itemB && (
+          <>
+            <span aria-hidden="true" className="text-soft">
+              →
+            </span>
+            <StopPill n={2} icon={<StorefrontIcon size={14} />} label={labelB} />
+          </>
+        )}
         <span aria-hidden="true" className="text-soft">
           →
         </span>

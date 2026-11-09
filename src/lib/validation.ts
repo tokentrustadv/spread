@@ -51,7 +51,10 @@ export const spreadSchema = z
     isPaused: z.boolean(),
     foodCost: z.number().min(0).max(999.99).nullable().optional(),
     price: z.number().min(0).max(999.99).nullable().optional(),
-    restaurants: z.array(restaurantSchema).length(2, "Exactly 2 restaurants"),
+    restaurants: z
+      .array(restaurantSchema)
+      .min(1, "At least 1 restaurant")
+      .max(2, "At most 2 restaurants"),
   })
   .superRefine((data, ctx) => {
     const totalItems = data.restaurants.reduce(

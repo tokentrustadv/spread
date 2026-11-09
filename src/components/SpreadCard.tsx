@@ -18,11 +18,15 @@ export function SpreadCard({
         <Tile letter={spread.title} color={spread.color} />
         <div className="min-w-0 flex-1">
           <h3 className="truncate text-lg font-bold">{spread.title}</h3>
-          {a && b && (
+          {a && (
             <div className="mt-1 flex items-center gap-2 text-sm text-soft">
               <span className="truncate">{a.name}</span>
-              <Node size="sm" />
-              <span className="truncate">{b.name}</span>
+              {b && (
+                <>
+                  <Node size="sm" />
+                  <span className="truncate">{b.name}</span>
+                </>
+              )}
             </div>
           )}
         </div>

@@ -46,7 +46,7 @@ export function SignInForm() {
         className="input-field flex-1"
       />
       <button type="submit" disabled={status === "sending"} className="btn-primary">
-        {status === "sending" ? "Sending…" : "Create your free menu"}
+        {status === "sending" ? "Sending…" : "Create your free board"}
       </button>
       {status === "error" && (
         <p className="text-sm text-hot">

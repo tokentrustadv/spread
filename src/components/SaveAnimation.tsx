@@ -15,7 +15,7 @@ export function SaveAnimation({
   title: string;
   color: SpreadColor;
   restaurantA: string;
-  restaurantB: string;
+  restaurantB?: string | null;
   onDone: () => void;
 }) {
   const [phase, setPhase] = useState<"collapse" | "reveal">("collapse");
@@ -45,8 +45,12 @@ export function SaveAnimation({
         {phase === "collapse" ? (
           <div className="flex items-center gap-3 animate-collapse">
             <Tile letter={restaurantA} color={color} size="lg" />
-            <Node size="lg" />
-            <Tile letter={restaurantB} color={color} size="lg" />
+            {restaurantB && (
+              <>
+                <Node size="lg" />
+                <Tile letter={restaurantB} color={color} size="lg" />
+              </>
+            )}
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3 animate-pop-in">

@@ -32,6 +32,11 @@ export default async function RequestsPage() {
       </div>
 
       <p className="mt-2 text-xs text-soft">
+        Accepting a request doesn&rsquo;t change your Spread or your area
+        &mdash; it&rsquo;s your call every time.
+      </p>
+
+      <p className="mt-2 text-xs text-soft">
         Newest first. Requests expire after seven days if you haven&rsquo;t
         responded. Finished requests are deleted 30 days after you close
         them. Spread removes a deleted request from its active database

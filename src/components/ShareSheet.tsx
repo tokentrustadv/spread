@@ -16,7 +16,7 @@ export function ShareSheet({
   title: string;
   color: SpreadColor;
   restaurantA: string;
-  restaurantB: string;
+  restaurantB?: string | null;
   url: string;
 }) {
   const [open, setOpen] = useState(false);
@@ -67,8 +67,12 @@ export function ShareSheet({
               <h3 className="mt-2 font-display text-2xl font-extrabold">{title}</h3>
               <div className="mt-3 flex items-center gap-2 text-sm text-soft">
                 <Tile letter={restaurantA} color={color} size="sm" />
-                <Node size="sm" />
-                <Tile letter={restaurantB} color={color} size="sm" />
+                {restaurantB && (
+                  <>
+                    <Node size="sm" />
+                    <Tile letter={restaurantB} color={color} size="sm" />
+                  </>
+                )}
               </div>
               <p className="mt-4 text-sm text-soft">A meal {title} swears by.</p>
             </div>

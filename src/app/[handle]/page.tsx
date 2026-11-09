@@ -84,8 +84,25 @@ export default async function CreatorMenuPage({
       </div>
 
       <div className="mt-6">
-        <CopyLinkButton url={menuUrl} label="Copy menu link" />
+        <CopyLinkButton url={menuUrl} label="Copy board link" />
       </div>
+
+      {profile.socialLink && (
+        <div className="mt-4 text-center">
+          <a
+            href={profile.socialLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-semibold text-hot hover:underline"
+          >
+            Suggest something to {profile.displayName}
+          </a>
+          <p className="mt-1 text-xs text-soft">
+            Have something in mind? Ask directly. The creator decides what
+            they offer.
+          </p>
+        </div>
+      )}
 
       <div className="mt-8 flex flex-col gap-3">
         {spreads.length === 0 ? (
@@ -116,7 +133,7 @@ export default async function CreatorMenuPage({
 
       <div className="mt-8 text-center">
         <Link href="/" className="text-xs text-soft hover:text-ink">
-          Made with Spread — create your own menu →
+          Made with Spread — create your own board →
         </Link>
       </div>
     </main>

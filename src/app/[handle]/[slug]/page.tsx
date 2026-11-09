@@ -117,9 +117,11 @@ export default async function SpreadDetailPage({
         {a && (
           <RestaurantBlock name={a.name} items={a.items} />
         )}
-        <div className="flex justify-center">
-          <Node size="lg" />
-        </div>
+        {a && b && (
+          <div className="flex justify-center">
+            <Node size="lg" />
+          </div>
+        )}
         {b && (
           <RestaurantBlock name={b.name} items={b.items} />
         )}
@@ -138,7 +140,7 @@ export default async function SpreadDetailPage({
               title={spread.title}
               color={spread.color}
               restaurantA={a?.name ?? "?"}
-              restaurantB={b?.name ?? "?"}
+              restaurantB={b?.name ?? null}
               url={shareUrl}
             />
             <OwnerActions spreadId={spread.id} userId={spread.userId} />

@@ -19,7 +19,7 @@ const steps = [
   {
     n: 1,
     title: "Make it yours",
-    body: "Your favorite item from two local spots — add a third if you want more. Name your Spread.",
+    body: "Pick one favorite item from a restaurant you love — add a second spot later if you want. Name your Spread.",
   },
   {
     n: 2,
@@ -29,7 +29,7 @@ const steps = [
   {
     n: 3,
     title: "Share and deliver",
-    body: "Share your menu with your audience, confirm requests directly, and deliver the meals yourself.",
+    body: "Share your board with your audience, confirm requests directly, and deliver the meals yourself.",
   },
 ];
 
@@ -60,16 +60,20 @@ export default async function LandingPage({
           </p>
 
           <h1 className="mt-2 font-display text-4xl font-extrabold leading-[1.1]">
-            Your favorites.
+            One favorite.
             <br />
-            Your menu.
+            Your price.
             <br />
-            <span className="text-hot">Your delivery.</span>
+            <span className="text-hot">Delivered by you.</span>
           </h1>
 
           <p className="mt-4 text-[17px] text-soft">
-            Two food items from two local spots. Name your Spread, share it
-            with your followers, and deliver on your terms.
+            Choose one favorite item from a restaurant you love, name your
+            Spread, and share it with the people who already follow you.
+          </p>
+
+          <p className="mt-2 text-sm font-semibold text-ink">
+            Start small. Grow your board on your terms.
           </p>
 
           <div className="mt-3 inline-flex items-center rounded-full bg-tomato-tint px-3 py-1.5 text-xs font-semibold text-hot">
@@ -86,6 +90,10 @@ export default async function LandingPage({
                 <SignInForm />
                 <p className="mt-2 text-xs text-soft">
                   We&rsquo;ll email you a sign-in link. No password needed.
+                </p>
+                <p className="mt-3 text-sm text-soft">
+                  Start with one favorite. Learn what your customers want.
+                  Add only what works for you.
                 </p>
                 <p className="mt-4 rounded-input border border-line2 bg-surface p-3 text-xs text-soft">
                   Build and share free. Activate requests for $12 total for
@@ -182,9 +190,9 @@ export default async function LandingPage({
           <div>
             <p className="font-display font-bold">Is Spread a marketplace?</p>
             <p className="mt-1 text-[15px] text-soft">
-              No — it&rsquo;s a membership. We give you the menu and sharing
-              tools. You handle requests, payment, and delivery yourself,
-              directly with your customers.
+              No — it&rsquo;s a membership. We give you the board and
+              sharing tools. You handle requests, payment, and delivery
+              yourself, directly with your customers.
             </p>
           </div>
         </div>

@@ -22,14 +22,15 @@ type FormState = {
   foodCost: string;
   price: string;
   isPaused: boolean;
-  restaurants: [RestaurantDraft, RestaurantDraft];
+  restaurants: RestaurantDraft[];
 };
 
+const MAX_RESTAURANTS = 2;
+
 function fromSpread(spread: Spread): FormState {
-  const [a, b] = spread.restaurants;
-  const toDraft = (r?: Spread["restaurants"][number]): RestaurantDraft => ({
-    name: r?.name ?? "",
-    items: (r?.items ?? []).map((i) => ({ name: i.name, note: i.note ?? "" })),
+  const toDraft = (r: Spread["restaurants"][number]): RestaurantDraft => ({
+    name: r.name,
+    items: r.items.map((i) => ({ name: i.name, note: i.note ?? "" })),
   });
   return {
     title: spread.title,
@@ -38,7 +39,7 @@ function fromSpread(spread: Spread): FormState {
     foodCost: spread.foodCost != null ? String(spread.foodCost) : "",
     price: spread.price != null ? String(spread.price) : "",
     isPaused: spread.isPaused,
-    restaurants: [toDraft(a), toDraft(b)],
+    restaurants: spread.restaurants.map(toDraft),
   };
 }
 
@@ -49,10 +50,7 @@ const emptyState: FormState = {
   foodCost: "",
   price: "",
   isPaused: false,
-  restaurants: [
-    { name: "", items: [{ name: "", note: "" }] },
-    { name: "", items: [] },
-  ],
+  restaurants: [{ name: "", items: [{ name: "", note: "" }] }],
 };
 
 function fromDemoDraft(): FormState | null {
@@ -68,14 +66,20 @@ function fromDemoDraft(): FormState | null {
       restaurantB?: string;
       itemB?: string;
     };
-    if (!draft.restaurantA || !draft.restaurantB) return null;
+    if (!draft.restaurantA) return null;
+    const restaurants: RestaurantDraft[] = [
+      { name: draft.restaurantA, items: [{ name: draft.itemA ?? "", note: "" }] },
+    ];
+    if (draft.restaurantB) {
+      restaurants.push({
+        name: draft.restaurantB,
+        items: [{ name: draft.itemB ?? "", note: "" }],
+      });
+    }
     return {
       ...emptyState,
       title: draft.title ?? "",
-      restaurants: [
-        { name: draft.restaurantA, items: [{ name: draft.itemA ?? "", note: "" }] },
-        { name: draft.restaurantB, items: [{ name: draft.itemB ?? "", note: "" }] },
-      ],
+      restaurants,
     };
   } catch {
     return null;
@@ -124,32 +128,47 @@ export function SpreadForm({
     setForm((f) => ({ ...f, price: (foodCostNum + runFee).toFixed(2) }));
   }
 
-  function updateRestaurant(index: 0 | 1, patch: Partial<RestaurantDraft>) {
+  function updateRestaurant(index: number, patch: Partial<RestaurantDraft>) {
     setForm((f) => {
-      const restaurants = [...f.restaurants] as [RestaurantDraft, RestaurantDraft];
+      const restaurants = [...f.restaurants];
       restaurants[index] = { ...restaurants[index], ...patch };
       return { ...f, restaurants };
     });
   }
 
-  function addItem(index: 0 | 1) {
+  function addItem(index: number) {
     if (totalItems >= 3) return;
     updateRestaurant(index, {
       items: [...form.restaurants[index].items, { name: "", note: "" }],
     });
   }
 
-  function removeItem(index: 0 | 1, itemIndex: number) {
+  function removeItem(index: number, itemIndex: number) {
     updateRestaurant(index, {
       items: form.restaurants[index].items.filter((_, i) => i !== itemIndex),
     });
   }
 
-  function updateItem(index: 0 | 1, itemIndex: number, patch: Partial<ItemDraft>) {
+  function updateItem(index: number, itemIndex: number, patch: Partial<ItemDraft>) {
     const items = form.restaurants[index].items.map((item, i) =>
       i === itemIndex ? { ...item, ...patch } : item
     );
     updateRestaurant(index, { items });
+  }
+
+  function addRestaurant() {
+    if (form.restaurants.length >= MAX_RESTAURANTS || totalItems >= 3) return;
+    setForm((f) => ({
+      ...f,
+      restaurants: [...f.restaurants, { name: "", items: [{ name: "", note: "" }] }],
+    }));
+  }
+
+  function removeRestaurant(index: number) {
+    setForm((f) => ({
+      ...f,
+      restaurants: f.restaurants.filter((_, i) => i !== index),
+    }));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -200,8 +219,8 @@ export function SpreadForm({
       <SaveAnimation
         title={form.title}
         color={form.color}
-        restaurantA={form.restaurants[0].name || "?"}
-        restaurantB={form.restaurants[1].name || "?"}
+        restaurantA={form.restaurants[0]?.name || "?"}
+        restaurantB={form.restaurants[1]?.name || null}
         onDone={() => router.push(`/@${handle}/${savedSlug}`)}
       />
     );
@@ -246,17 +265,26 @@ export function SpreadForm({
 
       {form.restaurants.map((restaurant, index) => (
         <div key={index} className="card p-4">
-          <label className="mb-1.5 block text-sm font-semibold text-soft">
-            {index === 0 ? "First restaurant" : "Second restaurant"}
-          </label>
+          <div className="flex items-center justify-between gap-2">
+            <label className="mb-1.5 block text-sm font-semibold text-soft">
+              {index === 0 ? "Restaurant" : "Second restaurant"}
+            </label>
+            {index > 0 && (
+              <button
+                type="button"
+                onClick={() => removeRestaurant(index)}
+                className="mb-1.5 text-xs font-semibold text-soft hover:text-hot"
+              >
+                Remove this restaurant
+              </button>
+            )}
+          </div>
           <input
             className="input-field"
             value={restaurant.name}
             maxLength={50}
             placeholder="e.g. Ray's BBQ"
-            onChange={(e) =>
-              updateRestaurant(index as 0 | 1, { name: e.target.value })
-            }
+            onChange={(e) => updateRestaurant(index, { name: e.target.value })}
           />
 
           <div className="mt-3 flex flex-col gap-3">
@@ -269,12 +297,12 @@ export function SpreadForm({
                     maxLength={60}
                     placeholder="e.g. Brisket sandwich"
                     onChange={(e) =>
-                      updateItem(index as 0 | 1, itemIndex, { name: e.target.value })
+                      updateItem(index, itemIndex, { name: e.target.value })
                     }
                   />
                   <button
                     type="button"
-                    onClick={() => removeItem(index as 0 | 1, itemIndex)}
+                    onClick={() => removeItem(index, itemIndex)}
                     className="shrink-0 text-sm text-soft hover:text-hot"
                     aria-label="Remove item"
                   >
@@ -287,7 +315,7 @@ export function SpreadForm({
                   maxLength={120}
                   placeholder="How it comes (optional) — BBQ sauce on the side"
                   onChange={(e) =>
-                    updateItem(index as 0 | 1, itemIndex, { note: e.target.value })
+                    updateItem(index, itemIndex, { note: e.target.value })
                   }
                 />
               </div>
@@ -296,7 +324,7 @@ export function SpreadForm({
 
           <button
             type="button"
-            onClick={() => addItem(index as 0 | 1)}
+            onClick={() => addItem(index)}
             disabled={totalItems >= 3}
             className="mt-3 text-sm font-semibold text-hot disabled:cursor-not-allowed disabled:text-soft"
           >
@@ -307,6 +335,17 @@ export function SpreadForm({
           </div>
         </div>
       ))}
+
+      {form.restaurants.length < MAX_RESTAURANTS && (
+        <button
+          type="button"
+          onClick={addRestaurant}
+          disabled={totalItems >= 3}
+          className="btn-secondary w-full disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          + Add a second restaurant
+        </button>
+      )}
 
       {flaggedItems.length > 0 && (
         <div className="rounded-input bg-tomato-tint p-3 text-xs text-hot">
@@ -331,7 +370,7 @@ export function SpreadForm({
 
       <div className="card p-4">
         <label className="mb-1.5 block text-sm font-semibold text-soft">
-          What it costs you
+          Your purchase cost
         </label>
         <input
           type="number"
@@ -344,8 +383,8 @@ export function SpreadForm({
           onChange={(e) => setForm((f) => ({ ...f, foodCost: e.target.value }))}
         />
         <p className="mt-1 text-xs text-soft">
-          Both items, tax included — what you actually pay at the counter.
-          Never shown to buyers.
+          What you actually pay at the counter, tax included. Never shown to
+          buyers.
         </p>
 
         <div className="mt-3 flex items-center gap-3">
@@ -392,10 +431,10 @@ export function SpreadForm({
         {profit !== null && (
           <div className="mt-2">
             <p className="text-sm font-semibold text-herb">
-              Amount left after food cost: ${profit.toFixed(2)}
+              Amount left after purchase cost: ${profit.toFixed(2)}
             </p>
             <p className="text-xs text-soft">
-              Before travel costs, your time, and other expenses.
+              Before travel, payment fees, your time, and other expenses.
             </p>
           </div>
         )}
@@ -421,6 +460,10 @@ export function SpreadForm({
             className="h-6 w-11 shrink-0 accent-hot"
           />
         </label>
+        <p className="mt-3 text-xs text-soft">
+          Keep what works. Change what doesn&rsquo;t — pause, edit, or remove
+          this Spread any time, no commitment.
+        </p>
       </div>
 
       {errors.length > 0 && (
