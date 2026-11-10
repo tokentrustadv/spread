@@ -4,4 +4,4 @@ export const siteUrl =
 export const siteName = "Spread";
 
 export const missionLine =
-  "Some of the best meals don't exist on any menu. Build yours.";
+  "A membership for independent delivery creators. Your favorite, your price, delivered by you.";
