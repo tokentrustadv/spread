@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Node } from "@/components/Node";
+import { Tile } from "@/components/Tile";
 import { SignInForm } from "./SignInForm";
 import { SpreadDemo } from "./SpreadDemo";
 import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
@@ -19,7 +19,7 @@ const steps = [
   {
     n: 1,
     title: "Make it yours",
-    body: "Pick one favorite item from a restaurant you love — add a second spot later if you want. Name your Spread.",
+    body: "Pick one favorite item from a restaurant near you. Name your Spread.",
   },
   {
     n: 2,
@@ -68,8 +68,10 @@ export default async function LandingPage({
           </h1>
 
           <p className="mt-4 text-[17px] text-soft">
-            Choose one favorite item from a restaurant you love, name your
-            Spread, and share it with the people who already follow you.
+            What&rsquo;s one item from a restaurant near you that you&rsquo;d
+            want to offer, price, and deliver yourself? Start there, name
+            your Spread, and share it with the people who already follow
+            you.
           </p>
 
           <p className="mt-2 text-sm font-semibold text-ink">
@@ -209,26 +211,34 @@ export default async function LandingPage({
 
       <section className="mt-14">
         <h2 className="font-display text-2xl font-extrabold leading-tight">
-          Ever want the fries from one place and the sandwich from another?
+          Add more when it&rsquo;s worth it.
         </h2>
         <p className="mt-3 text-[15px] text-soft">
-          Or the chicken strips from your favorite fast-food spot — with the egg
-          rolls and potstickers from the place down the road? On Spread,
-          that&rsquo;s one meal. You just have to name it.
+          Your board grows one favorite at a time — from the same restaurant
+          or a new one, whenever you&rsquo;re ready. Customers can always
+          suggest something they&rsquo;d love to see; it&rsquo;s always your
+          call whether to add it.
         </p>
 
         <div className="card mt-6 p-5">
-          <div className="flex items-center justify-between gap-3">
-            <div className="min-w-0">
-              <p className="truncate font-display font-bold">Raising Cane&rsquo;s</p>
-              <p className="truncate text-sm text-soft">Chicken Strips</p>
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <Tile letter="Chicken Strips" color="tomato" size="sm" />
+              <div className="min-w-0">
+                <p className="truncate font-display font-bold">
+                  Raising Cane&rsquo;s
+                </p>
+                <p className="truncate text-sm text-soft">Chicken Strips</p>
+              </div>
             </div>
-            <Node />
-            <div className="min-w-0 text-right">
-              <p className="truncate font-display font-bold">Panda Express</p>
-              <p className="truncate text-sm text-soft">
-                Egg Rolls · Potstickers
-              </p>
+            <div className="flex items-center gap-3">
+              <Tile letter="Orange Chicken" color="teal" size="sm" />
+              <div className="min-w-0">
+                <p className="truncate font-display font-bold">
+                  Panda Express
+                </p>
+                <p className="truncate text-sm text-soft">Orange Chicken</p>
+              </div>
             </div>
           </div>
           <Link

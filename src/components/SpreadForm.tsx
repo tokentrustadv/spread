@@ -25,8 +25,6 @@ type FormState = {
   restaurants: RestaurantDraft[];
 };
 
-const MAX_RESTAURANTS = 2;
-
 function fromSpread(spread: Spread): FormState {
   const toDraft = (r: Spread["restaurants"][number]): RestaurantDraft => ({
     name: r.name,
@@ -39,7 +37,9 @@ function fromSpread(spread: Spread): FormState {
     foodCost: spread.foodCost != null ? String(spread.foodCost) : "",
     price: spread.price != null ? String(spread.price) : "",
     isPaused: spread.isPaused,
-    restaurants: spread.restaurants.map(toDraft),
+    // A Spread is always exactly one restaurant going forward; older
+    // multi-restaurant Spreads just drop to their first restaurant here.
+    restaurants: spread.restaurants.slice(0, 1).map(toDraft),
   };
 }
 
@@ -63,19 +63,11 @@ function fromDemoDraft(): FormState | null {
       title?: string;
       restaurantA?: string;
       itemA?: string;
-      restaurantB?: string;
-      itemB?: string;
     };
     if (!draft.restaurantA) return null;
     const restaurants: RestaurantDraft[] = [
       { name: draft.restaurantA, items: [{ name: draft.itemA ?? "", note: "" }] },
     ];
-    if (draft.restaurantB) {
-      restaurants.push({
-        name: draft.restaurantB,
-        items: [{ name: draft.itemB ?? "", note: "" }],
-      });
-    }
     return {
       ...emptyState,
       title: draft.title ?? "",
@@ -156,21 +148,6 @@ export function SpreadForm({
     updateRestaurant(index, { items });
   }
 
-  function addRestaurant() {
-    if (form.restaurants.length >= MAX_RESTAURANTS || totalItems >= 3) return;
-    setForm((f) => ({
-      ...f,
-      restaurants: [...f.restaurants, { name: "", items: [{ name: "", note: "" }] }],
-    }));
-  }
-
-  function removeRestaurant(index: number) {
-    setForm((f) => ({
-      ...f,
-      restaurants: f.restaurants.filter((_, i) => i !== index),
-    }));
-  }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErrors([]);
@@ -220,7 +197,6 @@ export function SpreadForm({
         title={form.title}
         color={form.color}
         restaurantA={form.restaurants[0]?.name || "?"}
-        restaurantB={form.restaurants[1]?.name || null}
         onDone={() => router.push(`/@${handle}/${savedSlug}`)}
       />
     );
@@ -265,20 +241,9 @@ export function SpreadForm({
 
       {form.restaurants.map((restaurant, index) => (
         <div key={index} className="card p-4">
-          <div className="flex items-center justify-between gap-2">
-            <label className="mb-1.5 block text-sm font-semibold text-soft">
-              {index === 0 ? "Restaurant" : "Second restaurant"}
-            </label>
-            {index > 0 && (
-              <button
-                type="button"
-                onClick={() => removeRestaurant(index)}
-                className="mb-1.5 text-xs font-semibold text-soft hover:text-hot"
-              >
-                Remove this restaurant
-              </button>
-            )}
-          </div>
+          <label className="mb-1.5 block text-sm font-semibold text-soft">
+            Restaurant
+          </label>
           <input
             className="input-field"
             value={restaurant.name}
@@ -335,17 +300,6 @@ export function SpreadForm({
           </div>
         </div>
       ))}
-
-      {form.restaurants.length < MAX_RESTAURANTS && (
-        <button
-          type="button"
-          onClick={addRestaurant}
-          disabled={totalItems >= 3}
-          className="btn-secondary w-full disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          + Add a second restaurant
-        </button>
-      )}
 
       {flaggedItems.length > 0 && (
         <div className="rounded-input bg-tomato-tint p-3 text-xs text-hot">
