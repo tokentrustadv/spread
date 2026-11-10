@@ -7,6 +7,7 @@ import { SpreadDemo } from "./SpreadDemo";
 import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
 import { Logo } from "@/components/Logo";
 import { CarMark } from "@/components/CarMark";
+import { DeliveryScene } from "@/components/DeliveryScene";
 import {
   MenuIcon,
   PriceIcon,
@@ -150,29 +151,32 @@ export default async function LandingPage({
         </div>
       </section>
 
-      <section className="-mx-5 mt-14 bg-herb/15 px-5 py-6 lg:rounded-card">
-        <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
-          <h2 className="shrink-0 font-display text-xl font-extrabold leading-tight">
-            You control the flow.
-          </h2>
-          <div className="hidden h-8 w-px shrink-0 bg-ink/15 lg:block" />
-          <div className="flex flex-wrap gap-x-6 gap-y-3">
-            <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
-              <MenuIcon size={17} /> Your menu
-            </span>
-            <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
-              <PriceIcon size={17} /> Your price
-            </span>
-            <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
-              <HoursIcon size={17} /> Your hours
-            </span>
-            <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
-              <AreaIcon size={17} /> Your area
-            </span>
-            <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
-              <RequestsIcon size={17} /> Your requests
-            </span>
+      <section className="-mx-5 mt-14 bg-herb/15 px-5 py-6 lg:rounded-card lg:py-8">
+        <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
+            <h2 className="shrink-0 font-display text-xl font-extrabold leading-tight">
+              You control the flow.
+            </h2>
+            <div className="hidden h-8 w-px shrink-0 bg-ink/15 lg:block" />
+            <div className="flex flex-wrap gap-x-6 gap-y-3">
+              <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                <MenuIcon size={17} /> Your menu
+              </span>
+              <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                <PriceIcon size={17} /> Your price
+              </span>
+              <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                <HoursIcon size={17} /> Your hours
+              </span>
+              <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                <AreaIcon size={17} /> Your area
+              </span>
+              <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                <RequestsIcon size={17} /> Your requests
+              </span>
+            </div>
           </div>
+          <DeliveryScene className="mx-auto w-full max-w-[300px] text-ink/60 lg:mx-0 lg:w-[300px] lg:shrink-0" />
         </div>
       </section>
 
