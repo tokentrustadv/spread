@@ -12,15 +12,16 @@ type SampleItem = {
   item: string;
   letter: string;
   color: SpreadColor;
+  price: number;
 };
 
 const OPTIONS: SampleItem[] = [
-  { restaurant: "Raising Cane's", item: "Chicken Strips", letter: "R", color: "amber" },
-  { restaurant: "Five Guys", item: "Cajun Fries", letter: "F", color: "tomato" },
-  { restaurant: "In-N-Out", item: "Double-Double", letter: "I", color: "herb" },
-  { restaurant: "Panda Express", item: "Orange Chicken", letter: "P", color: "teal" },
-  { restaurant: "Chipotle", item: "Chicken Bowl", letter: "C", color: "plum" },
-  { restaurant: "Taco Bell", item: "Crunchwrap Supreme", letter: "T", color: "amber" },
+  { restaurant: "Raising Cane's", item: "Chicken Strips", letter: "R", color: "amber", price: 14 },
+  { restaurant: "Five Guys", item: "Cajun Fries", letter: "F", color: "tomato", price: 9 },
+  { restaurant: "In-N-Out", item: "Double-Double", letter: "I", color: "herb", price: 12 },
+  { restaurant: "Panda Express", item: "Orange Chicken", letter: "P", color: "teal", price: 13 },
+  { restaurant: "Chipotle", item: "Chicken Bowl", letter: "C", color: "plum", price: 14 },
+  { restaurant: "Taco Bell", item: "Crunchwrap Supreme", letter: "T", color: "amber", price: 10 },
 ];
 
 export const DEMO_DRAFT_KEY = "spread_demo_draft";
@@ -55,6 +56,31 @@ function StopPill({ icon, label }: { icon: ReactNode; label: string }) {
       <span className="shrink-0 text-soft">{icon}</span>
       <span className="truncate font-semibold text-ink">{label}</span>
     </div>
+  );
+}
+
+// A single winding line standing in for the whole route — it runs behind
+// the builder card on desktop (the card's opaque background covers the
+// middle of it), so pickup and drop-off read as one continuous path
+// rather than two disconnected segments.
+function RoutePath() {
+  return (
+    <svg
+      className="pointer-events-none absolute left-1/2 top-0 z-0 hidden h-full w-6 -translate-x-1/2 lg:block"
+      viewBox="0 0 24 200"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M12 0 C 4 36, 20 64, 12 100 C 6 128, 18 156, 12 200"
+        stroke="#C4472D"
+        strokeWidth="2"
+        strokeDasharray="1 9"
+        strokeLinecap="round"
+        fill="none"
+        opacity="0.3"
+      />
+    </svg>
   );
 }
 
@@ -119,11 +145,23 @@ export function SpreadDemo() {
           <p className="text-xs text-soft">your demo Spread</p>
         </div>
 
-        <div className="mt-6 flex items-center justify-center text-sm">
+        <div className="mt-5 flex items-center justify-center text-sm">
           <div className="min-w-0 text-center">
             <p className="truncate font-display font-bold">{item.restaurant}</p>
             <p className="truncate text-soft">{item.item}</p>
           </div>
+        </div>
+
+        <div className="mt-4 text-center">
+          <p className="font-display text-2xl font-extrabold text-hot">
+            ${item.price.toFixed(2)}
+          </p>
+          <p className="mt-0.5 text-xs text-soft">Sample delivered price</p>
+        </div>
+
+        <div className="mt-4 rounded-input bg-bg p-3 text-center text-xs text-soft">
+          <p>Sample area: within 5 miles of your neighborhood</p>
+          <p className="mt-0.5">Sample hours: Fri&ndash;Sun, 5&ndash;8pm</p>
         </div>
 
         <p className="mt-5 text-center text-sm text-soft">
@@ -229,42 +267,42 @@ export function SpreadDemo() {
         Illustrative delivery example.
       </p>
 
-      {/* Desktop: stops wrap around the card, never overlapping it — each
-          row lives in its own stacked flex row, so there's no absolute
-          positioning that could ever land on top of the controls. */}
-      <div className="mt-3 hidden lg:block">
-        <div className="flex items-center justify-center">
+      {/* One continuous route line runs behind the whole stack on desktop
+          — the card's opaque background covers the middle of it, so
+          pickup and drop-off read as a single path rather than two
+          fragments. The card itself renders exactly once; only the
+          decorative stop rows toggle between desktop and mobile layout. */}
+      <div className="relative mt-3">
+        <RoutePath />
+
+        <div className="relative z-10 hidden flex-col items-center gap-2 lg:flex">
           <StopPill icon={<StorefrontIcon size={16} />} label={label} />
-        </div>
-        <div className="flex items-center justify-center gap-3 py-2">
-          <span className="h-5 w-px bg-line2" />
           <RouteMarker active={!atDropoff} size={20} />
-          <span className="h-5 w-px bg-line2" />
         </div>
-      </div>
 
-      {card}
+        <div className="relative z-10">{card}</div>
 
-      <div className="mt-2 hidden lg:block">
-        <div className="flex items-center justify-center gap-3 py-2">
-          <span className="h-5 w-px bg-line2" />
+        <div className="relative z-10 mt-2 hidden flex-col items-center gap-2 lg:flex">
           <RouteMarker active={atDropoff} size={20} />
-          <span className="h-5 w-px bg-line2" />
-        </div>
-        <div className="flex items-center justify-center gap-3">
           <StopPill icon={<HomeIcon size={16} />} label="Customer drop-off" />
-          <VehicleGlyphs size={14} className="text-soft" />
+          <VehicleGlyphs size={14} className="mt-1 text-soft" />
         </div>
-      </div>
 
-      {/* Mobile: one compact sequence below the card, never beside or
-          behind its controls. */}
-      <div className="mt-3 flex flex-wrap items-center justify-center gap-x-2 gap-y-2 lg:hidden">
-        <StopPill icon={<StorefrontIcon size={14} />} label={label} />
-        <span aria-hidden="true" className="text-soft">
-          →
-        </span>
-        <StopPill icon={<HomeIcon size={14} />} label="Customer drop-off" />
+        {/* Mobile: a compact pickup → drop-off sequence below the card —
+            the marker slides along a short connecting line to echo the
+            same "one route" idea. */}
+        <div className="relative z-10 mt-3 flex items-center justify-center gap-2 lg:hidden">
+          <StopPill icon={<StorefrontIcon size={14} />} label={label} />
+          <div className="relative h-px w-10 shrink-0 bg-line2">
+            <div
+              className="absolute top-1/2 -translate-y-1/2 transition-all duration-500"
+              style={{ left: atDropoff ? "calc(100% - 7px)" : "0px" }}
+            >
+              <RouteMarker active size={14} />
+            </div>
+          </div>
+          <StopPill icon={<HomeIcon size={14} />} label="Customer drop-off" />
+        </div>
       </div>
     </div>
   );

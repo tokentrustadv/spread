@@ -68,10 +68,9 @@ export default async function LandingPage({
           </h1>
 
           <p className="mt-4 text-[17px] text-soft">
-            What&rsquo;s one item from a restaurant near you that you&rsquo;d
-            want to offer, price, and deliver yourself? Start there, name
-            your Spread, and share it with the people who already follow
-            you.
+            Choose a favorite from a nearby restaurant. Set your delivered
+            price, delivery area, and hours. Share your board with your
+            social followers&mdash;and choose which requests to accept.
           </p>
 
           <p className="mt-2 text-sm font-semibold text-ink">
@@ -97,11 +96,22 @@ export default async function LandingPage({
                   Start with one favorite. Learn what your customers want.
                   Add only what works for you.
                 </p>
-                <p className="mt-4 rounded-input border border-line2 bg-surface p-3 text-xs text-soft">
-                  Build and share free. Activate requests for $12 total for
-                  your first three months, then $12/month. No commission on
-                  your sales.
-                </p>
+                <div className="mt-4 rounded-input border border-line2 bg-surface p-3 text-xs text-soft">
+                  <p className="font-semibold text-ink">
+                    Build and share free.
+                  </p>
+                  <p className="mt-1">
+                    Activate requests for{" "}
+                    <strong className="font-semibold text-ink">
+                      $12 total for your first three months
+                    </strong>
+                    , then{" "}
+                    <strong className="font-semibold text-ink">
+                      $12/month starting in month four
+                    </strong>
+                    . No commission on your sales.
+                  </p>
+                </div>
                 <Link
                   href="/example"
                   className="mt-3 block text-center text-sm font-semibold text-hot hover:underline"
@@ -169,16 +179,62 @@ export default async function LandingPage({
       <div className="mx-auto w-full max-w-[560px]">
       <section className="mt-14">
         <h2 className="font-display text-2xl font-extrabold leading-tight">
+          You choose every request.
+        </h2>
+        <p className="mt-3 text-[15px] text-soft">
+          When someone requests a Spread, it lands in your queue &mdash;
+          never an assignment. Accept the ones you want, decline the rest,
+          no explanation needed.
+        </p>
+
+        <div className="card mt-6 p-5">
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <p className="font-display text-sm font-bold">
+                The Orange Chicken Favorite
+              </p>
+              <p className="text-xs text-soft">
+                Sample request &mdash; not a real customer
+              </p>
+            </div>
+            <span className="shrink-0 rounded-full bg-tomato-tint px-2.5 py-1 text-[11px] font-semibold text-hot">
+              New
+            </span>
+          </div>
+          <div className="mt-3 rounded-input bg-bg p-3 text-sm">
+            <p className="font-semibold">Jordan</p>
+            <p className="text-soft">Instagram: @jordan_example</p>
+          </div>
+          <div className="mt-4 flex gap-2">
+            <button
+              type="button"
+              disabled
+              className="btn-primary flex-1 disabled:cursor-not-allowed disabled:opacity-90"
+            >
+              Accept
+            </button>
+            <button
+              type="button"
+              disabled
+              className="btn-secondary flex-1 disabled:cursor-not-allowed disabled:opacity-90"
+            >
+              Decline
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-14">
+        <h2 className="font-display text-2xl font-extrabold leading-tight">
           A few more things
         </h2>
         <div className="mt-5 flex flex-col gap-5">
           <div>
             <p className="font-display font-bold">How do I get paid?</p>
             <p className="mt-1 text-[15px] text-soft">
-              Directly — Cash App, Venmo, however you already get paid for
-              anything — the same way a friend pays you back. No middleman
-              holding your money. You know who&rsquo;s asking, and you&rsquo;re
-              the one who delivers it.
+              Customers pay you directly through your chosen payment
+              method. You arrange payment and any refunds with your
+              customer. Spread does not collect customer payments.
             </p>
           </div>
           <div>
@@ -220,41 +276,39 @@ export default async function LandingPage({
           call whether to add it.
         </p>
 
-        <div className="card mt-6 p-5">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-3">
-              <Tile letter="Chicken Strips" color="tomato" size="sm" />
-              <div className="min-w-0">
-                <p className="truncate font-display font-bold">
-                  Raising Cane&rsquo;s
-                </p>
-                <p className="truncate text-sm text-soft">Chicken Strips</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Tile letter="Orange Chicken" color="teal" size="sm" />
-              <div className="min-w-0">
-                <p className="truncate font-display font-bold">
-                  Panda Express
-                </p>
-                <p className="truncate text-sm text-soft">Orange Chicken</p>
-              </div>
+        <div className="mt-6 flex flex-col gap-3">
+          <div className="card flex items-center gap-3 p-4">
+            <Tile letter="Chicken Strips" color="tomato" size="sm" />
+            <div className="min-w-0">
+              <p className="truncate font-display font-bold">
+                Raising Cane&rsquo;s
+              </p>
+              <p className="truncate text-sm text-soft">Chicken Strips</p>
             </div>
           </div>
-          <Link
-            href="/example"
-            className="btn-secondary mt-5 block w-full text-center"
-          >
-            See how this works →
-          </Link>
+          <div className="card flex items-center gap-3 p-4">
+            <Tile letter="Orange Chicken" color="teal" size="sm" />
+            <div className="min-w-0">
+              <p className="truncate font-display font-bold">
+                Panda Express
+              </p>
+              <p className="truncate text-sm text-soft">Orange Chicken</p>
+            </div>
+          </div>
         </div>
+        <Link
+          href="/example"
+          className="btn-secondary mt-4 block w-full text-center"
+        >
+          See how this works →
+        </Link>
       </section>
 
       <footer className="mt-16 flex flex-col items-center pb-8 text-center text-xs text-soft">
         <CarMark size={140} />
         <p className="mt-3">Or by car — however you already get around.</p>
         <p className="mt-2">
-          Spread — some of the best meals don&rsquo;t exist on any menu.
+          Your favorites. Your neighborhood. Your terms.
         </p>
       </footer>
       </div>
