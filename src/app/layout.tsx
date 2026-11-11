@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Inter } from "next/font/google";
 import "./globals.css";
 import { siteUrl, missionLine } from "@/lib/site";
+import { Footer } from "@/components/Footer";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -66,6 +67,7 @@ export default function RootLayout({
           />
         </div>
         {children}
+        <Footer />
       </body>
     </html>
   );

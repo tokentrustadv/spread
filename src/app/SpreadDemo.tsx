@@ -74,11 +74,11 @@ function RoutePath() {
       <path
         d="M12 0 C 4 36, 20 64, 12 100 C 6 128, 18 156, 12 200"
         stroke="#C4472D"
-        strokeWidth="2"
-        strokeDasharray="1 9"
+        strokeWidth="2.5"
+        strokeDasharray="2 7"
         strokeLinecap="round"
         fill="none"
-        opacity="0.3"
+        opacity="0.55"
       />
     </svg>
   );
@@ -164,7 +164,13 @@ export function SpreadDemo() {
           <p className="mt-0.5">Sample hours: Fri&ndash;Sun, 5&ndash;8pm</p>
         </div>
 
-        <p className="mt-5 text-center text-sm text-soft">
+        <p className="mt-4 text-center text-xs text-soft">
+          Demo only &mdash; in a real Spread, once you confirm the request
+          and arrange payment, you buy this yourself at the restaurant and
+          deliver it.
+        </p>
+
+        <p className="mt-3 text-center text-sm text-soft">
           Created by you. Shared with your people. Delivered by you.
         </p>
 

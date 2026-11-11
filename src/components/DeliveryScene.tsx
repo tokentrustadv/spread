@@ -49,36 +49,50 @@ export function DeliveryScene({
       <circle cx="30" cy="108" r="7" stroke="currentColor" strokeWidth="1.6" />
       <circle cx="78" cy="108" r="7" stroke="currentColor" strokeWidth="1.6" />
 
-      {/* courier, mid-stride, with a slight forward lean for a bit of
-          energy rather than a stiff stick figure */}
-      <circle cx="167" cy="68" r="9" stroke="currentColor" strokeWidth="1.8" />
+      {/* courier, mid-stride — a tapered torso silhouette and a bent
+          carrying arm read as an actual person rather than a stick
+          figure, with small feet to ground the stride */}
+      <circle cx="166" cy="66" r="9" stroke="currentColor" strokeWidth="1.8" />
       <path
-        d="M167 77 Q171 88 168 100"
+        d="M159 75 Q157 82 159 90 Q161 97 159 103 L175 103 Q177 96 175 89 Q173 82 175 75 Q167 72 159 75 Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+        fill="none"
+      />
+      <path
+        d="M174 80 Q183 84 187 92"
         stroke="currentColor"
         strokeWidth="1.8"
         strokeLinecap="round"
         fill="none"
       />
       <path
-        d="M168 82 L185 92"
+        d="M160 80 L147 90"
         stroke="currentColor"
         strokeWidth="1.8"
         strokeLinecap="round"
       />
       <path
-        d="M168 82 L153 87"
+        d="M162 103 L152 120"
         stroke="currentColor"
         strokeWidth="1.8"
         strokeLinecap="round"
       />
       <path
-        d="M168 100 L156 118"
+        d="M171 103 L183 118"
         stroke="currentColor"
         strokeWidth="1.8"
         strokeLinecap="round"
       />
       <path
-        d="M168 100 L182 116"
+        d="M147 120 L157 120"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M179 118 L189 118"
         stroke="currentColor"
         strokeWidth="1.8"
         strokeLinecap="round"

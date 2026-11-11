@@ -308,13 +308,26 @@ export default async function LandingPage({
         </Link>
       </section>
 
-      <footer className="mt-16 flex flex-col items-center pb-8 text-center text-xs text-soft">
+      <section className="mt-14 card p-6 text-center">
+        <p className="font-display text-lg font-bold">
+          Ready to build your own board?
+        </p>
+        <p className="mt-2 text-sm text-soft">
+          Free to build and share. Activate requests when you&rsquo;re
+          ready.
+        </p>
+        <Link href="#signup" className="btn-primary mt-4 w-full">
+          Create your free board
+        </Link>
+      </section>
+
+      <div className="mt-16 flex flex-col items-center pb-8 text-center text-xs text-soft">
         <CarMark size={140} />
         <p className="mt-3">Or by car — however you already get around.</p>
         <p className="mt-2">
           Your favorites. Your neighborhood. Your terms.
         </p>
-      </footer>
+      </div>
       </div>
     </main>
   );
