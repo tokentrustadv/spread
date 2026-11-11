@@ -22,8 +22,7 @@ function XIcon({ size = 16 }: { size?: number }) {
   );
 }
 
-// TODO(chip): replace with your actual X profile URL.
-const X_PROFILE_URL = "https://x.com/spread";
+const X_PROFILE_URL = "https://x.com/chipmahoney9";
 
 export function Footer() {
   return (
@@ -40,9 +39,9 @@ export function Footer() {
               restaurant. A creator buys each item themselves, in person,
               at the restaurant, after confirming the request and
               arranging payment directly with their customer through their
-              own social media or messaging. Full terms:{" "}
+              own social media or messaging.{" "}
               <Link href="/terms" className="font-semibold text-hot hover:underline">
-                spread.app/terms
+                Read the full terms
               </Link>
               .
             </p>

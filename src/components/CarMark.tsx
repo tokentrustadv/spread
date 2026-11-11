@@ -1,9 +1,42 @@
-// A restrained, thin-line car illustration — the second half of the
-// "this is personal delivery" pairing alongside the bike/wheel mark
-// (DeliveryMark, Logo's LogoMark): sometimes it's a bike, sometimes it's
-// a car, always a person, never a gig-app courier. Matches the thin,
-// single-tone silhouette language used by RouteIcons (currentColor,
-// no fills except the faint brand accent on the door).
+// The car glyph — a filled, dimensional shape (charcoal body, cream
+// window band, cream hubcaps) rather than a thin outline, so it reads
+// consistently with the storefront/bag/doorstep in DeliveryScene. Drawn
+// in its own local box (x: 0-79, y: 0 roofline to 32 wheel-center) so it
+// can be positioned anywhere via a wrapping <g transform="translate(...)">.
+export function CarGlyph() {
+  return (
+    <>
+      <path
+        d="M0 32 L0 20 Q0 14 6 13 L18 10 Q26 0 38 0 L54 0 Q63 0 68 9 L71 13 Q79 14 79 20 L79 32 Z"
+        fill="#26231F"
+        stroke="#26231F"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M20 10 Q27 2 38 2 L52 2 Q59 2 64 8 L67 10 Z"
+        fill="#E8E5DA"
+        opacity="0.9"
+      />
+      <line
+        x1="0"
+        y1="32"
+        x2="79"
+        y2="32"
+        stroke="#26231F"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+      <circle cx="17" cy="32" r="7.5" fill="#26231F" />
+      <circle cx="17" cy="32" r="3" fill="#E8E5DA" />
+      <circle cx="63" cy="32" r="7.5" fill="#26231F" />
+      <circle cx="63" cy="32" r="3" fill="#E8E5DA" />
+    </>
+  );
+}
+
+// A small, dimensional car illustration — the same glyph used inside
+// DeliveryScene, standalone for the homepage's closing flourish.
 export function CarMark({
   size = 120,
   className,
@@ -14,46 +47,14 @@ export function CarMark({
   return (
     <svg
       width={size}
-      height={size * 0.45}
-      viewBox="0 0 200 90"
+      height={size * 0.42}
+      viewBox="-6 -4 92 44"
       fill="none"
       aria-hidden="true"
       className={className}
     >
-      <path
-        d="M14 64 L14 50 Q14 42 22 40 L46 36 Q58 20 78 20 L118 20 Q132 20 140 32 L150 40 L176 44 Q186 46 186 56 L186 64"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M58 36 L70 24 Q76 20 84 20 L116 20 Q126 20 132 28 L140 36"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <line
-        x1="14"
-        y1="64"
-        x2="186"
-        y2="64"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <circle cx="54" cy="64" r="12" stroke="currentColor" strokeWidth="2" />
-      <circle cx="146" cy="64" r="12" stroke="currentColor" strokeWidth="2" />
-      <circle cx="54" cy="64" r="4" stroke="currentColor" strokeWidth="1.3" />
-      <circle cx="146" cy="64" r="4" stroke="currentColor" strokeWidth="1.3" />
-      <path
-        d="M96 38 C 93 34, 88 33, 85 36 C 82 39, 83 43, 87 45 C 91 47, 97 46, 100 49 C 103 52, 101 55, 97 57"
-        stroke="#C4472D"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <ellipse cx="40" cy="38" rx="36" ry="3.5" fill="#26231F" opacity="0.08" />
+      <CarGlyph />
     </svg>
   );
 }

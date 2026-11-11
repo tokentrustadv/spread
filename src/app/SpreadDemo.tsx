@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Tile } from "@/components/Tile";
 import { StorefrontIcon, HomeIcon, VehicleGlyphs, RouteMarker } from "@/components/RouteIcons";
 import type { SpreadColor } from "@/lib/colors";
+import { useDemoResult } from "./DemoResultContext";
 
 type SampleItem = {
   restaurant: string;
@@ -59,28 +60,36 @@ function StopPill({ icon, label }: { icon: ReactNode; label: string }) {
   );
 }
 
-// A single winding line standing in for the whole route — it runs behind
-// the builder card on desktop (the card's opaque background covers the
-// middle of it), so pickup and drop-off read as one continuous path
-// rather than two disconnected segments.
-function RoutePath() {
+// A continuous route line in its own lane to the left of the builder —
+// always fully visible (never hidden behind the card), stretching to
+// match whatever height the pickup/card/drop-off stack beside it ends
+// up being, with the two markers pinned to its top and bottom.
+function RouteRail({ atDropoff }: { atDropoff: boolean }) {
   return (
-    <svg
-      className="pointer-events-none absolute left-1/2 top-0 z-0 hidden h-full w-6 -translate-x-1/2 lg:block"
-      viewBox="0 0 24 200"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M12 0 C 4 36, 20 64, 12 100 C 6 128, 18 156, 12 200"
-        stroke="#C4472D"
-        strokeWidth="2.5"
-        strokeDasharray="2 7"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.55"
-      />
-    </svg>
+    <div className="relative hidden w-7 shrink-0 self-stretch lg:block">
+      <svg
+        className="pointer-events-none absolute left-1/2 top-0 h-full w-6 -translate-x-1/2"
+        viewBox="0 0 24 200"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M12 0 C 4 36, 20 64, 12 100 C 6 128, 18 156, 12 200"
+          stroke="#C4472D"
+          strokeWidth="2.5"
+          strokeDasharray="2 7"
+          strokeLinecap="round"
+          fill="none"
+          opacity="0.6"
+        />
+      </svg>
+      <div className="absolute left-1/2 top-0 -translate-x-1/2">
+        <RouteMarker active={!atDropoff} size={18} />
+      </div>
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
+        <RouteMarker active={atDropoff} size={18} />
+      </div>
+    </div>
   );
 }
 
@@ -88,6 +97,7 @@ export function SpreadDemo() {
   const [selected, setSelected] = useState<number | null>(null);
   const [mealName, setMealName] = useState("");
   const [phase, setPhase] = useState<Phase>("building");
+  const { setDemoResult } = useDemoResult();
 
   const item = selected !== null ? OPTIONS[selected] : null;
   const canCombine = item !== null && mealName.trim().length > 0;
@@ -96,23 +106,34 @@ export function SpreadDemo() {
   const label = item?.restaurant ?? "Pick a spot";
 
   function handleCombine() {
-    if (!canCombine) return;
+    if (!canCombine || !item) return;
     const reduced =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (reduced) {
+    const reveal = () => {
       setPhase("result");
+      setDemoResult({
+        title: mealName,
+        restaurantName: item.restaurant,
+        itemName: item.item,
+        price: item.price,
+      });
+    };
+
+    if (reduced) {
+      reveal();
       return;
     }
     setPhase("combining");
-    setTimeout(() => setPhase("result"), 500);
+    setTimeout(reveal, 500);
   }
 
   function reset() {
     setSelected(null);
     setMealName("");
     setPhase("building");
+    setDemoResult(null);
   }
 
   function handleContinue() {
@@ -273,41 +294,36 @@ export function SpreadDemo() {
         Illustrative delivery example.
       </p>
 
-      {/* One continuous route line runs behind the whole stack on desktop
-          — the card's opaque background covers the middle of it, so
-          pickup and drop-off read as a single path rather than two
-          fragments. The card itself renders exactly once; only the
-          decorative stop rows toggle between desktop and mobile layout. */}
-      <div className="relative mt-3">
-        <RoutePath />
+      <div className="mt-3 flex items-start gap-4">
+        <RouteRail atDropoff={atDropoff} />
 
-        <div className="relative z-10 hidden flex-col items-center gap-2 lg:flex">
-          <StopPill icon={<StorefrontIcon size={16} />} label={label} />
-          <RouteMarker active={!atDropoff} size={20} />
-        </div>
-
-        <div className="relative z-10">{card}</div>
-
-        <div className="relative z-10 mt-2 hidden flex-col items-center gap-2 lg:flex">
-          <RouteMarker active={atDropoff} size={20} />
-          <StopPill icon={<HomeIcon size={16} />} label="Customer drop-off" />
-          <VehicleGlyphs size={14} className="mt-1 text-soft" />
-        </div>
-
-        {/* Mobile: a compact pickup → drop-off sequence below the card —
-            the marker slides along a short connecting line to echo the
-            same "one route" idea. */}
-        <div className="relative z-10 mt-3 flex items-center justify-center gap-2 lg:hidden">
-          <StopPill icon={<StorefrontIcon size={14} />} label={label} />
-          <div className="relative h-px w-10 shrink-0 bg-line2">
-            <div
-              className="absolute top-1/2 -translate-y-1/2 transition-all duration-500"
-              style={{ left: atDropoff ? "calc(100% - 7px)" : "0px" }}
-            >
-              <RouteMarker active size={14} />
-            </div>
+        <div className="min-w-0 flex-1">
+          <div className="mb-2 hidden justify-center lg:flex">
+            <StopPill icon={<StorefrontIcon size={16} />} label={label} />
           </div>
-          <StopPill icon={<HomeIcon size={14} />} label="Customer drop-off" />
+
+          {card}
+
+          <div className="mt-2 hidden flex-col items-center gap-2 lg:flex">
+            <StopPill icon={<HomeIcon size={16} />} label="Customer drop-off" />
+            <VehicleGlyphs size={14} className="text-soft" />
+          </div>
+
+          {/* Mobile: a compact pickup → drop-off sequence below the card —
+              the marker slides along a short connecting line to echo the
+              same "one route" idea. */}
+          <div className="mt-3 flex items-center justify-center gap-2 lg:hidden">
+            <StopPill icon={<StorefrontIcon size={14} />} label={label} />
+            <div className="relative h-px w-10 shrink-0 bg-line2">
+              <div
+                className="absolute top-1/2 -translate-y-1/2 transition-all duration-500"
+                style={{ left: atDropoff ? "calc(100% - 7px)" : "0px" }}
+              >
+                <RouteMarker active size={14} />
+              </div>
+            </div>
+            <StopPill icon={<HomeIcon size={14} />} label="Customer drop-off" />
+          </div>
         </div>
       </div>
     </div>
