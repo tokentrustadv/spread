@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SignInForm } from "./SignInForm";
@@ -90,18 +91,30 @@ export default async function LandingPage({
           </div>
 
           <div className="mt-12 lg:mt-0">
-            <BoardPreview
-              handle="yourhandle"
-              displayName="Your Board"
-              initial="Y"
-              color="tomato"
-              title="Your First Spread"
-              restaurant="A restaurant near you"
-              item="Your favorite item"
-              price={14}
-              area="Within 5 miles"
-              hours="Pick your hours"
-            />
+            <div className="overflow-hidden rounded-card shadow-sm">
+              <Image
+                src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop"
+                alt="A few favorite plates on a wood table"
+                width={1200}
+                height={800}
+                className="h-48 w-full object-cover sm:h-64"
+                priority
+              />
+            </div>
+            <div className="mt-5">
+              <BoardPreview
+                handle="yourhandle"
+                displayName="Your Board"
+                initial="Y"
+                color="tomato"
+                title="Your First Spread"
+                restaurant="A restaurant near you"
+                item="Your favorite item"
+                price={14}
+                area="Within 5 miles"
+                hours="Pick your hours"
+              />
+            </div>
             <DeliveryScene className="mt-6 w-full text-ink/60" />
           </div>
         </div>
@@ -122,7 +135,16 @@ export default async function LandingPage({
             </div>
 
             <div className="mt-8 lg:mt-0">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-soft">
+              <div className="overflow-hidden rounded-card shadow-sm">
+                <Image
+                  src="https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?q=80&w=1200&auto=format&fit=crop"
+                  alt="Crispy fried chicken, Jordan's favorite from the spot down the street"
+                  width={1200}
+                  height={800}
+                  className="h-44 w-full object-cover sm:h-56"
+                />
+              </div>
+              <p className="mb-2 mt-5 text-xs font-semibold uppercase tracking-wide text-soft">
                 Example &mdash; not a real account
               </p>
               <BoardPreview
