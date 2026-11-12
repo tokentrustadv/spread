@@ -1,4 +1,4 @@
-import { STYLE_TOKENS, type SpreadStyle } from "@/lib/spreadStyle";
+import { STYLE_TOKENS, toSpreadStyle, type SpreadStyle } from "@/lib/spreadStyle";
 import { SPREAD_STYLE_ICONS } from "./SpreadStyleIcons";
 
 export function Tile({
@@ -8,8 +8,11 @@ export function Tile({
   style: SpreadStyle;
   size?: "sm" | "md" | "lg";
 }) {
-  const tokens = STYLE_TOKENS[style];
-  const Icon = SPREAD_STYLE_ICONS[style];
+  // Defensive: never crash on an unrecognized value, even if some caller
+  // somewhere still has stale data (legacy color names, bad input, etc).
+  const safeStyle = toSpreadStyle(style);
+  const tokens = STYLE_TOKENS[safeStyle];
+  const Icon = SPREAD_STYLE_ICONS[safeStyle];
   const sizeClasses = {
     sm: "h-10 w-10 rounded-[10px]",
     md: "h-14 w-14 rounded-[14px]",

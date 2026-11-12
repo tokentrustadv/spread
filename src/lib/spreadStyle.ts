@@ -32,3 +32,19 @@ export const STYLE_TOKENS: Record<SpreadStyle, { text: string; tint: string }> =
 export function isSpreadStyle(value: string): value is SpreadStyle {
   return (SPREAD_STYLES as readonly string[]).includes(value);
 }
+
+// Spreads created before the style-icon system used a fixed set of color
+// names. Map those to a reasonable icon so existing data keeps working
+// without a migration; anything else unrecognized falls back to "burger".
+const LEGACY_COLOR_STYLE: Record<string, SpreadStyle> = {
+  tomato: "burger",
+  amber: "chicken",
+  herb: "bowl",
+  plum: "taco",
+  teal: "pizza",
+};
+
+export function toSpreadStyle(value: string): SpreadStyle {
+  if (isSpreadStyle(value)) return value;
+  return LEGACY_COLOR_STYLE[value] ?? "burger";
+}
