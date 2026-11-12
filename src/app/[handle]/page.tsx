@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { listPublicSpreadsByHandle } from "@/services/spreads";
 import { isMembershipActiveForUser } from "@/services/membership";
 import { Tile } from "@/components/Tile";
+import { AvatarTile } from "@/components/AvatarTile";
 import { siteUrl } from "@/lib/site";
 import { CopyLinkButton } from "@/components/CopyLinkButton";
 
@@ -57,7 +58,7 @@ export default async function CreatorMenuPage({
   return (
     <main className="frame py-10">
       <div className="flex flex-col items-center text-center">
-        <Tile letter={profile.displayName} color="tomato" size="lg" />
+        <AvatarTile letter={profile.displayName} size="lg" />
         <h1 className="mt-4 font-display text-2xl font-extrabold">
           {profile.displayName}
         </h1>
@@ -115,7 +116,7 @@ export default async function CreatorMenuPage({
               className="card block p-4"
             >
               <div className="flex items-center gap-4">
-                <Tile letter={spread.title} color={spread.color} />
+                <Tile style={spread.color} />
                 <div className="min-w-0 flex-1">
                   <h3 className="truncate text-lg font-bold">{spread.title}</h3>
                   {spread.price != null && (

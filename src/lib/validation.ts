@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SPREAD_COLORS } from "./colors";
+import { SPREAD_STYLES } from "./spreadStyle";
 
 export const handleSchema = z
   .string()
@@ -44,7 +44,7 @@ export const restaurantSchema = z.object({
 
 export const spreadSchema = z.object({
   title: z.string().min(1, "Required").max(60),
-  color: z.enum(SPREAD_COLORS),
+  color: z.enum(SPREAD_STYLES),
   notes: z.string().max(500).optional().or(z.literal("")),
   isPublic: z.boolean(),
   isPaused: z.boolean(),

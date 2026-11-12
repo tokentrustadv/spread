@@ -4,17 +4,17 @@ import { useState } from "react";
 import { Tile } from "./Tile";
 import { Node } from "./Node";
 import { LogoMark } from "./Logo";
-import type { SpreadColor } from "@/lib/colors";
+import type { SpreadStyle } from "@/lib/spreadStyle";
 
 export function ShareSheet({
   title,
-  color,
+  style,
   restaurantA,
   restaurantB,
   url,
 }: {
   title: string;
-  color: SpreadColor;
+  style: SpreadStyle;
   restaurantA: string;
   restaurantB?: string | null;
   url: string;
@@ -66,11 +66,13 @@ export function ShareSheet({
               </p>
               <h3 className="mt-2 font-display text-2xl font-extrabold">{title}</h3>
               <div className="mt-3 flex items-center gap-2 text-sm text-soft">
-                <Tile letter={restaurantA} color={color} size="sm" />
+                <Tile style={style} size="sm" />
+                <span className="truncate">{restaurantA}</span>
                 {restaurantB && (
                   <>
                     <Node size="sm" />
-                    <Tile letter={restaurantB} color={color} size="sm" />
+                    <Tile style={style} size="sm" />
+                    <span className="truncate">{restaurantB}</span>
                   </>
                 )}
               </div>

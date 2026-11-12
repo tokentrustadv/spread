@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { createSpread, updateSpread } from "@/services/spreads";
 import { spreadSchema } from "@/lib/validation";
-import { SPREAD_COLORS, COLOR_TOKENS, type SpreadColor } from "@/lib/colors";
+import { SPREAD_STYLES, STYLE_TOKENS, type SpreadStyle } from "@/lib/spreadStyle";
+import { SPREAD_STYLE_ICONS } from "./SpreadStyleIcons";
 import { SaveAnimation } from "./SaveAnimation";
 import type { Spread } from "@/types/spread";
 import { flaggedFoodPolicyTerm } from "@/lib/foodPolicy";
@@ -17,7 +18,7 @@ type RestaurantDraft = { name: string; items: ItemDraft[] };
 
 type FormState = {
   title: string;
-  color: SpreadColor;
+  color: SpreadStyle;
   notes: string;
   foodCost: string;
   price: string;
@@ -45,7 +46,7 @@ function fromSpread(spread: Spread): FormState {
 
 const emptyState: FormState = {
   title: "",
-  color: "tomato",
+  color: "burger",
   notes: "",
   foodCost: "",
   price: "",
@@ -195,7 +196,7 @@ export function SpreadForm({
     return (
       <SaveAnimation
         title={form.title}
-        color={form.color}
+        style={form.color}
         restaurantA={form.restaurants[0]?.name || "?"}
         onDone={() => router.push(`/@${handle}/${savedSlug}`)}
       />
@@ -218,24 +219,34 @@ export function SpreadForm({
       </div>
 
       <div>
-        <label className="mb-1.5 block text-sm font-semibold text-soft">Color</label>
-        <div className="flex gap-2">
-          {SPREAD_COLORS.map((c) => (
-            <button
-              key={c}
-              type="button"
-              onClick={() => setForm((f) => ({ ...f, color: c }))}
-              className="h-9 w-9 rounded-full border-2 transition-transform"
-              style={{
-                backgroundColor: COLOR_TOKENS[c].text,
-                borderColor: form.color === c ? COLOR_TOKENS[c].text : "transparent",
-                outline: form.color === c ? "2px solid white" : undefined,
-                outlineOffset: form.color === c ? "-4px" : undefined,
-                transform: form.color === c ? "scale(1.1)" : undefined,
-              }}
-              aria-label={c}
-            />
-          ))}
+        <label className="mb-1.5 block text-sm font-semibold text-soft">Style</label>
+        <p className="mb-2 text-xs text-soft">
+          Pick the icon that matches your item.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {SPREAD_STYLES.map((s) => {
+            const Icon = SPREAD_STYLE_ICONS[s];
+            const selected = form.color === s;
+            return (
+              <button
+                key={s}
+                type="button"
+                onClick={() => setForm((f) => ({ ...f, color: s }))}
+                className="flex h-14 w-14 flex-col items-center justify-center rounded-input transition-transform"
+                style={{
+                  backgroundColor: STYLE_TOKENS[s].tint,
+                  color: STYLE_TOKENS[s].text,
+                  outline: selected ? `2px solid ${STYLE_TOKENS[s].text}` : undefined,
+                  outlineOffset: selected ? "2px" : undefined,
+                  transform: selected ? "scale(1.06)" : undefined,
+                }}
+                aria-label={s}
+                aria-pressed={selected}
+              >
+                <Icon size={26} />
+              </button>
+            );
+          })}
         </div>
       </div>
 

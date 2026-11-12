@@ -93,8 +93,8 @@ export default async function LandingPage({
           <div className="mt-12 lg:mt-0">
             <div className="overflow-hidden rounded-card shadow-sm">
               <Image
-                src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop"
-                alt="A few favorite plates on a wood table"
+                src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?q=80&w=1200&auto=format&fit=crop"
+                alt="One favorite burger, the kind of single item a Spread starts with"
                 width={1200}
                 height={800}
                 className="h-48 w-full object-cover sm:h-64"
@@ -106,7 +106,7 @@ export default async function LandingPage({
                 handle="yourhandle"
                 displayName="Your Board"
                 initial="Y"
-                color="tomato"
+                style="burger"
                 title="Your First Spread"
                 restaurant="A restaurant near you"
                 item="Your favorite item"
@@ -151,7 +151,7 @@ export default async function LandingPage({
                 handle="jordan_example"
                 displayName="Jordan"
                 initial="J"
-                color="amber"
+                style="chicken"
                 title="The Orange Chicken Favorite"
                 restaurant="Panda Express"
                 item="Orange Chicken"
@@ -189,27 +189,39 @@ export default async function LandingPage({
 
         {/* ---------- You control the flow ---------- */}
         <section className="-mx-5 mt-24 bg-herb/15 px-5 py-8 lg:mt-28 lg:rounded-card">
-          <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
-            <h2 className="shrink-0 font-display text-xl font-extrabold leading-tight lg:text-2xl">
-              You control the flow.
-            </h2>
-            <div className="hidden h-8 w-px shrink-0 bg-ink/15 lg:block" />
-            <div className="flex flex-wrap gap-x-6 gap-y-3">
-              <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
-                <MenuIcon size={17} /> Your menu
-              </span>
-              <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
-                <PriceIcon size={17} /> Your price
-              </span>
-              <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
-                <HoursIcon size={17} /> Your hours
-              </span>
-              <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
-                <AreaIcon size={17} /> Your area
-              </span>
-              <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
-                <RequestsIcon size={17} /> Your requests
-              </span>
+          <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-6 lg:flex-row lg:items-center lg:gap-10">
+            <div className="h-40 overflow-hidden rounded-card shadow-sm lg:h-32 lg:w-[220px] lg:shrink-0">
+              <Image
+                src="https://images.pexels.com/photos/4393668/pexels-photo-4393668.jpeg?auto=compress&cs=tinysrgb&w=900"
+                alt="A creator handing off a delivery bag in person"
+                width={900}
+                height={600}
+                className="h-full w-full object-cover"
+                loading="eager"
+              />
+            </div>
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
+              <h2 className="shrink-0 font-display text-xl font-extrabold leading-tight lg:text-2xl">
+                You control the flow.
+              </h2>
+              <div className="hidden h-8 w-px shrink-0 bg-ink/15 lg:block" />
+              <div className="flex flex-wrap gap-x-6 gap-y-3">
+                <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                  <MenuIcon size={17} /> Your menu
+                </span>
+                <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                  <PriceIcon size={17} /> Your price
+                </span>
+                <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                  <HoursIcon size={17} /> Your hours
+                </span>
+                <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                  <AreaIcon size={17} /> Your area
+                </span>
+                <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                  <RequestsIcon size={17} /> Your requests
+                </span>
+              </div>
             </div>
           </div>
         </section>

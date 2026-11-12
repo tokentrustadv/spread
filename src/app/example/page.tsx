@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Tile } from "@/components/Tile";
+import { AvatarTile } from "@/components/AvatarTile";
 import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
 import { RequestPreview } from "./RequestPreview";
 
@@ -17,7 +18,7 @@ export default function ExamplePage() {
       </div>
 
       <div className="mt-6 flex flex-col items-center text-center">
-        <Tile letter="J" color="tomato" />
+        <AvatarTile letter="J" />
         <h1 className="mt-3 font-display text-xl font-extrabold">Jordan</h1>
         <p className="text-sm text-soft">@jordan_example</p>
         <p className="mt-2 max-w-[360px] text-sm text-soft">
@@ -27,7 +28,7 @@ export default function ExamplePage() {
 
       <div className="mt-6 card p-5">
         <div className="flex flex-col items-center text-center">
-          <Tile letter="O" color="amber" size="lg" />
+          <Tile style="chicken" size="lg" />
           <h2 className="mt-3 font-display text-2xl font-extrabold">
             The Orange Chicken Favorite
           </h2>

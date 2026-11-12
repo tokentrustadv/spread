@@ -5,25 +5,26 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { Tile } from "@/components/Tile";
 import { StorefrontIcon, HomeIcon, VehicleGlyphs, RouteMarker } from "@/components/RouteIcons";
-import type { SpreadColor } from "@/lib/colors";
+import type { SpreadStyle } from "@/lib/spreadStyle";
 import { useDemoResult } from "./DemoResultContext";
 
 type SampleItem = {
   restaurant: string;
   item: string;
-  letter: string;
-  color: SpreadColor;
+  style: SpreadStyle;
   price: number;
 };
 
 const OPTIONS: SampleItem[] = [
-  { restaurant: "Raising Cane's", item: "Chicken Strips", letter: "R", color: "amber", price: 14 },
-  { restaurant: "Five Guys", item: "Cajun Fries", letter: "F", color: "tomato", price: 9 },
-  { restaurant: "In-N-Out", item: "Double-Double", letter: "I", color: "herb", price: 12 },
-  { restaurant: "Panda Express", item: "Orange Chicken", letter: "P", color: "teal", price: 13 },
-  { restaurant: "Chipotle", item: "Chicken Bowl", letter: "C", color: "plum", price: 14 },
-  { restaurant: "Taco Bell", item: "Crunchwrap Supreme", letter: "T", color: "amber", price: 10 },
+  { restaurant: "Raising Cane's", item: "Chicken Strips", style: "chicken", price: 14 },
+  { restaurant: "Five Guys", item: "Cajun Fries", style: "fries", price: 9 },
+  { restaurant: "In-N-Out", item: "Double-Double", style: "burger", price: 12 },
+  { restaurant: "Panda Express", item: "Orange Chicken", style: "chicken", price: 13 },
+  { restaurant: "Chipotle", item: "Chicken Bowl", style: "bowl", price: 14 },
+  { restaurant: "Taco Bell", item: "Crunchwrap Supreme", style: "taco", price: 10 },
 ];
+
+const MAX_QUANTITY = 3;
 
 export const DEMO_DRAFT_KEY = "spread_demo_draft";
 
@@ -96,6 +97,7 @@ function RouteRail({ atDropoff }: { atDropoff: boolean }) {
 export function SpreadDemo() {
   const [selected, setSelected] = useState<number | null>(null);
   const [mealName, setMealName] = useState("");
+  const [quantity, setQuantity] = useState(1);
   const [phase, setPhase] = useState<Phase>("building");
   const { setDemoResult } = useDemoResult();
 
@@ -118,6 +120,7 @@ export function SpreadDemo() {
         restaurantName: item.restaurant,
         itemName: item.item,
         price: item.price,
+        quantity,
       });
     };
 
@@ -132,6 +135,7 @@ export function SpreadDemo() {
   function reset() {
     setSelected(null);
     setMealName("");
+    setQuantity(1);
     setPhase("building");
     setDemoResult(null);
   }
@@ -145,6 +149,7 @@ export function SpreadDemo() {
           title: mealName,
           restaurantA: item.restaurant,
           itemA: item.item,
+          quantity,
         })
       );
     } catch {
@@ -159,7 +164,7 @@ export function SpreadDemo() {
     card = (
       <div className="card p-6">
         <div className="flex flex-col items-center text-center" role="status">
-          <Tile letter={mealName} color="tomato" size="lg" />
+          <Tile style={item.style} size="lg" />
           <h3 className="mt-4 font-display text-xl font-extrabold">
             {mealName}
           </h3>
@@ -169,15 +174,20 @@ export function SpreadDemo() {
         <div className="mt-5 flex items-center justify-center text-sm">
           <div className="min-w-0 text-center">
             <p className="truncate font-display font-bold">{item.restaurant}</p>
-            <p className="truncate text-soft">{item.item}</p>
+            <p className="truncate text-soft">
+              {item.item}
+              {quantity > 1 && <span> &times; {quantity}</span>}
+            </p>
           </div>
         </div>
 
         <div className="mt-4 text-center">
           <p className="font-display text-2xl font-extrabold text-hot">
-            ${item.price.toFixed(2)}
+            ${(item.price * quantity).toFixed(2)}
           </p>
-          <p className="mt-0.5 text-xs text-soft">Sample delivered price</p>
+          <p className="mt-0.5 text-xs text-soft">
+            Sample delivered price{quantity > 1 ? ` for ${quantity}` : ""}
+          </p>
         </div>
 
         <div className="mt-4 rounded-input bg-bg p-3 text-center text-xs text-soft">
@@ -215,7 +225,7 @@ export function SpreadDemo() {
     card = (
       <div className="card flex items-center justify-center gap-3 p-6 py-12">
         <div className="animate-collapse">
-          <Tile letter={item.letter} color={item.color} size="lg" />
+          <Tile style={item.style} size="lg" />
         </div>
       </div>
     );
@@ -254,6 +264,35 @@ export function SpreadDemo() {
               </button>
             );
           })}
+        </div>
+
+        <div className="mt-4 flex items-center justify-between gap-3 rounded-input border border-line2 p-2.5">
+          <span className="text-xs font-semibold text-soft">
+            How many? <span className="text-ink/50">(up to {MAX_QUANTITY} of the same item)</span>
+          </span>
+          <div className="flex shrink-0 items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+              disabled={quantity <= 1}
+              aria-label="Decrease quantity"
+              className="flex h-7 w-7 items-center justify-center rounded-full border border-line2 text-sm font-bold text-ink disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              −
+            </button>
+            <span className="w-4 text-center font-display text-sm font-bold">
+              {quantity}
+            </span>
+            <button
+              type="button"
+              onClick={() => setQuantity((q) => Math.min(MAX_QUANTITY, q + 1))}
+              disabled={quantity >= MAX_QUANTITY}
+              aria-label="Increase quantity"
+              className="flex h-7 w-7 items-center justify-center rounded-full border border-line2 text-sm font-bold text-ink disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              +
+            </button>
+          </div>
         </div>
 
         <label

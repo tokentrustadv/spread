@@ -1,4 +1,4 @@
-import type { SpreadColor } from "@/lib/colors";
+import type { SpreadStyle } from "@/lib/spreadStyle";
 
 export type Profile = {
   id: string;
@@ -36,7 +36,7 @@ export type Spread = {
   userId: string;
   slug: string;
   title: string;
-  color: SpreadColor;
+  color: SpreadStyle;
   notes: string | null;
   isPublic: boolean;
   isPaused: boolean;

@@ -1,5 +1,6 @@
 import { Tile } from "./Tile";
-import type { SpreadColor } from "@/lib/colors";
+import { AvatarTile } from "./AvatarTile";
+import type { SpreadStyle } from "@/lib/spreadStyle";
 
 // A static, polished mockup of a real board page — not a live screenshot,
 // but built from the same Tile/card language as the actual product, so it
@@ -8,7 +9,7 @@ export function BoardPreview({
   handle,
   displayName,
   initial,
-  color,
+  style,
   title,
   restaurant,
   item,
@@ -20,7 +21,7 @@ export function BoardPreview({
   handle: string;
   displayName: string;
   initial: string;
-  color: SpreadColor;
+  style: SpreadStyle;
   title: string;
   restaurant: string;
   item: string;
@@ -42,7 +43,7 @@ export function BoardPreview({
 
       <div className="p-5">
         <div className="flex items-center gap-3">
-          <Tile letter={initial} color={color} />
+          <AvatarTile letter={initial} />
           <div className="min-w-0">
             <p className="truncate font-display text-sm font-bold">
               {displayName}
@@ -53,7 +54,8 @@ export function BoardPreview({
 
         <div className="mt-4 rounded-input border border-line2 p-3">
           <div className="flex items-start justify-between gap-2">
-            <div className="min-w-0">
+            <Tile style={style} size="sm" />
+            <div className="min-w-0 flex-1">
               <p className="truncate font-display text-sm font-bold">
                 {title}
               </p>

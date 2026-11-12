@@ -3,17 +3,17 @@
 import { useEffect, useState } from "react";
 import { Tile } from "./Tile";
 import { Node } from "./Node";
-import type { SpreadColor } from "@/lib/colors";
+import type { SpreadStyle } from "@/lib/spreadStyle";
 
 export function SaveAnimation({
   title,
-  color,
+  style,
   restaurantA,
   restaurantB,
   onDone,
 }: {
   title: string;
-  color: SpreadColor;
+  style: SpreadStyle;
   restaurantA: string;
   restaurantB?: string | null;
   onDone: () => void;
@@ -43,18 +43,21 @@ export function SaveAnimation({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-bg">
       <div className="flex flex-col items-center gap-4">
         {phase === "collapse" ? (
-          <div className="flex items-center gap-3 animate-collapse">
-            <Tile letter={restaurantA} color={color} size="lg" />
+          <div
+            className="flex items-center gap-3 animate-collapse"
+            aria-label={restaurantB ? `${restaurantA} and ${restaurantB}` : restaurantA}
+          >
+            <Tile style={style} size="lg" />
             {restaurantB && (
               <>
                 <Node size="lg" />
-                <Tile letter={restaurantB} color={color} size="lg" />
+                <Tile style={style} size="lg" />
               </>
             )}
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3 animate-pop-in">
-            <Tile letter={title} color={color} size="lg" />
+            <Tile style={style} size="lg" />
             <h3 className="max-w-[280px] text-center font-display text-xl font-bold">
               {title}
             </h3>

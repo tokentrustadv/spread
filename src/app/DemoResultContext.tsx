@@ -7,6 +7,7 @@ export type DemoResult = {
   restaurantName: string;
   itemName: string;
   price: number;
+  quantity: number;
 } | null;
 
 type DemoResultContextValue = {

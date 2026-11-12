@@ -14,7 +14,12 @@ export function SampleRequestCard() {
     <div className="card mt-6 p-5">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="font-display text-sm font-bold">{title}</p>
+          <p className="font-display text-sm font-bold">
+            {title}
+            {demoResult && demoResult.quantity > 1 && (
+              <span className="text-soft"> &times; {demoResult.quantity}</span>
+            )}
+          </p>
           <p className="text-xs text-soft">
             Sample request &mdash; not a real customer
             {!demoResult && " (build one above to see it here)"}
