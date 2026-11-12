@@ -53,11 +53,11 @@ export default function WhyPage() {
         </h2>
         <p className="mt-3 text-[15px] text-soft">
           There&rsquo;s no algorithm deciding your rate, your route, or your
-          customer. You build a Spread — your own item from two local
-          spots — and put a price on it that actually accounts for your
-          gas, your time, your effort. Nobody marks it up on the way to the
-          customer. Nobody skims the tip. It&rsquo;s your menu, so it&rsquo;s
-          your terms.
+          customer. You build a Spread — your own favorite item from a
+          local spot — and put a price on it that actually accounts for
+          your gas, your time, your effort. Nobody marks it up on the way
+          to the customer. Nobody skims the tip. It&rsquo;s your board, so
+          it&rsquo;s your terms.
         </p>
       </section>
 
@@ -80,7 +80,7 @@ export default function WhyPage() {
           Build something that&rsquo;s actually yours.
         </p>
         <Link href="/#signup" className="btn-primary mt-4 w-full">
-          Create your free menu
+          Create your free board
         </Link>
       </div>
     </main>

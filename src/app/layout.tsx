@@ -1,17 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Inter } from "next/font/google";
+import { Fraunces, Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import { siteUrl, missionLine } from "@/lib/site";
+import { Footer } from "@/components/Footer";
 
-const bricolage = Bricolage_Grotesque({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["700", "800"],
-  variable: "--font-bricolage",
+  weight: "variable",
+  style: ["normal"],
+  axes: ["opsz", "SOFT"],
+  variable: "--font-fraunces",
 });
 
-const inter = Inter({
+const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-instrument-sans",
 });
 
 export const metadata: Metadata = {
@@ -53,19 +57,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${inter.variable}`}>
+    <html
+      lang="en"
+      className={`${fraunces.variable} ${instrumentSans.variable}`}
+    >
       <body>
         <div className="ambient-glow">
           <div
-            className="absolute -left-32 -top-32 h-96 w-96 rounded-full opacity-30 blur-3xl"
+            className="absolute -left-32 -top-32 h-96 w-96 rounded-full opacity-[0.12] blur-3xl"
             style={{ background: "linear-gradient(135deg,#C4472D,#D9836D)" }}
           />
           <div
-            className="absolute -bottom-32 -right-32 h-96 w-96 rounded-full opacity-20 blur-3xl"
+            className="absolute -bottom-32 -right-32 h-96 w-96 rounded-full opacity-[0.08] blur-3xl"
             style={{ background: "linear-gradient(135deg,#D9836D,#C4472D)" }}
           />
         </div>
         {children}
+        <Footer />
       </body>
     </html>
   );

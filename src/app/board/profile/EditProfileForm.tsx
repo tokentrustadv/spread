@@ -130,7 +130,7 @@ export function EditProfileForm({
           className="input-field"
           value={area}
           maxLength={100}
-          placeholder="Delivering around Sample University"
+          placeholder="Within 5 miles of Sample University"
           onChange={(e) => setArea(e.target.value)}
         />
       </div>

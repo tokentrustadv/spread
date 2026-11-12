@@ -112,23 +112,27 @@ export async function GET(request: Request) {
             }}
           >
             <span style={{ color: "#26231F" }}>{a}</span>
-            <span
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 44,
-                height: 44,
-                margin: "0 20px",
-                borderRadius: "50%",
-                background: "linear-gradient(135deg,#C4472D,#D9836D)",
-                color: "#fff",
-                fontSize: 26,
-              }}
-            >
-              +
-            </span>
-            <span style={{ color: "#26231F" }}>{b}</span>
+            {b && (
+              <>
+                <span
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 44,
+                    height: 44,
+                    margin: "0 20px",
+                    borderRadius: "50%",
+                    background: "linear-gradient(135deg,#C4472D,#D9836D)",
+                    color: "#fff",
+                    fontSize: 26,
+                  }}
+                >
+                  +
+                </span>
+                <span style={{ color: "#26231F" }}>{b}</span>
+              </>
+            )}
           </div>
 
           <div

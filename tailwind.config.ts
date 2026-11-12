@@ -20,8 +20,8 @@ const config: Config = {
         teal: { DEFAULT: "#1F8C86", tint: "#DFF2F0" },
       },
       fontFamily: {
-        display: ["var(--font-bricolage)", "sans-serif"],
-        body: ["var(--font-inter)", "sans-serif"],
+        display: ["var(--font-fraunces)", "serif"],
+        body: ["var(--font-instrument-sans)", "sans-serif"],
       },
       borderRadius: {
         card: "18px",

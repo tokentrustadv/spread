@@ -22,8 +22,8 @@ export default async function NewSpreadPage() {
       </Link>
       <h1 className="mt-4 font-display text-2xl font-extrabold">New spread</h1>
       <p className="mt-1 text-sm text-soft">
-        Two local spots, one item from each — a third if you want it,
-        exactly how you love them.
+        Start with one favorite from a restaurant near you. Add a second
+        restaurant later if a combination works better for you.
       </p>
       <div className="mt-8">
         <SpreadForm userId={user.id} handle={profile.handle} />

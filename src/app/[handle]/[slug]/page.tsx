@@ -100,7 +100,7 @@ export default async function SpreadDetailPage({
   return (
     <main className="frame py-10">
       <div className="flex flex-col items-center text-center">
-        <Tile letter={spread.title} color={spread.color} size="lg" />
+        <Tile style={spread.color} size="lg" />
         <h1 className="mt-4 font-display text-3xl font-extrabold">
           {spread.title}
         </h1>
@@ -117,9 +117,11 @@ export default async function SpreadDetailPage({
         {a && (
           <RestaurantBlock name={a.name} items={a.items} />
         )}
-        <div className="flex justify-center">
-          <Node size="lg" />
-        </div>
+        {a && b && (
+          <div className="flex justify-center">
+            <Node size="lg" />
+          </div>
+        )}
         {b && (
           <RestaurantBlock name={b.name} items={b.items} />
         )}
@@ -136,9 +138,9 @@ export default async function SpreadDetailPage({
           <div className="flex flex-col gap-4">
             <ShareSheet
               title={spread.title}
-              color={spread.color}
+              style={spread.color}
               restaurantA={a?.name ?? "?"}
-              restaurantB={b?.name ?? "?"}
+              restaurantB={b?.name ?? null}
               url={shareUrl}
             />
             <OwnerActions spreadId={spread.id} userId={spread.userId} />

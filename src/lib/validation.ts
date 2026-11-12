@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SPREAD_COLORS } from "./colors";
+import { SPREAD_STYLES } from "./spreadStyle";
 
 export const handleSchema = z
   .string()
@@ -39,40 +39,29 @@ export const itemSchema = z.object({
 
 export const restaurantSchema = z.object({
   name: z.string().min(1, "Required").max(50),
-  items: z.array(itemSchema).max(3),
+  items: z.array(itemSchema).min(1, "At least 1 item").max(3),
 });
 
-export const spreadSchema = z
-  .object({
-    title: z.string().min(1, "Required").max(60),
-    color: z.enum(SPREAD_COLORS),
-    notes: z.string().max(500).optional().or(z.literal("")),
-    isPublic: z.boolean(),
-    isPaused: z.boolean(),
-    foodCost: z.number().min(0).max(999.99).nullable().optional(),
-    price: z.number().min(0).max(999.99).nullable().optional(),
-    restaurants: z.array(restaurantSchema).length(2, "Exactly 2 restaurants"),
-  })
-  .superRefine((data, ctx) => {
-    const totalItems = data.restaurants.reduce(
-      (sum, r) => sum + r.items.length,
-      0
-    );
-    if (totalItems < 1 || totalItems > 3) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "1-3 items total across the spread",
-        path: ["restaurants"],
-      });
-    }
-  });
+export const spreadSchema = z.object({
+  title: z.string().min(1, "Required").max(60),
+  color: z.enum(SPREAD_STYLES),
+  notes: z.string().max(500).optional().or(z.literal("")),
+  isPublic: z.boolean(),
+  isPaused: z.boolean(),
+  foodCost: z.number().min(0).max(999.99).nullable().optional(),
+  price: z.number().min(0).max(999.99).nullable().optional(),
+  restaurants: z
+    .array(restaurantSchema)
+    .min(1, "At least 1 restaurant")
+    .max(2, "At most 2 restaurants"),
+});
 
 const datetimeLocalPattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 
 export const requestSubmitSchema = z.object({
   spreadId: z.string().uuid(),
   clientSubmissionId: z.string().uuid(),
-  quantity: z.number().int().min(1).max(10),
+  quantity: z.number().int().min(1).max(3),
   customerDisplayName: z.string().trim().min(1).max(80),
   contactChannel: z.enum(["instagram", "messenger", "other"]),
   socialHandle: z.string().trim().min(1).max(80),

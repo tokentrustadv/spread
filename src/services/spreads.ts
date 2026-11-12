@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/types/database";
 import type { Spread, SpreadWithOwner } from "@/types/spread";
 import type { SpreadInput } from "@/lib/validation";
-import type { SpreadColor } from "@/lib/colors";
+import { toSpreadStyle } from "@/lib/spreadStyle";
 import { slugify, dedupeSlug } from "@/lib/slug";
 import { getProfileByHandle } from "@/services/profile";
 import { isMembershipActiveForUser } from "@/services/membership";
@@ -40,7 +40,7 @@ function toSpread(row: RawSpread): Spread {
     userId: row.user_id,
     slug: row.slug,
     title: row.title,
-    color: row.color as SpreadColor,
+    color: toSpreadStyle(row.color),
     notes: row.notes,
     isPublic: row.is_public,
     isPaused: row.is_paused,

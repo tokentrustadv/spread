@@ -32,6 +32,25 @@ export default async function RequestsPage() {
       </div>
 
       <p className="mt-2 text-xs text-soft">
+        Accepting a request doesn&rsquo;t change your Spread or your area
+        &mdash; it&rsquo;s your call every time.
+      </p>
+
+      <p className="mt-2 text-xs text-soft">
+        New requests don&rsquo;t email or text you automatically &mdash;
+        check back here, or let your customers know to message you
+        directly so you see it right away.
+      </p>
+
+      <p className="mt-2 text-xs text-soft">
+        Accepting starts the conversation, not a payment. After you accept:
+        your customer pays you directly, you confirm you received it, then
+        you buy the item at the restaurant and deliver it yourself. Spread
+        only ever collects your membership fee &mdash; never a customer&rsquo;s
+        meal payment.
+      </p>
+
+      <p className="mt-2 text-xs text-soft">
         Newest first. Requests expire after seven days if you haven&rsquo;t
         responded. Finished requests are deleted 30 days after you close
         them. Spread removes a deleted request from its active database

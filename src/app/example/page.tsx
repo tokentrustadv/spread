@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Tile } from "@/components/Tile";
-import { Node } from "@/components/Node";
+import { AvatarTile } from "@/components/AvatarTile";
 import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
 import { RequestPreview } from "./RequestPreview";
 
@@ -18,7 +18,7 @@ export default function ExamplePage() {
       </div>
 
       <div className="mt-6 flex flex-col items-center text-center">
-        <Tile letter="J" color="tomato" />
+        <AvatarTile letter="J" />
         <h1 className="mt-3 font-display text-xl font-extrabold">Jordan</h1>
         <p className="text-sm text-soft">@jordan_example</p>
         <p className="mt-2 max-w-[360px] text-sm text-soft">
@@ -28,11 +28,11 @@ export default function ExamplePage() {
 
       <div className="mt-6 card p-5">
         <div className="flex flex-col items-center text-center">
-          <Tile letter="T" color="amber" size="lg" />
+          <Tile style="chicken" size="lg" />
           <h2 className="mt-3 font-display text-2xl font-extrabold">
-            The Orange Chicken Drop
+            The Orange Chicken Favorite
           </h2>
-          <p className="font-display text-xl font-bold text-hot">$18.00</p>
+          <p className="font-display text-xl font-bold text-hot">$12.00</p>
         </div>
 
         <div className="mt-3 text-center text-sm text-soft">
@@ -41,23 +41,14 @@ export default function ExamplePage() {
           <p>Takes Venmo or Cash App</p>
         </div>
 
-        <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-center sm:gap-6">
-          <div className="text-center sm:text-right">
+        <div className="mt-6 flex justify-center">
+          <div className="text-center">
             <p className="text-xs font-semibold uppercase tracking-wide text-soft">
               From
             </p>
             <h3 className="mt-1 font-display text-lg font-bold">Panda Express</h3>
             <p className="font-medium">Orange Chicken</p>
             <p className="text-sm text-soft">Extra sauce on the side</p>
-          </div>
-          <Node />
-          <div className="text-center sm:text-left">
-            <p className="text-xs font-semibold uppercase tracking-wide text-soft">
-              From
-            </p>
-            <h3 className="mt-1 font-display text-lg font-bold">McDonald&rsquo;s</h3>
-            <p className="font-medium">Fries</p>
-            <p className="text-sm text-soft">Extra crispy</p>
           </div>
         </div>
 
@@ -72,7 +63,7 @@ export default function ExamplePage() {
 
       <div className="mt-10 text-center">
         <Link href="/" className="btn-primary w-full">
-          Create your free menu
+          Create your free board
         </Link>
         <Link
           href="/"
