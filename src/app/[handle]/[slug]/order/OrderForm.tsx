@@ -195,7 +195,7 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
 
           <div>
             <label className="mb-1.5 block text-sm font-semibold text-soft">
-              Quantity <span className="font-normal text-soft">(up to 3 of the same item)</span>
+              Quantity <span className="font-normal text-soft">(how many complete Spreads — up to 3)</span>
             </label>
             <input
               type="number"
@@ -253,7 +253,8 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
           <div className="rounded-input bg-tomato-tint p-3 text-sm text-hot">
             Request saved to {spread.ownerDisplayName}&rsquo;s board (ref{" "}
             {confirmation.reference}). It isn&rsquo;t accepted until they
-            confirm with you.
+            confirm with you. Spread doesn&rsquo;t notify them automatically
+            &mdash; message them directly below so they see it right away.
           </div>
 
           <div>

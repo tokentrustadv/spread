@@ -37,6 +37,12 @@ export default async function RequestsPage() {
       </p>
 
       <p className="mt-2 text-xs text-soft">
+        New requests don&rsquo;t email or text you automatically &mdash;
+        check back here, or let your customers know to message you
+        directly so you see it right away.
+      </p>
+
+      <p className="mt-2 text-xs text-soft">
         Accepting starts the conversation, not a payment. After you accept:
         your customer pays you directly, you confirm you received it, then
         you buy the item at the restaurant and deliver it yourself. Spread

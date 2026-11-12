@@ -186,7 +186,8 @@ export function SpreadDemo() {
             ${(item.price * quantity).toFixed(2)}
           </p>
           <p className="mt-0.5 text-xs text-soft">
-            Sample delivered price{quantity > 1 ? ` for ${quantity}` : ""}
+            Sample delivered price
+            {quantity > 1 ? ` for ${quantity} complete Spreads` : ""}
           </p>
         </div>
 
@@ -268,7 +269,7 @@ export function SpreadDemo() {
 
         <div className="mt-4 flex items-center justify-between gap-3 rounded-input border border-line2 p-2.5">
           <span className="text-xs font-semibold text-soft">
-            How many? <span className="text-ink/50">(up to {MAX_QUANTITY} of the same item)</span>
+            How many? <span className="text-ink/50">(up to {MAX_QUANTITY} complete Spreads)</span>
           </span>
           <div className="flex shrink-0 items-center gap-3">
             <button
