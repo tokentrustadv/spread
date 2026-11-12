@@ -195,16 +195,16 @@ export function OrderForm({ spread }: { spread: SpreadWithOwner }) {
 
           <div>
             <label className="mb-1.5 block text-sm font-semibold text-soft">
-              Quantity
+              Quantity <span className="font-normal text-soft">(up to 3 of the same item)</span>
             </label>
             <input
               type="number"
               min={1}
-              max={10}
+              max={3}
               className="input-field"
               value={quantity}
               onChange={(e) =>
-                setQuantity(Math.min(10, Math.max(1, Number(e.target.value) || 1)))
+                setQuantity(Math.min(3, Math.max(1, Number(e.target.value) || 1)))
               }
             />
           </div>

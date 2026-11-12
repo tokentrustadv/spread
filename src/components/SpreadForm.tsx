@@ -38,9 +38,7 @@ function fromSpread(spread: Spread): FormState {
     foodCost: spread.foodCost != null ? String(spread.foodCost) : "",
     price: spread.price != null ? String(spread.price) : "",
     isPaused: spread.isPaused,
-    // A Spread is always exactly one restaurant going forward; older
-    // multi-restaurant Spreads just drop to their first restaurant here.
-    restaurants: spread.restaurants.slice(0, 1).map(toDraft),
+    restaurants: spread.restaurants.map(toDraft),
   };
 }
 
@@ -129,6 +127,21 @@ export function SpreadForm({
     });
   }
 
+  function addRestaurant() {
+    if (form.restaurants.length >= 2) return;
+    setForm((f) => ({
+      ...f,
+      restaurants: [...f.restaurants, { name: "", items: [{ name: "", note: "" }] }],
+    }));
+  }
+
+  function removeRestaurant(index: number) {
+    setForm((f) => ({
+      ...f,
+      restaurants: f.restaurants.filter((_, i) => i !== index),
+    }));
+  }
+
   function addItem(index: number) {
     if (totalItems >= 3) return;
     updateRestaurant(index, {
@@ -198,6 +211,7 @@ export function SpreadForm({
         title={form.title}
         style={form.color}
         restaurantA={form.restaurants[0]?.name || "?"}
+        restaurantB={form.restaurants[1]?.name ?? null}
         onDone={() => router.push(`/@${handle}/${savedSlug}`)}
       />
     );
@@ -252,9 +266,20 @@ export function SpreadForm({
 
       {form.restaurants.map((restaurant, index) => (
         <div key={index} className="card p-4">
-          <label className="mb-1.5 block text-sm font-semibold text-soft">
-            Restaurant
-          </label>
+          <div className="flex items-center justify-between gap-2">
+            <label className="mb-1.5 block text-sm font-semibold text-soft">
+              {index === 0 ? "Restaurant" : "Second restaurant"}
+            </label>
+            {index === 1 && (
+              <button
+                type="button"
+                onClick={() => removeRestaurant(index)}
+                className="mb-1.5 text-sm text-soft hover:text-hot"
+              >
+                Remove
+              </button>
+            )}
+          </div>
           <input
             className="input-field"
             value={restaurant.name}
@@ -311,6 +336,16 @@ export function SpreadForm({
           </div>
         </div>
       ))}
+
+      {form.restaurants.length < 2 && (
+        <button
+          type="button"
+          onClick={addRestaurant}
+          className="self-start text-sm font-semibold text-hot"
+        >
+          + Add a second restaurant
+        </button>
+      )}
 
       {flaggedItems.length > 0 && (
         <div className="rounded-input bg-tomato-tint p-3 text-xs text-hot">

@@ -56,7 +56,7 @@ export default async function LandingPage({
             </h1>
 
             <p className="mt-5 text-lg text-soft">
-              Build a board around one favorite, and deliver it yourself.
+              Start with one favorite. Combine more when it works for you.
             </p>
 
             <div className="mt-4 inline-flex items-center rounded-full bg-tomato-tint px-3 py-1.5 text-xs font-semibold text-hot">
@@ -240,7 +240,7 @@ export default async function LandingPage({
             <strong className="font-semibold text-ink">
               $12/month starting in month four
             </strong>
-            . No commission on your sales &mdash; ever.
+            . No Spread commission on sales &mdash; ever.
           </p>
         </section>
 
@@ -264,6 +264,16 @@ export default async function LandingPage({
                 Refunds go straight back through Cash App or Venmo, worked
                 out directly between you and your customer &mdash; the
                 same way payment did.
+              </p>
+            </div>
+            <div>
+              <p className="font-display font-bold">What counts as food only?</p>
+              <p className="mt-1 text-[15px] text-soft">
+                No drinks, ice cream, or other cold items &mdash; hot or
+                freshly prepared food only. Spread flags likely drink or
+                cold-item names when you list them, but it&rsquo;s a
+                reminder, not an automatic check: keeping your listings
+                food-only is on you as the creator.
               </p>
             </div>
           </div>

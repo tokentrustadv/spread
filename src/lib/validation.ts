@@ -50,7 +50,10 @@ export const spreadSchema = z.object({
   isPaused: z.boolean(),
   foodCost: z.number().min(0).max(999.99).nullable().optional(),
   price: z.number().min(0).max(999.99).nullable().optional(),
-  restaurants: z.array(restaurantSchema).length(1, "One restaurant"),
+  restaurants: z
+    .array(restaurantSchema)
+    .min(1, "At least 1 restaurant")
+    .max(2, "At most 2 restaurants"),
 });
 
 const datetimeLocalPattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
@@ -58,7 +61,7 @@ const datetimeLocalPattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 export const requestSubmitSchema = z.object({
   spreadId: z.string().uuid(),
   clientSubmissionId: z.string().uuid(),
-  quantity: z.number().int().min(1).max(10),
+  quantity: z.number().int().min(1).max(3),
   customerDisplayName: z.string().trim().min(1).max(80),
   contactChannel: z.enum(["instagram", "messenger", "other"]),
   socialHandle: z.string().trim().min(1).max(80),
