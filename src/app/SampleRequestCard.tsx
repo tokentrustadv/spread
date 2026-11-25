@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDemoResult } from "./DemoResultContext";
 
 const DEFAULT_EXAMPLE = {
-  title: "The Orange Chicken Favorite",
+  title: "The Orange Glaze Favorite",
 };
 
 type SampleStatus = "new" | "accepted" | "declined";

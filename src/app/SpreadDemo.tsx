@@ -16,15 +16,18 @@ type SampleItem = {
 };
 
 const OPTIONS: SampleItem[] = [
-  { restaurant: "Raising Cane's", item: "Chicken Strips", style: "chicken", price: 14 },
-  { restaurant: "Five Guys", item: "Cajun Fries", style: "fries", price: 9 },
-  { restaurant: "In-N-Out", item: "Double-Double", style: "burger", price: 12 },
-  { restaurant: "Panda Express", item: "Orange Chicken", style: "chicken", price: 13 },
-  { restaurant: "Chipotle", item: "Chicken Bowl", style: "bowl", price: 14 },
-  { restaurant: "Taco Bell", item: "Crunchwrap Supreme", style: "taco", price: 10 },
+  { restaurant: "Mei's Kitchen", item: "Honey Garlic Chicken", style: "chicken", price: 14 },
+  { restaurant: "Corner Fry Co.", item: "Truffle Parmesan Fries", style: "fries", price: 9 },
+  { restaurant: "The Grill House", item: "Double Smash Burger", style: "burger", price: 12 },
+  { restaurant: "Sunny's Diner", item: "Orange Glazed Chicken", style: "chicken", price: 13 },
+  { restaurant: "Green Bowl Café", item: "Harvest Chicken Bowl", style: "bowl", price: 14 },
+  { restaurant: "Taqueria Del Sol", item: "Street Taco Trio", style: "taco", price: 10 },
 ];
 
 const MAX_QUANTITY = 3;
+const PRICE_STEP = 1;
+const MIN_PRICE = 5;
+const MAX_PRICE = 40;
 
 export const DEMO_DRAFT_KEY = "spread_demo_draft";
 
@@ -98,11 +101,18 @@ export function SpreadDemo() {
   const [selected, setSelected] = useState<number | null>(null);
   const [mealName, setMealName] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [customPrice, setCustomPrice] = useState<number | null>(null);
   const [phase, setPhase] = useState<Phase>("building");
   const { setDemoResult } = useDemoResult();
 
   const item = selected !== null ? OPTIONS[selected] : null;
+  const deliveredPrice = customPrice ?? item?.price ?? 0;
   const canCombine = item !== null && mealName.trim().length > 0;
+
+  function selectItem(i: number) {
+    setSelected(i);
+    setCustomPrice(OPTIONS[i].price);
+  }
   const atDropoff = phase === "result";
 
   const label = item?.restaurant ?? "Pick a spot";
@@ -119,7 +129,7 @@ export function SpreadDemo() {
         title: mealName,
         restaurantName: item.restaurant,
         itemName: item.item,
-        price: item.price,
+        price: deliveredPrice,
         quantity,
       });
     };
@@ -136,6 +146,7 @@ export function SpreadDemo() {
     setSelected(null);
     setMealName("");
     setQuantity(1);
+    setCustomPrice(null);
     setPhase("building");
     setDemoResult(null);
   }
@@ -183,10 +194,10 @@ export function SpreadDemo() {
 
         <div className="mt-4 text-center">
           <p className="font-display text-2xl font-extrabold text-hot">
-            ${(item.price * quantity).toFixed(2)}
+            ${(deliveredPrice * quantity).toFixed(2)}
           </p>
           <p className="mt-0.5 text-xs text-soft">
-            Sample delivered price
+            Your sample delivered price
             {quantity > 1 ? ` for ${quantity} complete Spreads` : ""}
           </p>
         </div>
@@ -196,10 +207,19 @@ export function SpreadDemo() {
           <p className="mt-0.5">Sample hours: Fri&ndash;Sun, 5&ndash;8pm</p>
         </div>
 
+        <div className="mt-4 rounded-input border border-line2 p-3 text-xs text-soft">
+          <p className="font-semibold text-ink">How a real Spread works:</p>
+          <p className="mt-1">
+            request &rarr; creator confirmation &rarr; direct payment and
+            verification &rarr; restaurant purchase &rarr; personal delivery.
+          </p>
+        </div>
+
         <p className="mt-4 text-center text-xs text-soft">
-          Demo only &mdash; in a real Spread, once you confirm the request
-          and arrange payment, you buy this yourself at the restaurant and
-          deliver it.
+          This is a simulation &mdash; no real request, message, payment,
+          or delivery happens here. In a real Spread, once you confirm the
+          request and arrange payment, you buy this yourself at the
+          restaurant and deliver it.
         </p>
 
         <p className="mt-3 text-center text-sm text-soft">
@@ -239,6 +259,10 @@ export function SpreadDemo() {
         <p className="mt-1 text-center text-sm text-soft">
           Pick one favorite item from a restaurant near you.
         </p>
+        <p className="mt-1 text-center text-xs text-soft">
+          A simulation &mdash; nothing here is a real request, message,
+          payment, or delivery.
+        </p>
 
         <div className="mt-4 grid grid-cols-2 gap-2">
           {OPTIONS.map((option, i) => {
@@ -248,7 +272,7 @@ export function SpreadDemo() {
                 key={option.item}
                 type="button"
                 aria-pressed={isSelected}
-                onClick={() => setSelected(i)}
+                onClick={() => selectItem(i)}
                 className={`flex items-start justify-between gap-2 rounded-input border p-2 text-left text-xs transition-colors ${
                   isSelected
                     ? "border-hot bg-tomato-tint"
@@ -295,6 +319,45 @@ export function SpreadDemo() {
             </button>
           </div>
         </div>
+
+        {item && (
+          <div className="mt-3 flex items-center justify-between gap-3 rounded-input border border-line2 p-2.5">
+            <span className="text-xs font-semibold text-soft">
+              Your delivered price
+            </span>
+            <div className="flex shrink-0 items-center gap-3">
+              <button
+                type="button"
+                onClick={() =>
+                  setCustomPrice((p) =>
+                    Math.max(MIN_PRICE, (p ?? item.price) - PRICE_STEP)
+                  )
+                }
+                disabled={deliveredPrice <= MIN_PRICE}
+                aria-label="Decrease price"
+                className="flex h-7 w-7 items-center justify-center rounded-full border border-line2 text-sm font-bold text-ink disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                −
+              </button>
+              <span className="w-12 text-center font-display text-sm font-bold">
+                ${deliveredPrice}
+              </span>
+              <button
+                type="button"
+                onClick={() =>
+                  setCustomPrice((p) =>
+                    Math.min(MAX_PRICE, (p ?? item.price) + PRICE_STEP)
+                  )
+                }
+                disabled={deliveredPrice >= MAX_PRICE}
+                aria-label="Increase price"
+                className="flex h-7 w-7 items-center justify-center rounded-full border border-line2 text-sm font-bold text-ink disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        )}
 
         <label
           htmlFor="demo-meal-name"

@@ -30,7 +30,7 @@ export default function ExamplePage() {
         <div className="flex flex-col items-center text-center">
           <Tile style="chicken" size="lg" />
           <h2 className="mt-3 font-display text-2xl font-extrabold">
-            The Orange Chicken Favorite
+            The Orange Glaze Favorite
           </h2>
           <p className="font-display text-xl font-bold text-hot">$13.00</p>
         </div>
@@ -46,8 +46,8 @@ export default function ExamplePage() {
             <p className="text-xs font-semibold uppercase tracking-wide text-soft">
               From
             </p>
-            <h3 className="mt-1 font-display text-lg font-bold">Panda Express</h3>
-            <p className="font-medium">Orange Chicken</p>
+            <h3 className="mt-1 font-display text-lg font-bold">Sunny&rsquo;s Diner</h3>
+            <p className="font-medium">Orange Glazed Chicken</p>
             <p className="text-sm text-soft">Extra sauce on the side</p>
           </div>
         </div>

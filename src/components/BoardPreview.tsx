@@ -16,6 +16,7 @@ export function BoardPreview({
   price,
   area,
   hours,
+  sampleRequest,
   className,
 }: {
   handle: string;
@@ -28,6 +29,7 @@ export function BoardPreview({
   price: number;
   area: string;
   hours: string;
+  sampleRequest?: { customerName: string; contactLabel: string };
   className?: string;
 }) {
   return (
@@ -74,6 +76,31 @@ export function BoardPreview({
             {area} &middot; {hours}
           </p>
         </div>
+
+        {sampleRequest && (
+          <div className="mt-4 rounded-input border border-line2 p-3">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-xs font-semibold text-soft">
+                Example request
+              </p>
+              <span className="shrink-0 rounded-full bg-tomato-tint px-2 py-0.5 text-[10px] font-semibold text-hot">
+                New
+              </span>
+            </div>
+            <p className="mt-1.5 text-sm font-semibold">
+              {sampleRequest.customerName}
+            </p>
+            <p className="text-xs text-soft">{sampleRequest.contactLabel}</p>
+            <div className="mt-2.5 flex gap-2">
+              <span className="flex-1 rounded-input bg-hot px-3 py-1.5 text-center text-xs font-semibold text-bg">
+                Accept
+              </span>
+              <span className="flex-1 rounded-input border border-line2 px-3 py-1.5 text-center text-xs font-semibold text-soft">
+                Decline
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
