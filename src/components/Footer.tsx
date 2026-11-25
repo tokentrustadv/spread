@@ -37,7 +37,7 @@ export function Footer() {
             </h2>
           </div>
           <Link
-            href="#signup"
+            href="/#signup"
             className="btn-primary w-full shrink-0 sm:w-auto"
           >
             Create your free board

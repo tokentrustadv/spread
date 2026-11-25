@@ -19,11 +19,12 @@ export function RequestPreview() {
       {open && (
         <div className="mt-4 rounded-input border border-line2 bg-surface p-4">
           <p className="text-xs text-soft">
-            This is a simulated preview — nothing here sends anything. A
-            real request page asks for a delivery address and any
-            instructions, lets you copy a clean summary, and sends you to
-            the creator&rsquo;s own DM to confirm. Nothing is charged, and
-            the request isn&rsquo;t confirmed until the creator replies.
+            This is a simulated preview — nothing here sends anything. On a
+            real request page, submitting saves your request straight to
+            the creator&rsquo;s board — it doesn&rsquo;t notify them
+            automatically, so you also copy a clean summary and message
+            them directly. Nothing is charged, and the request isn&rsquo;t
+            accepted until the creator confirms with you.
           </p>
 
           <label className="mb-1.5 mt-4 block text-sm font-semibold text-soft">

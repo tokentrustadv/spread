@@ -32,7 +32,7 @@ export default function ExamplePage() {
           <h2 className="mt-3 font-display text-2xl font-extrabold">
             The Orange Chicken Favorite
           </h2>
-          <p className="font-display text-xl font-bold text-hot">$12.00</p>
+          <p className="font-display text-xl font-bold text-hot">$13.00</p>
         </div>
 
         <div className="mt-3 text-center text-sm text-soft">

@@ -59,6 +59,11 @@ export default async function LandingPage({
               Start with one favorite. Combine more when it works for you.
             </p>
 
+            <p className="mt-2 text-sm text-soft">
+              Choose a favorite from a restaurant you love, set your price,
+              and deliver it yourself to the people who already follow you.
+            </p>
+
             <div className="mt-4 inline-flex items-center rounded-full bg-tomato-tint px-3 py-1.5 text-xs font-semibold text-hot">
               Food only · No drinks or cold items
             </div>

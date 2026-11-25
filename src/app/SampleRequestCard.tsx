@@ -1,14 +1,23 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useDemoResult } from "./DemoResultContext";
 
 const DEFAULT_EXAMPLE = {
   title: "The Orange Chicken Favorite",
 };
 
+type SampleStatus = "new" | "accepted" | "declined";
+
 export function SampleRequestCard() {
   const { demoResult } = useDemoResult();
   const title = demoResult?.title || DEFAULT_EXAMPLE.title;
+  const [status, setStatus] = useState<SampleStatus>("new");
+
+  // A fresh demo build should present as a fresh, un-actioned sample again.
+  useEffect(() => {
+    setStatus("new");
+  }, [demoResult]);
 
   return (
     <div className="card mt-6 p-5">
@@ -33,22 +42,40 @@ export function SampleRequestCard() {
         <p className="font-semibold">Jordan</p>
         <p className="text-soft">Instagram: @jordan_example</p>
       </div>
-      <div className="mt-4 flex gap-2">
-        <button
-          type="button"
-          disabled
-          className="btn-primary flex-1 disabled:cursor-not-allowed disabled:opacity-90"
-        >
-          Accept
-        </button>
-        <button
-          type="button"
-          disabled
-          className="btn-secondary flex-1 disabled:cursor-not-allowed disabled:opacity-90"
-        >
-          Decline
-        </button>
-      </div>
+
+      {status === "new" ? (
+        <div className="mt-4 flex gap-2">
+          <button
+            type="button"
+            onClick={() => setStatus("accepted")}
+            className="btn-primary flex-1"
+          >
+            Accept (sample)
+          </button>
+          <button
+            type="button"
+            onClick={() => setStatus("declined")}
+            className="btn-secondary flex-1"
+          >
+            Decline (sample)
+          </button>
+        </div>
+      ) : (
+        <div className="mt-4 flex items-center justify-between gap-2 rounded-input bg-bg p-3">
+          <p className="text-sm font-semibold text-soft">
+            {status === "accepted"
+              ? "✓ Accepted — sample only, nothing sent"
+              : "Declined — sample only, nothing sent"}
+          </p>
+          <button
+            type="button"
+            onClick={() => setStatus("new")}
+            className="shrink-0 text-xs font-semibold text-hot hover:underline"
+          >
+            Reset
+          </button>
+        </div>
+      )}
     </div>
   );
 }
