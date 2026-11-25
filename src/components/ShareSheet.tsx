@@ -31,7 +31,7 @@ export function ShareSheet({
   })();
 
   const intro =
-    "Hungry? A Spread Creator can deliver one of their favorite items to your door — no pictures, no tipping, just personal convenience in your area. Spread makes delivery personal, and each creator offers an item they love.";
+    "Hungry? A Spread Creator can deliver one of their favorite items to your door — no drop-and-dash, no proof-of-delivery photos, no tipping or extra fees. Just a real person who knocks or rings the bell and hands it to you. Spread makes delivery personal, and each creator offers an item they love.";
 
   const caption = `${intro}\n\n${title} — request yours here: ${url}\n\nHave a meal you love? Create your own Spread and deliver it today: ${homeUrl}`;
 
