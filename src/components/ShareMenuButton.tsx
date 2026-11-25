@@ -11,7 +11,15 @@ export function ShareMenuButton({
 }) {
   const [status, setStatus] = useState<"idle" | "copied">("idle");
 
-  const caption = `I made my own board on Spread — delivered by me. Check out what I'm offering and message me to request yours: ${menuUrl}`;
+  const homeUrl = (() => {
+    try {
+      return new URL(menuUrl).origin;
+    } catch {
+      return menuUrl;
+    }
+  })();
+
+  const caption = `I made my own board on Spread — delivered by me. Check out what I'm offering and message me to request yours: ${menuUrl}\n\nHave a meal you love? Create your own Spread and deliver it today: ${homeUrl}`;
 
   async function handleShare() {
     if (typeof navigator !== "undefined" && navigator.share) {

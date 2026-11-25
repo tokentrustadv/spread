@@ -22,10 +22,20 @@ export function ShareSheet({
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  const homeUrl = (() => {
+    try {
+      return new URL(url).origin;
+    } catch {
+      return url;
+    }
+  })();
+
+  const caption = `A meal ${title} swears by. Request yours here: ${url}\n\nHave a meal you love? Create your own Spread and deliver it today: ${homeUrl}`;
+
   async function handleShare() {
     if (typeof navigator !== "undefined" && navigator.share) {
       try {
-        await navigator.share({ title, text: `A meal ${title} swears by.`, url });
+        await navigator.share({ title, text: caption, url });
         return;
       } catch {
         // user cancelled; fall through to sheet
@@ -35,7 +45,7 @@ export function ShareSheet({
   }
 
   async function handleCopy() {
-    await navigator.clipboard.writeText(url);
+    await navigator.clipboard.writeText(caption);
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   }
@@ -77,10 +87,14 @@ export function ShareSheet({
                 )}
               </div>
               <p className="mt-4 text-sm text-soft">A meal {title} swears by.</p>
+              <p className="mt-2 text-xs text-soft">
+                Have a meal you love? Create your own Spread and deliver it
+                today.
+              </p>
             </div>
 
             <button onClick={handleCopy} className="btn-secondary mt-4 w-full">
-              {copied ? "Copied!" : "Copy link"}
+              {copied ? "Caption copied!" : "Copy caption"}
             </button>
           </div>
         </div>
