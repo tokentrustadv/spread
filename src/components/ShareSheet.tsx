@@ -30,7 +30,10 @@ export function ShareSheet({
     }
   })();
 
-  const caption = `A meal ${title} swears by. Request yours here: ${url}\n\nHave a meal you love? Create your own Spread and deliver it today: ${homeUrl}`;
+  const intro =
+    "Hungry? A Spread Creator can deliver one of their favorite items to your door — no pictures, no tipping, just personal convenience in your area. Spread makes delivery personal, and each creator offers an item they love.";
+
+  const caption = `${intro}\n\n${title} — request yours here: ${url}\n\nHave a meal you love? Create your own Spread and deliver it today: ${homeUrl}`;
 
   async function handleShare() {
     if (typeof navigator !== "undefined" && navigator.share) {
@@ -86,7 +89,7 @@ export function ShareSheet({
                   </>
                 )}
               </div>
-              <p className="mt-4 text-sm text-soft">A meal {title} swears by.</p>
+              <p className="mt-4 text-sm text-soft">{intro}</p>
               <p className="mt-2 text-xs text-soft">
                 Have a meal you love? Create your own Spread and deliver it
                 today.
