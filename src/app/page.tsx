@@ -9,7 +9,7 @@ import { SampleRequestCard } from "./SampleRequestCard";
 import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
 import { Logo } from "@/components/Logo";
 import { CarMark } from "@/components/CarMark";
-import { DeliveryScene } from "@/components/DeliveryScene";
+import { HeroScene } from "@/components/HeroScene";
 import { BoardPreview } from "@/components/BoardPreview";
 import {
   MenuIcon,
@@ -61,14 +61,10 @@ export default async function LandingPage({
               <span className="text-hot">Delivered by you.</span>
             </h1>
 
-            <p className="mt-5 text-lg text-soft">
-              Start with one favorite. Combine more when it works for you.
-            </p>
-
-            <p className="mt-2 text-sm text-soft">
-              Choose a restaurant favorite, set your delivered price, and
-              share it with your social followers. You decide your area,
-              your hours, and every request you accept.
+            <p className="mt-5 max-w-[42ch] text-lg leading-relaxed text-ink/80">
+              Start with one restaurant favorite, set your delivered
+              price, and share it with your followers. You decide your
+              area, your hours, and every request you accept.
             </p>
 
             <div className="mt-4 flex flex-wrap items-center gap-2">
@@ -83,15 +79,12 @@ export default async function LandingPage({
 
           <div className="order-2 mx-auto mt-10 w-full max-w-[480px] lg:order-none lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:mx-0 lg:mt-0 lg:self-center">
             <div className="overflow-hidden rounded-card shadow-sm">
-              <Image
-                src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?q=80&w=1200&auto=format&fit=crop"
-                alt="One favorite burger, the kind of single item a Spread starts with"
-                width={1200}
-                height={800}
-                className="h-48 w-full object-cover sm:h-64"
-                priority
-              />
+              <HeroScene className="h-48 w-full sm:h-64" />
             </div>
+            <p className="mt-2 text-xs text-soft">
+              A creator delivering their own favorite, to someone in their
+              own neighborhood.
+            </p>
             <div className="mt-5">
               <BoardPreview
                 handle="yourhandle"
@@ -110,7 +103,6 @@ export default async function LandingPage({
                 }}
               />
             </div>
-            <DeliveryScene className="mt-6 w-full text-ink/60" />
           </div>
 
           <div
@@ -269,22 +261,43 @@ export default async function LandingPage({
         </section>
 
         {/* ---------- Membership ---------- */}
-        <section className="mx-auto mt-24 max-w-[640px] text-center lg:mt-28">
-          <h2 className="font-display text-2xl font-extrabold leading-tight lg:text-4xl">
-            A membership, not a marketplace.
-          </h2>
-          <p className="mt-4 text-[17px] text-soft">
-            Build and share free. Activate requests for{" "}
-            <strong className="font-semibold text-ink">
-              $12 total for your first three months
-            </strong>
-            , then{" "}
-            <strong className="font-semibold text-ink">
-              $12/month starting in month four
-            </strong>
-            . No Spread commission on sales &mdash; ever. Separate
-            payment-provider fees may apply.
-          </p>
+        <section className="mx-auto mt-24 max-w-[640px] lg:mt-28">
+          <div className="text-center">
+            <h2 className="font-display text-2xl font-extrabold leading-tight lg:text-4xl">
+              A membership, not a marketplace.
+            </h2>
+            <p className="mt-3 text-[15px] text-soft">
+              Build and share your board for free. Pay only once you turn
+              requests on.
+            </p>
+          </div>
+
+          <div className="mt-8 card p-6 lg:p-8">
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div className="text-center sm:border-r sm:border-line2 sm:pr-6 sm:text-left">
+                <p className="text-xs font-semibold uppercase tracking-wide text-soft">
+                  First 3 months
+                </p>
+                <p className="mt-1 font-display text-4xl font-extrabold text-hot">
+                  $12
+                </p>
+                <p className="mt-1 text-sm text-soft">total, not monthly</p>
+              </div>
+              <div className="text-center sm:pl-6 sm:text-left">
+                <p className="text-xs font-semibold uppercase tracking-wide text-soft">
+                  Month 4 onward
+                </p>
+                <p className="mt-1 font-display text-4xl font-extrabold text-ink">
+                  $12
+                </p>
+                <p className="mt-1 text-sm text-soft">per month</p>
+              </div>
+            </div>
+            <div className="mt-6 border-t border-line2 pt-5 text-center text-sm text-soft sm:text-left">
+              No Spread commission on sales &mdash; ever. Separate
+              payment-provider fees may apply.
+            </div>
+          </div>
         </section>
 
         {/* ---------- FAQ ---------- */}
