@@ -136,13 +136,31 @@ export default async function SpreadDetailPage({
       <div className="mt-10">
         {isOwner ? (
           <div className="flex flex-col gap-4">
-            <ShareSheet
-              title={spread.title}
-              style={spread.color}
-              restaurantA={a?.name ?? "?"}
-              restaurantB={b?.name ?? null}
-              url={shareUrl}
-            />
+            {spread.ownerMembershipActive ? (
+              <ShareSheet
+                title={spread.title}
+                style={spread.color}
+                restaurantA={a?.name ?? "?"}
+                restaurantB={b?.name ?? null}
+                url={shareUrl}
+              />
+            ) : (
+              <div className="card p-5 text-center">
+                <p className="font-display text-sm font-bold">
+                  Activate your membership to share this Spread
+                </p>
+                <p className="mt-1 text-sm text-soft">
+                  Your board stays free to build — sharing and accepting
+                  requests need an active membership first.
+                </p>
+                <Link
+                  href="/board/profile"
+                  className="btn-primary mt-3 w-full"
+                >
+                  Activate membership
+                </Link>
+              </div>
+            )}
             <OwnerActions spreadId={spread.id} userId={spread.userId} />
           </div>
         ) : spread.ownerIsLive && !spread.isPaused && spread.ownerMembershipActive ? (
