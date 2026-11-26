@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/services/profile";
 import { listSpreads } from "@/services/spreads";
 import { getRequestCounts } from "@/services/requests";
+import { isMembershipActiveForUser } from "@/services/membership";
 import { SpreadCard } from "@/components/SpreadCard";
 import { SignOut } from "@/components/SignOut";
 import { ShareMenuButton } from "@/components/ShareMenuButton";
@@ -23,6 +24,11 @@ export default async function BoardPage() {
 
   const spreads = await listSpreads(supabase, user.id);
   const requestCounts = await getRequestCounts(supabase, user.id);
+  const membershipActive = await isMembershipActiveForUser(supabase, user.id);
+  const profileComplete =
+    !!profile.area &&
+    !!profile.availability &&
+    !!(profile.cashappHandle || profile.venmoHandle);
 
   return (
     <main className="frame py-10">
@@ -57,11 +63,42 @@ export default async function BoardPage() {
         </span>
       </Link>
 
+      {!profileComplete && (
+        <div className="mt-6 rounded-input border border-line2 bg-surface p-4">
+          <p className="font-display text-sm font-bold">
+            Finish setting up your profile
+          </p>
+          <p className="mt-1 text-sm text-soft">
+            Add your delivery area, your hours, and how customers pay you
+            (Cash App or Venmo) so people know what to expect before they
+            request anything.
+          </p>
+          <Link href="/board/profile" className="btn-primary mt-3 w-full">
+            Complete your profile
+          </Link>
+        </div>
+      )}
+
       <div className="mt-4 flex flex-col gap-3">
-        <ShareMenuButton
-          displayName={profile.displayName}
-          menuUrl={`${siteUrl}/@${profile.handle}`}
-        />
+        {membershipActive ? (
+          <ShareMenuButton
+            displayName={profile.displayName}
+            menuUrl={`${siteUrl}/@${profile.handle}`}
+          />
+        ) : (
+          <div className="rounded-input border border-line2 bg-surface p-4 text-center">
+            <p className="font-display text-sm font-bold">
+              Activate your membership to share your board
+            </p>
+            <p className="mt-1 text-sm text-soft">
+              Building your board is free — activating your membership
+              turns on sharing and accepting requests.
+            </p>
+            <Link href="/board/profile" className="btn-primary mt-3 w-full">
+              Activate membership
+            </Link>
+          </div>
+        )}
         <Link href="/board/new" className="btn-secondary w-full">
           + New spread
         </Link>
