@@ -1,7 +1,9 @@
-// Illustrated plate of orange-glazed chicken for the "Something of your
-// own" example, replacing a stock photo that didn't visually read as
-// orange-glazed. Same flat-illustration system as HeroScene, with soft
-// two-tone shading for texture.
+// The orange-glazed chicken example, drawn going into the same insulated
+// bag used throughout the illustration system — ties Jordan's example
+// item directly to the delivery bag Chip responded to, rather than a
+// plate sitting on its own.
+import { LogoMark } from "./Logo";
+
 export function GlazedChickenPlate({ className }: { className?: string }) {
   return (
     <svg
@@ -11,45 +13,61 @@ export function GlazedChickenPlate({ className }: { className?: string }) {
       className={className}
     >
       <defs>
-        <linearGradient id="plate-bg" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="bagchicken-bg" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#F6EFE2" />
           <stop offset="100%" stopColor="#EFE4D1" />
         </linearGradient>
       </defs>
-      <rect width="400" height="230" fill="url(#plate-bg)" />
+      <rect width="400" height="230" fill="url(#bagchicken-bg)" />
 
-      {/* plate */}
-      <ellipse cx="200" cy="128" rx="150" ry="72" fill="#FFFFFF" stroke="#26231F" strokeWidth="1.6" />
-      <ellipse cx="200" cy="128" rx="120" ry="56" fill="#FBF3E6" stroke="#26231F" strokeWidth="1" opacity="0.6" />
+      <ellipse cx="200" cy="196" rx="140" ry="14" fill="#26231F" opacity="0.08" />
 
-      {/* glazed chicken pieces, warm orange tones */}
-      <g>
-        <ellipse cx="155" cy="118" rx="42" ry="26" fill="#C4472D" />
-        <ellipse cx="155" cy="112" rx="38" ry="20" fill="#E07E12" opacity="0.85" />
-        <ellipse cx="146" cy="106" rx="12" ry="6" fill="#F3A33D" opacity="0.8" />
-
-        <ellipse cx="236" cy="128" rx="40" ry="25" fill="#B23F28" />
-        <ellipse cx="236" cy="122" rx="36" ry="19" fill="#DB760F" opacity="0.85" />
-        <ellipse cx="226" cy="116" rx="11" ry="5.5" fill="#F3A33D" opacity="0.75" />
-
-        <ellipse cx="196" cy="148" rx="34" ry="21" fill="#C4472D" />
-        <ellipse cx="196" cy="143" rx="30" ry="16" fill="#E07E12" opacity="0.85" />
-
-        {/* sesame / herb fleck texture */}
-        {[
-          [138, 104], [168, 100], [148, 122], [220, 108], [250, 120],
-          [230, 134], [186, 138], [210, 156], [178, 150],
-        ].map(([x, y], i) => (
-          <circle key={i} cx={x} cy={y} r="1.6" fill="#FFF7ED" opacity="0.8" />
-        ))}
-        {[ [160, 130], [240, 140], [200, 160] ].map(([x, y], i) => (
-          <circle key={`g${i}`} cx={x} cy={y} r="1.4" fill="#42634B" opacity="0.6" />
-        ))}
+      {/* the insulated bag, open at the top */}
+      <g transform="translate(118, 48)">
+        {/* open flap, folded back */}
+        <path
+          d="M10 18 Q6 -4 34 -10 L96 -10 Q124 -4 120 18"
+          fill="#A83A24"
+          stroke="#26231F"
+          strokeWidth="1.8"
+        />
+        {/* bag body */}
+        <rect
+          x="0"
+          y="18"
+          width="130"
+          height="118"
+          rx="14"
+          fill="#C4472D"
+          stroke="#26231F"
+          strokeWidth="2"
+        />
+        <rect x="0" y="18" width="130" height="30" rx="14" fill="#FFFFFF" opacity="0.1" />
+        {/* dark interior, visible through the open top */}
+        <path
+          d="M14 18 Q65 2 116 18 L116 34 Q65 20 14 34 Z"
+          fill="#3A1A10"
+        />
+        <g transform="translate(36, 70)">
+          <LogoMark size={48} />
+        </g>
       </g>
 
-      {/* garnish */}
-      <ellipse cx="300" cy="150" rx="18" ry="9" fill="#5A7A62" opacity="0.5" />
-      <ellipse cx="108" cy="150" rx="14" ry="7" fill="#5A7A62" opacity="0.4" />
+      {/* glazed chicken pieces, resting in the open bag */}
+      <g transform="translate(150, 30)">
+        <ellipse cx="46" cy="30" rx="34" ry="21" fill="#B23F28" />
+        <ellipse cx="46" cy="25" rx="30" ry="16" fill="#E07E12" opacity="0.88" />
+        <ellipse cx="37" cy="19" rx="9" ry="4.5" fill="#F3A33D" opacity="0.8" />
+
+        <ellipse cx="88" cy="22" rx="28" ry="18" fill="#C4472D" />
+        <ellipse cx="88" cy="17" rx="24" ry="13" fill="#DB760F" opacity="0.88" />
+
+        {[
+          [26, 14], [52, 10], [78, 8], [100, 14], [60, 24],
+        ].map(([x, y], i) => (
+          <circle key={i} cx={x} cy={y} r="1.5" fill="#FFF7ED" opacity="0.85" />
+        ))}
+      </g>
     </svg>
   );
 }
