@@ -225,7 +225,7 @@ export function HeroScene({ className }: { className?: string }) {
         />
         <rect x="2" y="2" width="44" height="10" rx="7" fill="#FFFFFF" opacity="0.12" />
         <g transform="translate(11, 6)">
-          <LogoMark size={24} />
+          <LogoMark size={24} color="#FFF7ED" />
         </g>
       </g>
     </svg>

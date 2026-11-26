@@ -49,7 +49,7 @@ export function GlazedChickenPlate({ className }: { className?: string }) {
           fill="#3A1A10"
         />
         <g transform="translate(36, 70)">
-          <LogoMark size={48} />
+          <LogoMark size={48} color="#FFF7ED" />
         </g>
       </g>
 

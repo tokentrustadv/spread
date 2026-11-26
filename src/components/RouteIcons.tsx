@@ -36,9 +36,9 @@ export function VehicleGlyphs({ size = 16, className }: { size?: number; classNa
   );
 }
 
-// The small traveling marker — a miniature of the brand hub (hot circle +
-// white S), not the full wheel. "solid" = currently at this stop; faint
-// outline otherwise.
+// The small traveling marker — the real brand mark in a circle badge.
+// Filled solid when active (currently at this stop); faint outline
+// otherwise.
 export function RouteMarker({ active, size = 22 }: { active: boolean; size?: number }) {
   return (
     <svg
@@ -50,14 +50,10 @@ export function RouteMarker({ active, size = 22 }: { active: boolean; size?: num
       style={{ opacity: active ? 1 : 0.35 }}
     >
       <circle cx="50" cy="50" r="46" fill={active ? "#C4472D" : "none"} stroke="#C4472D" strokeWidth="6" />
-      <svg x="18" y="18" width="64" height="64" viewBox="0 0 100 100">
+      <svg x="20" y="20" width="60" height="60" viewBox="0 0 100 100">
         <path
-          d="M71 26C64 16 48 13 36 19C24 25 20 38 29 45C38 52 55 48 64 55C73 62 69 75 57 81C45 87 29 84 22 74"
-          stroke={active ? "white" : "#C4472D"}
-          strokeWidth="16"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
+          d="M50,10 A40,40 0 0,1 50,90 A22,22 0 0,1 50,46 A18,18 0 0,0 50,10 Z"
+          fill={active ? "#FFF7ED" : "#C4472D"}
         />
       </svg>
     </svg>

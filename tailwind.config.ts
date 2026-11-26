@@ -22,6 +22,7 @@ const config: Config = {
       fontFamily: {
         display: ["var(--font-fraunces)", "serif"],
         body: ["var(--font-instrument-sans)", "sans-serif"],
+        wordmark: ["var(--font-quicksand)", "sans-serif"],
       },
       borderRadius: {
         card: "18px",

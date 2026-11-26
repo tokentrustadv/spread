@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Instrument_Sans } from "next/font/google";
+import { Fraunces, Instrument_Sans, Quicksand } from "next/font/google";
 import "./globals.css";
 import { siteUrl, missionLine } from "@/lib/site";
 import { Footer } from "@/components/Footer";
@@ -16,6 +16,12 @@ const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-instrument-sans",
+});
+
+const quicksand = Quicksand({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-quicksand",
 });
 
 export const metadata: Metadata = {
@@ -59,7 +65,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${instrumentSans.variable}`}
+      className={`${fraunces.variable} ${instrumentSans.variable} ${quicksand.variable}`}
     >
       <body>
         <div className="ambient-glow">

@@ -73,8 +73,8 @@ export function ShareSheet({
                 className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-40 blur-3xl"
                 style={{ background: "linear-gradient(135deg,#C4472D,#D9836D)" }}
               />
-              <LogoMark size={18} className="text-hot" />
-              <p className="mt-1.5 font-display text-sm font-semibold text-hot">
+              <LogoMark size={18} />
+              <p className="mt-1.5 font-wordmark text-sm font-bold text-hot">
                 Spread
               </p>
               <h3 className="mt-2 font-display text-2xl font-extrabold">{title}</h3>

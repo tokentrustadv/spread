@@ -53,7 +53,7 @@ export function HandoffScene({ className }: { className?: string }) {
         />
         <rect x="4" y="6" width="74" height="16" rx="9" fill="#FFFFFF" opacity="0.12" />
         <g transform="translate(21, 15)">
-          <LogoMark size={36} />
+          <LogoMark size={36} color="#FFF7ED" />
         </g>
       </g>
     </svg>
