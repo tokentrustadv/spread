@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SignInForm } from "./SignInForm";
@@ -8,8 +7,9 @@ import { DemoResultProvider } from "./DemoResultContext";
 import { SampleRequestCard } from "./SampleRequestCard";
 import { FoodOnlyBadge } from "@/components/FoodOnlyBadge";
 import { Logo } from "@/components/Logo";
-import { CarMark } from "@/components/CarMark";
 import { HeroScene } from "@/components/HeroScene";
+import { GlazedChickenPlate } from "@/components/GlazedChickenPlate";
+import { HandoffScene } from "@/components/HandoffScene";
 import { BoardPreview } from "@/components/BoardPreview";
 import {
   MenuIcon,
@@ -17,6 +17,7 @@ import {
   HoursIcon,
   AreaIcon,
   RequestsIcon,
+  MicIcon,
 } from "@/components/ControlIcons";
 
 export default async function LandingPage({
@@ -141,13 +142,18 @@ export default async function LandingPage({
         </div>
 
         {/* ---------- Founder provenance ---------- */}
-        <div className="mt-10 rounded-input border border-line2 bg-surface px-5 py-3 text-center text-sm text-soft">
-          From Chip Mahoney, host of{" "}
-          <span className="font-semibold text-ink">The Chip Mahoney Show</span>.
+        <div className="mt-10 flex items-center justify-center gap-3 rounded-input border border-line2 bg-surface px-5 py-3 text-center text-sm text-soft">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-herb/15 text-herb">
+            <MicIcon size={16} />
+          </span>
+          <span>
+            From Chip Mahoney, host of{" "}
+            <span className="font-semibold text-ink">The Chip Mahoney Show</span>.
+          </span>
         </div>
 
         {/* ---------- Creator story ---------- */}
-        <section className="mt-24 lg:mt-28">
+        <section className="mt-16 lg:mt-20">
           <div className="lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
             <div>
               <h2 className="font-display text-2xl font-extrabold leading-tight lg:text-4xl">
@@ -170,13 +176,7 @@ export default async function LandingPage({
 
             <div className="mt-8 lg:mt-0">
               <div className="overflow-hidden rounded-card shadow-sm">
-                <Image
-                  src="https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?q=80&w=1200&auto=format&fit=crop"
-                  alt="Crispy glazed chicken, Jordan's favorite from the spot down the street"
-                  width={1200}
-                  height={800}
-                  className="h-44 w-full object-cover sm:h-56"
-                />
+                <GlazedChickenPlate className="h-44 w-full sm:h-56" />
               </div>
               <p className="mb-2 mt-5 text-xs font-semibold uppercase tracking-wide text-soft">
                 Example &mdash; not a real account
@@ -198,7 +198,7 @@ export default async function LandingPage({
         </section>
 
         {/* ---------- Product storytelling ---------- */}
-        <section id="try-it" className="mt-24 scroll-mt-10 lg:mt-28">
+        <section id="try-it" className="mt-16 scroll-mt-10 lg:mt-20">
           <div className="mx-auto max-w-[640px] text-center">
             <h2 className="font-display text-2xl font-extrabold leading-tight lg:text-4xl">
               See it come together.
@@ -222,17 +222,10 @@ export default async function LandingPage({
         </section>
 
         {/* ---------- You control the flow ---------- */}
-        <section className="-mx-5 mt-24 bg-herb px-5 py-8 text-bg lg:mt-28 lg:rounded-card">
+        <section className="-mx-5 mt-16 bg-herb px-5 py-8 text-bg lg:mt-20 lg:rounded-card">
           <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-6 lg:flex-row lg:items-center lg:gap-10">
             <div className="h-40 overflow-hidden rounded-card shadow-sm lg:h-32 lg:w-[220px] lg:shrink-0">
-              <Image
-                src="https://images.pexels.com/photos/4393668/pexels-photo-4393668.jpeg?auto=compress&cs=tinysrgb&w=900"
-                alt="A creator handing off a delivery bag in person"
-                width={900}
-                height={600}
-                className="h-full w-full object-cover"
-                loading="eager"
-              />
+              <HandoffScene className="h-full w-full" />
             </div>
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
               <h2 className="shrink-0 font-display text-xl font-extrabold leading-tight lg:text-2xl">
@@ -261,7 +254,7 @@ export default async function LandingPage({
         </section>
 
         {/* ---------- Membership ---------- */}
-        <section className="mx-auto mt-24 max-w-[640px] lg:mt-28">
+        <section className="mx-auto mt-16 max-w-[640px] lg:mt-20">
           <div className="text-center">
             <h2 className="font-display text-2xl font-extrabold leading-tight lg:text-4xl">
               A membership, not a marketplace.
@@ -278,18 +271,14 @@ export default async function LandingPage({
                 <p className="text-xs font-semibold uppercase tracking-wide text-soft">
                   First 3 months
                 </p>
-                <p className="mt-1 font-display text-4xl font-extrabold text-hot">
-                  $12
-                </p>
+                <p className="mt-1 text-4xl font-extrabold text-hot">$12</p>
                 <p className="mt-1 text-sm text-soft">total, not monthly</p>
               </div>
               <div className="text-center sm:pl-6 sm:text-left">
                 <p className="text-xs font-semibold uppercase tracking-wide text-soft">
                   Month 4 onward
                 </p>
-                <p className="mt-1 font-display text-4xl font-extrabold text-ink">
-                  $12
-                </p>
+                <p className="mt-1 text-4xl font-extrabold text-ink">$12</p>
                 <p className="mt-1 text-sm text-soft">per month</p>
               </div>
             </div>
@@ -301,13 +290,13 @@ export default async function LandingPage({
         </section>
 
         {/* ---------- FAQ ---------- */}
-        <section className="mx-auto mt-24 max-w-[640px] lg:mt-28">
+        <section className="mx-auto mt-16 max-w-[640px] lg:mt-20">
           <h2 className="font-display text-2xl font-extrabold leading-tight lg:text-3xl">
             A few more things
           </h2>
           <div className="mt-5 flex flex-col gap-5">
             <div>
-              <p className="font-display font-bold">How do I get paid?</p>
+              <p className="font-bold">How do I get paid?</p>
               <p className="mt-1 text-[15px] text-soft">
                 Customers pay you directly through your chosen payment
                 method. You arrange payment and any refunds with your
@@ -315,7 +304,7 @@ export default async function LandingPage({
               </p>
             </div>
             <div>
-              <p className="font-display font-bold">What about refunds?</p>
+              <p className="font-bold">What about refunds?</p>
               <p className="mt-1 text-[15px] text-soft">
                 Refunds go straight back through Cash App or Venmo, worked
                 out directly between you and your customer &mdash; the
@@ -323,7 +312,7 @@ export default async function LandingPage({
               </p>
             </div>
             <div>
-              <p className="font-display font-bold">What counts as food only?</p>
+              <p className="font-bold">What counts as food only?</p>
               <p className="mt-1 text-[15px] text-soft">
                 No drinks, ice cream, or other cold items &mdash; hot or
                 freshly prepared food only. Spread flags likely drink or
@@ -345,7 +334,7 @@ export default async function LandingPage({
         </section>
 
         {/* ---------- Closing ---------- */}
-        <section className="mx-auto mt-24 max-w-[560px] text-center lg:mt-28">
+        <section className="mx-auto mt-16 max-w-[560px] text-center lg:mt-20">
           <h2 className="font-display text-3xl font-extrabold leading-tight lg:text-4xl">
             Your first Spread could be around the corner.
           </h2>
@@ -356,11 +345,6 @@ export default async function LandingPage({
             Create your free board
           </Link>
         </section>
-
-        <div className="mt-16 flex flex-col items-center pb-8 text-center text-xs text-soft">
-          <CarMark size={110} />
-          <p className="mt-3">Or by car &mdash; however you already get around.</p>
-        </div>
       </main>
     </DemoResultProvider>
   );
