@@ -338,13 +338,20 @@ export function SpreadForm({
       ))}
 
       {form.restaurants.length < 2 && (
-        <button
-          type="button"
-          onClick={addRestaurant}
-          className="self-start text-sm font-semibold text-hot"
-        >
-          + Add a second restaurant
-        </button>
+        <div className="flex flex-col items-start gap-1">
+          <button
+            type="button"
+            onClick={addRestaurant}
+            className="self-start text-sm font-semibold text-hot"
+          >
+            + Add a second restaurant
+          </button>
+          <p className="text-xs text-soft">
+            A combo from two restaurants isn&rsquo;t on any menu &mdash;
+            it only exists because you made it. Many creators price these
+            higher than either restaurant&rsquo;s meal alone.
+          </p>
+        </div>
       )}
 
       {flaggedItems.length > 0 && (

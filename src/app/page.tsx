@@ -172,6 +172,13 @@ export default async function LandingPage({
                 complete Spread as published &mdash; a suggestion from a
                 customer is never an obligation to add an item or a stop.
               </p>
+              <p className="mt-3 text-[15px] text-soft">
+                A two-restaurant combo isn&rsquo;t sold anywhere else
+                &mdash; it only exists because a creator made it. That&rsquo;s
+                real pricing power: many creators price a combo higher
+                than either restaurant&rsquo;s meal alone, since there&rsquo;s
+                nowhere else to get it.
+              </p>
             </div>
 
             <div className="mt-8 lg:mt-0">
