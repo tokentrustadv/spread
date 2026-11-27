@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Instrument_Sans, Quicksand } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { siteUrl, missionLine } from "@/lib/site";
 import { Footer } from "@/components/Footer";
@@ -49,6 +50,9 @@ export const metadata: Metadata = {
     title: "Spread",
     description: missionLine,
   },
+  verification: {
+    google: "Q7jvf0H37I9B5lM3plM38JpZ3VYeArPWyTAPp4dB2kc",
+  },
 };
 
 export const viewport: Viewport = {
@@ -80,6 +84,7 @@ export default function RootLayout({
         </div>
         {children}
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
